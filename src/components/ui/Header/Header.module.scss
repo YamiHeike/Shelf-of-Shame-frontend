@@ -1,0 +1,33 @@
+.page-title {
+  text-shadow: 3px 2px 3px #383677;
+  margin-top: 2rem;
+
+  font-size: clamp(2rem, 8vw + 2rem, 6rem);
+
+  margin-top: clamp(4rem, 5vw + 2rem, 10rem);
+
+  @media (max-width: 480px) {
+    font-size: 2rem !important;
+    margin-top: 3rem;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 3rem !important;
+    margin-top: 5rem;
+  }
+
+  @media (min-width: 769px) {
+    font-size: 4rem !important;
+    margin-top: 6rem;
+  }
+
+  @media (min-width: 1200px) {
+    font-size: 5rem !important;
+    margin-top: 8rem;
+  }
+
+  @media (min-width: 1600px) {
+    font-size: 6rem !important;
+    margin-top: 10rem;
+  }
+}

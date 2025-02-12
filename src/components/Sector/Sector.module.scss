@@ -1,0 +1,22 @@
+.cover {
+  width: 100%;
+  max-height: 50dvh;
+  overflow: hidden;
+}
+
+.feature-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .feature-card {
+    margin-bottom: 16px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .feature-card {
+    margin-bottom: 24px;
+  }
+}

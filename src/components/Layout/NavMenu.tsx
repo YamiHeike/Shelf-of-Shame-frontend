@@ -20,23 +20,36 @@ export const NavMenu = () => {
     <Menu
       mode="horizontal"
       selectedKeys={[]}
-      style={{ padding: 8, fontWeight: 200, height: 65, opacity: 0.9 }}
+      style={{
+        padding: 8,
+        fontWeight: 200,
+        height: 65,
+        opacity: 0.9,
+        top: 0,
+        left: 0,
+        width: "100%",
+      }}
     >
-      <RadarChartOutlined
-        onClick={handleLogoClick}
-        rotate={45}
-        style={{ fontSize: 44, padding: 2, color: "#1677ff" }}
-      />
+      {/* Custom logo item outside the items array */}
+
+      <NavLink
+        to={routes.HOME.path}
+        style={{
+          textDecoration: "none",
+          cursor: "pointer",
+        }}
+      >
+        <RadarChartOutlined
+          onClick={handleLogoClick}
+          rotate={45}
+          style={{ fontSize: 44, padding: 2, color: "#BF2633" }}
+        />
+      </NavLink>
+
+      {/* Regular menu items */}
       {items.map((item) => (
         <Menu.Item key={item.key}>
-          <NavLink
-            to={item.key}
-            style={({ isActive }) => ({
-              color: isActive ? "#1677ff" : "inherit",
-            })}
-          >
-            {item.label}
-          </NavLink>
+          <NavLink to={item.key}>{item.label}</NavLink>
         </Menu.Item>
       ))}
     </Menu>

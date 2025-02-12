@@ -1,6 +1,13 @@
+@mixin center-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .hero {
+  @include center-content();
   width: 100%;
-  background-image: url("../assets/ontrail.jpg");
+  background-image: url("../assets/books.jpg");
   background-position: 0%;
-  height: calc(100dvh - 65px);
+  min-height: calc(100dvh - 65px);
 }

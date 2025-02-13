@@ -30,3 +30,11 @@ export const appFeatures = [
     description: "Access your data from anywhere with our cloud integration.",
   },
 ];
+
+export type AppFeatureType = {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+};
+
+export type AppFeaturesType = AppFeatureType[];

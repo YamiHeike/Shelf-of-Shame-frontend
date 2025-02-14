@@ -1,40 +1,35 @@
 import {
-  RocketOutlined,
-  SafetyOutlined,
-  TeamOutlined,
-  CloudOutlined,
+  BookOutlined,
+  FolderOpenOutlined,
+  BulbOutlined,
+  CheckCircleOutlined,
 } from "@ant-design/icons";
 
 export const appFeatures = [
   {
-    icon: <RocketOutlined style={{ fontSize: "32px", color: "#1890ff" }} />,
-    title: "Fast Performance",
+    icon: <BookOutlined style={{ fontSize: "32px", color: "#1890ff" }} />,
+    title: "Tackle Your Tsundoku",
     description:
-      "Experience blazing-fast performance with our optimized architecture.",
+      "Organize and track your unread books with ease, turning your ‘to-read’ pile into progress.",
   },
   {
-    icon: <SafetyOutlined style={{ fontSize: "32px", color: "#52c41a" }} />,
-    title: "Secure & Reliable",
+    icon: <FolderOpenOutlined style={{ fontSize: "32px", color: "#52c41a" }} />,
+    title: "Smart Book Categorization",
     description:
-      "Your data is safe with our industry-leading security measures.",
+      "Sort your books by genre, difficulty, or personal tags to make choosing your next read effortless.",
   },
   {
-    icon: <TeamOutlined style={{ fontSize: "32px", color: "#faad14" }} />,
-    title: "Collaboration Made Easy",
+    icon: <BulbOutlined style={{ fontSize: "32px", color: "#faad14" }} />,
+    title: "Personalized Reading Suggestions",
     description:
-      "Work seamlessly with your team using our collaboration tools.",
+      "Let the app recommend your next book based on your preferences and reading mood.",
   },
   {
-    icon: <CloudOutlined style={{ fontSize: "32px", color: "#f5222d" }} />,
-    title: "Cloud Integration",
-    description: "Access your data from anywhere with our cloud integration.",
+    icon: (
+      <CheckCircleOutlined style={{ fontSize: "32px", color: "#f5222d" }} />
+    ),
+    title: "Seamless Book Tracking",
+    description:
+      "Update progress, add comments, and keep track of your growing reading achievements.",
   },
 ];
-
-export type AppFeatureType = {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-};
-
-export type AppFeaturesType = AppFeatureType[];

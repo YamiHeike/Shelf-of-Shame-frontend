@@ -33,3 +33,9 @@ export const appFeatures = [
       "Update progress, add comments, and keep track of your growing reading achievements.",
   },
 ];
+
+export type AppFeatureType = {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+};

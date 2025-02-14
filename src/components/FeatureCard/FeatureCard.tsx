@@ -1,4 +1,4 @@
-import { type AppFeatureType } from "../Homepage/appFeatures";
+import { type AppFeatureType } from "../Homepage";
 import styles from "./FeatureCard.module.scss";
 import { Card, Col } from "antd";
 import Paragraph from "antd/es/typography/Paragraph";

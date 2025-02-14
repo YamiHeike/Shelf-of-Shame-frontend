@@ -8,6 +8,7 @@
   @include center-content();
   width: 100%;
   background-image: url("../assets/books.jpg");
-  background-position: 0%;
+  background-position: center;
+  background-size: cover;
   min-height: calc(100dvh - 65px);
 }

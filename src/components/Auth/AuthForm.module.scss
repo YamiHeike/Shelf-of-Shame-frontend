@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: center;
   height: calc(100dvh - 65px);
-  background: linear-gradient(135deg, #bf2633, #383677);
+  background: linear-gradient(135deg, #383677, #bf2633);
 }
 
 .card {
@@ -16,7 +16,7 @@
 }
 
 .title {
-  color: #1890ff;
+  color: #1890ff !important;
 }
 
 .footerText {

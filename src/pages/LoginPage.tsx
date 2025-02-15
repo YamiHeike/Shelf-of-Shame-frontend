@@ -1,12 +1,14 @@
 import { Button, Form, Input } from "antd";
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
-import { AuthForm } from "../components/Auth";
+import { AuthCredentials, AuthForm } from "../components/Auth";
 
 export const LoginPage = () => {
   const [form] = Form.useForm();
 
-  const onFinish = (values: any) => {
+  const onFinish = (values: AuthCredentials) => {
+    const email = form.getFieldValue("email");
+    console.log(email);
     console.log("Login Submitted:", values);
   };
 

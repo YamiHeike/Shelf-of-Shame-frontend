@@ -31,3 +31,19 @@
     margin-top: 10rem;
   }
 }
+
+.logo {
+  animation: logo-spin infinite 15s linear;
+  @media (max-width: 768px) {
+    animation: none;
+  }
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

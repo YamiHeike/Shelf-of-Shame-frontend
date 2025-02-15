@@ -3,6 +3,7 @@ import { routes } from "../../routes";
 import { NavLink } from "react-router-dom";
 import { RadarChartOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { RotatingLogo } from "../ui/RotatingLogo";
 
 export const NavMenu = () => {
   const navigate = useNavigate();
@@ -39,14 +40,14 @@ export const NavMenu = () => {
           cursor: "pointer",
         }}
       >
-        <RadarChartOutlined
+        <RotatingLogo
+          Icon={RadarChartOutlined}
           onClick={handleLogoClick}
           rotate={45}
           style={{ fontSize: 44, padding: 2, color: "#BF2633" }}
         />
       </NavLink>
 
-      {/* Regular menu items */}
       {items.map((item) => (
         <Menu.Item key={item.key}>
           <NavLink to={item.key}>{item.label}</NavLink>

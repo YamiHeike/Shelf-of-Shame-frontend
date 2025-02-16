@@ -1,15 +1,33 @@
 import { Button, Form, Input } from "antd";
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
-import { NavLink } from "react-router-dom";
-import { AuthCredentials, AuthForm } from "../components/Auth";
+import { NavLink, useNavigate } from "react-router-dom";
+import {
+  AuthCredentials,
+  AuthForm,
+  useAuth,
+  UserDto,
+} from "../components/Auth";
+import { request, setAuthToken } from "../utils";
 
 export const LoginPage = () => {
   const [form] = Form.useForm();
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
-  const onFinish = (values: AuthCredentials) => {
-    const email = form.getFieldValue("email");
-    console.log(email);
+  const onFinish = async (values: AuthCredentials) => {
     console.log("Login Submitted:", values);
+    try {
+      const response = await request<UserDto, AuthCredentials>(
+        "POST",
+        "http://localhost:8080/login",
+        values
+      );
+      setAuthToken(response.data.token);
+      login(response.data);
+      navigate("/");
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (

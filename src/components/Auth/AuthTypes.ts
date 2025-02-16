@@ -6,3 +6,10 @@ export interface AuthCredentials {
 export interface User extends AuthCredentials {
   username: string;
 }
+
+export type UserDto = {
+  id: number;
+  email: string;
+  username: string;
+  token: string;
+};

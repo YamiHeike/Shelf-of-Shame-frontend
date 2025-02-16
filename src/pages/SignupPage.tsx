@@ -1,13 +1,27 @@
 import { Button, Form, Input } from "antd";
 import { LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
-import { NavLink } from "react-router-dom";
-import { AuthForm } from "../components/Auth";
+import { NavLink, useNavigate } from "react-router-dom";
+import { AuthForm, useAuth, User, UserDto } from "../components/Auth";
+import { request, setAuthToken } from "../utils";
 
 export const SignupPage = () => {
   const [form] = Form.useForm();
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
-  const onFinish = (values: any) => {
-    console.log("Form Submitted:", values);
+  const onFinish = async (values: User) => {
+    console.log(values);
+    const response = await request<UserDto, User>(
+      "POST",
+      "http://localhost:8080/signup",
+      {
+        username: values.username,
+        password: values.password,
+        email: values.email,
+      }
+    );
+    setAuthToken(response.data.token);
+    login(response.data);
   };
 
   return (

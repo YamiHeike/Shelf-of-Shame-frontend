@@ -1,10 +1,10 @@
 import { createContext, useContext, useState } from "react";
-import { AuthCredentials, User } from "./AuthTypes";
+import { UserDto } from "./AuthTypes";
 
 type AuthContextType = {
-  user: User | null;
+  user: UserDto | null;
   isAuthenticated: boolean;
-  login: (user: User) => void;
+  login: (user: UserDto) => void;
   logout: () => void;
 };
 
@@ -20,10 +20,10 @@ type AuthProviderProps = {
 };
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserDto | null>(null);
   const isAuthenticated = !!user;
 
-  const login = (user: User) => {
+  const login = (user: UserDto) => {
     setUser(user);
   };
 

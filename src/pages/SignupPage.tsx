@@ -22,6 +22,7 @@ export const SignupPage = () => {
     );
     setAuthToken(response.data.token);
     login(response.data);
+    navigate("/");
   };
 
   return (

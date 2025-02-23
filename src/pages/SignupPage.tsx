@@ -10,19 +10,22 @@ export const SignupPage = () => {
   const { login } = useAuth();
 
   const onFinish = async (values: User) => {
-    console.log(values);
-    const response = await request<UserDto, User>(
-      "POST",
-      "http://localhost:8080/signup",
-      {
-        username: values.username,
-        password: values.password,
-        email: values.email,
-      }
-    );
-    setAuthToken(response.data.token);
-    login(response.data);
-    navigate("/");
+    try {
+      const response = await request<UserDto, User>(
+        "POST",
+        "http://localhost:8080/signup",
+        {
+          username: values.username,
+          password: values.password,
+          email: values.email,
+        }
+      );
+      setAuthToken(response.data.token);
+      login(response.data);
+      navigate("/");
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (

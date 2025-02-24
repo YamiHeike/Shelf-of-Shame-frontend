@@ -5,20 +5,15 @@ import {
   Typography,
   Row,
   Col,
-  Button,
   List,
   Statistic,
   Grid,
-  Tooltip,
+  Button,
 } from "antd";
-import {
-  BookOutlined,
-  BarChartOutlined,
-  PlusOutlined,
-  BulbOutlined,
-  TrophyOutlined,
-  FireOutlined,
-} from "@ant-design/icons";
+import { BookOutlined, TrophyOutlined, FireOutlined } from "@ant-design/icons";
+import { MotivationalQuotes } from "./MotivationalQuotes";
+import { Greeter } from "./Greeter";
+import { ButtonGroup } from "./ButtonGroup";
 
 const { Title, Text } = Typography;
 const { Sider, Content } = Layout;
@@ -44,24 +39,10 @@ export const AuthHomepage = () => {
     "I have always imagined that Paradise will be a kind of library. — Jorge Luis Borges",
   ];
 
-  return (
+  return user ? (
     <Layout style={{ minHeight: "calc(100vh - 65px)", background: "#f5f5f5" }}>
       {screens.lg && (
-        <Sider
-          width={250}
-          theme="light"
-          style={{ padding: 20, borderRight: "1px solid #ddd" }}
-        >
-          <Title level={4}>✨ Need inspiration?</Title>
-          <List
-            dataSource={motivationalQuotes}
-            renderItem={(quote) => (
-              <List.Item>
-                <Text italic>{quote}</Text>
-              </List.Item>
-            )}
-          />
-        </Sider>
+        <MotivationalQuotes motivationalQuotes={motivationalQuotes} />
       )}
       <Layout style={{ padding: screens.sm ? "10px" : "20px" }}>
         <Content>
@@ -73,14 +54,8 @@ export const AuthHomepage = () => {
               boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
             }}
           >
-            {/* Header Section */}
             <Row align="middle" justify="space-between" gutter={[16, 16]}>
-              <Col xs={24} md={16}>
-                <Title level={screens.sm ? 3 : 2}>
-                  📚 Hello, {user?.username}!
-                </Title>
-                <Text>Your Shelf of Shame awaits...</Text>
-              </Col>
+              <Greeter username={user.username} />
               <Col xs={24} md={8}>
                 <Statistic
                   title="Unread Books"
@@ -106,44 +81,14 @@ export const AuthHomepage = () => {
                 )}
               />
             </Card>
-            <Card style={{ marginTop: 20, borderRadius: 8 }}>
-              <Row gutter={[16, 16]} justify="center">
-                <Col xs={12} sm={8} md={6}>
-                  <Tooltip title="Add a Book">
-                    <Button type="primary" icon={<PlusOutlined />} block>
-                      {screens.md ? null : "Add a Book"}
-                    </Button>
-                  </Tooltip>
-                </Col>
-                <Col xs={12} sm={8} md={6}>
-                  <Tooltip title="Browse Shelf">
-                    <Button type="default" icon={<BookOutlined />} block>
-                      {screens.md ? null : "Browse Shelf"}
-                    </Button>
-                  </Tooltip>
-                </Col>
-                <Col xs={12} sm={8} md={6}>
-                  <Tooltip title="View Stats">
-                    <Button type="dashed" icon={<BarChartOutlined />} block>
-                      {screens.md ? null : "View Stats"}
-                    </Button>
-                  </Tooltip>
-                </Col>
-                <Col xs={12} sm={8} md={6}>
-                  <Tooltip title="Get Recommendations">
-                    <Button type="link" icon={<BulbOutlined />} block>
-                      {screens.md ? null : "Get Recommendations"}
-                    </Button>
-                  </Tooltip>
-                </Col>
-              </Row>
-            </Card>
+            <ButtonGroup />
             <Row justify="center" style={{ marginTop: 20 }}>
               <TrophyOutlined
                 style={{ color: "#faad14", fontSize: 20, marginRight: 8 }}
               />
               <Text type="secondary">
-                Finish your books and claim your glory! 📖🏆
+                You can do it! Think of how nice buying new books will feel
+                without this shameful pile! 📖🏆
               </Text>
             </Row>
           </Card>
@@ -159,8 +104,19 @@ export const AuthHomepage = () => {
           <Statistic title="Books Finished" value={booksFinished} />
           <Statistic title="Longest Book" value={longestBook} />
           <Statistic title="Favorite Genre" value={favoriteGenre} />
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              marginTop: "1em",
+            }}
+          >
+            <Button type="primary">More</Button>
+          </div>
         </Sider>
       )}
     </Layout>
+  ) : (
+    <p>Something went wrong</p>
   );
 };

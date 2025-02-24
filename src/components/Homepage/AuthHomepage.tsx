@@ -1,22 +1,15 @@
 import { useAuth } from "../Auth";
-import {
-  Layout,
-  Card,
-  Typography,
-  Row,
-  Col,
-  List,
-  Statistic,
-  Grid,
-  Button,
-} from "antd";
-import { BookOutlined, TrophyOutlined, FireOutlined } from "@ant-design/icons";
+import { Layout, Card, Row, Col, Statistic, Grid } from "antd";
+
+import { TrophyOutlined, FireOutlined } from "@ant-design/icons";
 import { MotivationalQuotes } from "./MotivationalQuotes";
 import { Greeter } from "./Greeter";
 import { ButtonGroup } from "./ButtonGroup";
+import { CurrentlyReading } from "./CurrentlyReading";
+import { StatisticsOverview } from "./StatisticsOverwiev";
+import { FooterText } from "../ui";
 
-const { Title, Text } = Typography;
-const { Sider, Content } = Layout;
+const { Content } = Layout;
 const { useBreakpoint } = Grid;
 
 export const AuthHomepage = () => {
@@ -26,11 +19,11 @@ export const AuthHomepage = () => {
   // Mock Data
   const unreadBooks = 42;
   const booksFinished = 23;
-  const longestBook = "War and Peace (1,225 pages)";
+  const longestBook = "War and Peace (1225 pages)";
   const favoriteGenre = "Fantasy";
   const currentlyReading = [
-    { title: "The Name of the Wind", author: "Patrick Rothfuss" },
-    { title: "Dune", author: "Frank Herbert" },
+    { title: "The Name of the Wind", author: ["Patrick Rothfuss"] },
+    { title: "Dune", author: ["Frank Herbert"] },
   ];
   const motivationalQuotes = [
     "A reader lives a thousand lives before he dies. — George R.R. Martin",
@@ -65,55 +58,29 @@ export const AuthHomepage = () => {
                 />
               </Col>
             </Row>
-            <Card
-              title="📖 Currently Reading"
-              style={{ marginTop: 20, borderRadius: 8 }}
-            >
-              <List
-                dataSource={currentlyReading}
-                renderItem={(book) => (
-                  <List.Item>
-                    <BookOutlined
-                      style={{ marginRight: 8, color: "#1890ff" }}
-                    />
-                    {book.title} by {book.author}
-                  </List.Item>
-                )}
-              />
-            </Card>
+            <CurrentlyReading
+              title={"📖 Currently Reading"}
+              bookList={currentlyReading}
+            />
             <ButtonGroup />
             <Row justify="center" style={{ marginTop: 20 }}>
               <TrophyOutlined
                 style={{ color: "#faad14", fontSize: 20, marginRight: 8 }}
               />
-              <Text type="secondary">
-                You can do it! Think of how nice buying new books will feel
-                without this shameful pile! 📖🏆
-              </Text>
+              <FooterText
+                text="You can do it! Think of how nice buying new books will feel
+                without this shameful pile! 📖🏆"
+              />
             </Row>
           </Card>
         </Content>
       </Layout>
       {screens.lg && (
-        <Sider
-          width={250}
-          theme="light"
-          style={{ padding: 20, borderLeft: "1px solid #ddd" }}
-        >
-          <Title level={4}>📊 Your Stats</Title>
-          <Statistic title="Books Finished" value={booksFinished} />
-          <Statistic title="Longest Book" value={longestBook} />
-          <Statistic title="Favorite Genre" value={favoriteGenre} />
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "flex-end",
-              marginTop: "1em",
-            }}
-          >
-            <Button type="primary">More</Button>
-          </div>
-        </Sider>
+        <StatisticsOverview
+          booksFinished={booksFinished}
+          longestBook={longestBook}
+          favoriteGenre={favoriteGenre}
+        />
       )}
     </Layout>
   ) : (

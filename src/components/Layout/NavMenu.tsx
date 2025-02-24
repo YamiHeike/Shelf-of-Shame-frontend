@@ -4,14 +4,45 @@ import { NavLink } from "react-router-dom";
 import { RadarChartOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { RotatingLogo } from "../ui/RotatingLogo";
+import { useAuth } from "../Auth";
 
 export const NavMenu = () => {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
 
+  // key label (route.path i route.label, mam zaimportowany obiekt routes, więc wystarczy routes.PATH.path)
+
+  /*
   const items = Object.values(routes).map((route) => ({
     key: route.path,
     label: route.label,
-  }));
+  })); */
+
+  let items = [];
+
+  if (isAuthenticated) {
+    items = [
+      {
+        key: routes.SHELF.path,
+        label: routes.SHELF.label,
+      },
+      {
+        key: routes.RECOMMENDATIONS.path,
+        label: routes.RECOMMENDATIONS.label,
+      },
+    ];
+  } else {
+    items = [
+      {
+        key: routes.LOGIN.path,
+        label: routes.LOGIN.label,
+      },
+      {
+        key: routes.SIGNUP.path,
+        label: routes.SIGNUP.label,
+      },
+    ];
+  }
 
   const handleLogoClick = () => {
     navigate(routes.HOME.path);
@@ -31,8 +62,6 @@ export const NavMenu = () => {
         width: "100%",
       }}
     >
-      {/* Custom logo item outside the items array */}
-
       <NavLink
         to={routes.HOME.path}
         style={{

@@ -7,13 +7,16 @@ import {
   useAuth,
   UserDto,
 } from "../components/Auth";
-import { request, setAuthToken } from "../utils";
+import { getValidationErrorMessage, request, setAuthToken } from "../utils";
+import { FormFieldError } from "../types";
+import { useState } from "react";
+import { FormAlert } from "../components/ui/FormAlert/FormAlert";
 
 export const LoginPage = () => {
   const [form] = Form.useForm();
+  const [error, setError] = useState<FormFieldError | null>(null);
   const { login } = useAuth();
   const navigate = useNavigate();
-
   const onFinish = async (values: AuthCredentials) => {
     console.log("Login Submitted:", values);
     try {
@@ -25,10 +28,22 @@ export const LoginPage = () => {
       setAuthToken(response.data.token);
       login(response.data);
       navigate("/");
-    } catch (e) {
-      console.log(e);
+    } catch (e: any) {
+      if (e.message === "Validation failed" && e.response.data.message) {
+        setError(e.response.data);
+      } else {
+        throw e;
+      }
     }
   };
+
+  let emailMsg;
+  let passwordMsg;
+
+  if (error) {
+    emailMsg = getValidationErrorMessage(error, "email");
+    passwordMsg = getValidationErrorMessage(error, "password");
+  }
 
   return (
     <AuthForm
@@ -38,6 +53,7 @@ export const LoginPage = () => {
           Don't have an account? <NavLink to="/signup">Sign Up</NavLink>
         </>
       }
+      error={error}
     >
       <Form form={form} onFinish={onFinish} layout="vertical">
         <Form.Item
@@ -50,7 +66,7 @@ export const LoginPage = () => {
         >
           <Input prefix={<MailOutlined />} placeholder="Email" />
         </Form.Item>
-
+        {emailMsg && <FormAlert errorMsg="Incorrect email" />}
         <Form.Item
           name="password"
           label="Password"
@@ -58,6 +74,7 @@ export const LoginPage = () => {
         >
           <Input.Password prefix={<LockOutlined />} placeholder="Password" />
         </Form.Item>
+        {passwordMsg && <FormAlert errorMsg="Incorrect password" />}
 
         <Form.Item>
           <Button type="primary" htmlType="submit" block>

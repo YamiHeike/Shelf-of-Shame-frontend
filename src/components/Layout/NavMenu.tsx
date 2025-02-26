@@ -8,15 +8,7 @@ import { useAuth } from "../Auth";
 
 export const NavMenu = () => {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
-
-  // key label (route.path i route.label, mam zaimportowany obiekt routes, więc wystarczy routes.PATH.path)
-
-  /*
-  const items = Object.values(routes).map((route) => ({
-    key: route.path,
-    label: route.label,
-  })); */
+  const { isAuthenticated, logout } = useAuth();
 
   let items = [];
 
@@ -82,6 +74,11 @@ export const NavMenu = () => {
           <NavLink to={item.key}>{item.label}</NavLink>
         </Menu.Item>
       ))}
+      {isAuthenticated && (
+        <Menu.Item key="logout" style={{ marginLeft: "auto" }}>
+          <a onClick={logout}>Log out</a>
+        </Menu.Item>
+      )}
     </Menu>
   );
 };

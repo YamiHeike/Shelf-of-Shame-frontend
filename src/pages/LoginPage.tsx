@@ -80,7 +80,7 @@ export const LoginPage = () => {
             onChange={handleChange}
           />
         </Form.Item>
-        {emailMsg && <FormAlert errorMsg="Invalid email format" />}
+        {emailMsg && <FormAlert errorMsg="Wrong email" />}
         <Form.Item
           name="password"
           label="Password"
@@ -92,7 +92,7 @@ export const LoginPage = () => {
             onChange={handleChange}
           />
         </Form.Item>
-        {passwordMsg && <FormAlert errorMsg="Invalid password format" />}
+        {passwordMsg && <FormAlert errorMsg="Wrong password" />}
 
         <Form.Item>
           <Button type="primary" htmlType="submit" block>

@@ -1,6 +1,6 @@
 export type FormFieldError = {
   message: string;
-  errors: ValidationError[];
+  errors?: ValidationError[];
 };
 
 export type ValidationError = {

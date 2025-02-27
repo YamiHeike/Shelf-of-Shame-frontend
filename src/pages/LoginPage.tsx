@@ -33,7 +33,13 @@ export const LoginPage = () => {
       if (e.response && e.response.data.message) {
         setError(e.response.data);
       } else {
-        setError(e);
+        if (e.response && e.response.status) {
+          setError({
+            message: e.response.data?.message || "Something went wrong",
+          });
+        } else {
+          setError({ message: "Something went wrong" });
+        }
       }
     }
   };

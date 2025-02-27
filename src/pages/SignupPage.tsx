@@ -2,15 +2,25 @@ import { Button, Form, Input } from "antd";
 import { LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AuthForm, useAuth, User, UserDto } from "../components/Auth";
-import { request, setAuthToken } from "../utils";
+import {
+  getValidationErrorMessage,
+  request,
+  reset,
+  setAuthToken,
+} from "../utils";
+import { type FormFieldError } from "../types";
+import { useState } from "react";
+import { FormAlert } from "../components/ui/FormAlert/FormAlert";
 
 export const SignupPage = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const { login } = useAuth();
+  const [error, setError] = useState<FormFieldError | null>(null);
 
   const onFinish = async (values: User) => {
     try {
+      setError(null);
       const response = await request<UserDto, User>(
         "POST",
         "http://localhost:8080/signup",
@@ -23,10 +33,27 @@ export const SignupPage = () => {
       setAuthToken(response.data.token);
       login(response.data);
       navigate("/");
-    } catch (e) {
-      console.log(e);
+    } catch (e: any) {
+      if (e.response) {
+        setError({
+          message: e.response.data?.message || "Something went wrong",
+          errors: e.response.data?.errors || undefined,
+        });
+      } else {
+        setError({ message: "Something went wrong" });
+      }
     }
   };
+
+  let emailMsg: string | null = null;
+  let usernameMsg: string | null = null;
+  let passwordMsg: string | null = null;
+
+  if (error) {
+    emailMsg = getValidationErrorMessage(error, "email");
+    usernameMsg = getValidationErrorMessage(error, "username");
+    passwordMsg = getValidationErrorMessage(error, "password");
+  }
 
   return (
     <AuthForm
@@ -36,6 +63,7 @@ export const SignupPage = () => {
           Already have an account? <NavLink to="/login">Login</NavLink>
         </>
       }
+      error={error}
     >
       <Form form={form} onFinish={onFinish} layout="vertical">
         <Form.Item
@@ -43,9 +71,13 @@ export const SignupPage = () => {
           label="Username"
           rules={[{ required: true, message: "Please enter your username" }]}
         >
-          <Input prefix={<UserOutlined />} placeholder="Username" />
+          <Input
+            prefix={<UserOutlined />}
+            placeholder="Username"
+            onChange={() => reset(usernameMsg)}
+          />
         </Form.Item>
-
+        {usernameMsg && <FormAlert errorMsg={usernameMsg} />}
         <Form.Item
           name="email"
           label="Email"
@@ -54,17 +86,25 @@ export const SignupPage = () => {
             { type: "email", message: "Invalid email address" },
           ]}
         >
-          <Input prefix={<MailOutlined />} placeholder="Email" />
+          <Input
+            prefix={<MailOutlined />}
+            placeholder="Email"
+            onChange={() => reset(emailMsg)}
+          />
         </Form.Item>
-
+        {emailMsg && <FormAlert errorMsg={emailMsg} />}
         <Form.Item
           name="password"
           label="Password"
           rules={[{ required: true, message: "Please enter your password" }]}
         >
-          <Input.Password prefix={<LockOutlined />} placeholder="Password" />
+          <Input.Password
+            prefix={<LockOutlined />}
+            placeholder="Password"
+            onChange={() => reset(passwordMsg)}
+          />
         </Form.Item>
-
+        {passwordMsg && <FormAlert errorMsg={passwordMsg} />}
         <Form.Item
           name="confirmPassword"
           label="Confirm Password"

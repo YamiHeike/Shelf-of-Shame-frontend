@@ -7,18 +7,23 @@ import {
   useAuth,
   UserDto,
 } from "../components/Auth";
-import { getValidationErrorMessage, request, setAuthToken } from "../utils";
-import { FormFieldError } from "../types";
+import {
+  getValidationErrorMessage,
+  request,
+  reset,
+  setAuthToken,
+} from "../utils";
+import { type FormFieldError } from "../types";
 import { useState } from "react";
 import { FormAlert } from "../components/ui/FormAlert/FormAlert";
 
 export const LoginPage = () => {
-  const wrongPass = "Wrong password";
   const [form] = Form.useForm();
   const [error, setError] = useState<FormFieldError | null>(null);
   const { login } = useAuth();
   const navigate = useNavigate();
   const onFinish = async (values: AuthCredentials) => {
+    setError(null);
     try {
       const response = await request<UserDto, AuthCredentials>(
         "POST",
@@ -29,36 +34,23 @@ export const LoginPage = () => {
       login(response.data);
       navigate("/");
     } catch (e: any) {
-      console.log(e);
-      if (e.response && e.response.data.message) {
-        setError(e.response.data);
+      if (e.response) {
+        setError({
+          message: e.response.data?.message || "Something went wrong",
+          errors: e.response.data?.errors || undefined,
+        });
       } else {
-        if (e.response && e.response.status) {
-          setError({
-            message: e.response.data?.message || "Something went wrong",
-          });
-        } else {
-          setError({ message: "Something went wrong" });
-        }
+        setError({ message: "Something went wrong" });
       }
     }
   };
 
-  const handleChange = () => {
-    if (error) {
-      setError(null);
-    }
-  };
-
-  let emailMsg;
-  let passwordMsg;
+  let emailMsg: string | null = null;
+  let passwordMsg: string | null = null;
 
   if (error) {
     emailMsg = getValidationErrorMessage(error, "email");
     passwordMsg = getValidationErrorMessage(error, "password");
-    if (error.message === wrongPass) {
-      passwordMsg = error.message;
-    }
   }
 
   return (
@@ -69,7 +61,7 @@ export const LoginPage = () => {
           Don't have an account? <NavLink to="/signup">Sign Up</NavLink>
         </>
       }
-      error={error?.message === wrongPass ? null : error}
+      error={error}
     >
       <Form form={form} onFinish={onFinish} layout="vertical">
         <Form.Item
@@ -83,7 +75,7 @@ export const LoginPage = () => {
           <Input
             prefix={<MailOutlined />}
             placeholder="Email"
-            onChange={handleChange}
+            onChange={() => reset(emailMsg)}
           />
         </Form.Item>
         {emailMsg && <FormAlert errorMsg="Wrong email" />}
@@ -95,7 +87,7 @@ export const LoginPage = () => {
           <Input.Password
             prefix={<LockOutlined />}
             placeholder="Password"
-            onChange={handleChange}
+            onChange={() => reset(passwordMsg)}
           />
         </Form.Item>
         {passwordMsg && <FormAlert errorMsg="Wrong password" />}

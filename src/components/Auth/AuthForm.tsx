@@ -17,9 +17,10 @@ export const AuthForm = ({
   error,
 }: AuthFormProps) => {
   const [messageApi, contextHolder] = message.useMessage();
+  const WRONG_PASS = "Wrong password";
 
   useEffect(() => {
-    if (error && !error.errors) {
+    if (error && !error.errors && error.message !== WRONG_PASS) {
       messageApi.error(error.message);
     }
   }, [error]);

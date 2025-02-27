@@ -1,3 +1,5 @@
+import { AuthPage } from "./AuthPage";
+
 export const AddBookPage = () => {
-  return <p>Add Book</p>;
+  return <AuthPage Page={<p>Add Book</p>} />;
 };

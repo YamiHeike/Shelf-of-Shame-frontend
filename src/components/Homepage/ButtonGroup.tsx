@@ -1,44 +1,51 @@
-import { Row, Col, Tooltip, Button, Card, Grid } from "antd";
+import { Row, Col, Card } from "antd";
 import {
   BookOutlined,
   BarChartOutlined,
   PlusOutlined,
   BulbOutlined,
 } from "@ant-design/icons";
+import { routes } from "../../routes";
+import { TooltipNavButton } from "../ui";
 
 export const ButtonGroup = () => {
-  const { useBreakpoint } = Grid;
-  const screens = useBreakpoint();
   return (
     <Card style={{ marginTop: 20, borderRadius: 8 }}>
       <Row gutter={[16, 16]} justify="center">
         <Col xs={12} sm={8} md={6}>
-          <Tooltip title="Add a Book">
-            <Button type="primary" icon={<PlusOutlined />} block>
-              {screens.md ? null : "Add a Book"}
-            </Button>
-          </Tooltip>
+          <TooltipNavButton
+            to={routes.ADD.path}
+            title="Add a Book"
+            Icon={<PlusOutlined />}
+            type="primary"
+            block
+          />
         </Col>
         <Col xs={12} sm={8} md={6}>
-          <Tooltip title="Browse Shelf">
-            <Button type="default" icon={<BookOutlined />} block>
-              {screens.md ? null : "Browse Shelf"}
-            </Button>
-          </Tooltip>
+          <TooltipNavButton
+            to={routes.SHELF.path}
+            title="Browse Shelf"
+            Icon={<BookOutlined />}
+            block
+          />
         </Col>
         <Col xs={12} sm={8} md={6}>
-          <Tooltip title="View Stats">
-            <Button type="dashed" icon={<BarChartOutlined />} block>
-              {screens.md ? null : "View Stats"}
-            </Button>
-          </Tooltip>
+          <TooltipNavButton
+            to={routes.STATS.path}
+            title="View Stats"
+            type="dashed"
+            Icon={<BarChartOutlined />}
+            block
+          />
         </Col>
         <Col xs={12} sm={8} md={6}>
-          <Tooltip title="Get Recommendations">
-            <Button type="link" icon={<BulbOutlined />} block>
-              {screens.md ? null : "Get Recommendations"}
-            </Button>
-          </Tooltip>
+          <TooltipNavButton
+            to={routes.RECOMMENDATIONS.path}
+            title="Get Recommendations"
+            type="link"
+            Icon={<BulbOutlined />}
+            block
+          />
         </Col>
       </Row>
     </Card>

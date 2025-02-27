@@ -18,10 +18,6 @@ export const NavMenu = () => {
         key: routes.SHELF.path,
         label: routes.SHELF.label,
       },
-      {
-        key: routes.RECOMMENDATIONS.path,
-        label: routes.RECOMMENDATIONS.label,
-      },
     ];
   } else {
     items = [
@@ -36,8 +32,21 @@ export const NavMenu = () => {
     ];
   }
 
+  items = [
+    {
+      key: routes.HOME.path,
+      label: routes.HOME.label,
+    },
+    ...items,
+  ];
+
   const handleLogoClick = () => {
     navigate(routes.HOME.path);
+  };
+
+  const handleLogout = () => {
+    navigate(routes.HOME.path);
+    logout();
   };
 
   return (
@@ -68,15 +77,21 @@ export const NavMenu = () => {
           style={{ fontSize: 44, padding: 2, color: "#BF2633" }}
         />
       </NavLink>
-
       {items.map((item) => (
         <Menu.Item key={item.key}>
-          <NavLink to={item.key}>{item.label}</NavLink>
+          <NavLink
+            to={item.key}
+            style={({ isActive }) => ({
+              color: isActive ? "#BF2633" : "inherit",
+            })}
+          >
+            {item.label}
+          </NavLink>
         </Menu.Item>
       ))}
       {isAuthenticated && (
         <Menu.Item key="logout" style={{ marginLeft: "auto" }}>
-          <a onClick={logout}>Log out</a>
+          <a onClick={handleLogout}>Log out</a>
         </Menu.Item>
       )}
     </Menu>

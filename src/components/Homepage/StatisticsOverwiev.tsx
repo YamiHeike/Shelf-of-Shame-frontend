@@ -1,4 +1,6 @@
 import { Typography, Layout, Button, Statistic } from "antd";
+import { routes } from "../../routes";
+import { Link } from "react-router-dom";
 
 type StatisticsOverviewProps = {
   booksFinished: number;
@@ -31,7 +33,9 @@ export const StatisticsOverview = ({
           marginTop: "1em",
         }}
       >
-        <Button type="primary">More</Button>
+        <Link to={routes.STATS.path}>
+          <Button type="primary">More</Button>
+        </Link>
       </div>
     </Sider>
   );

@@ -10,16 +10,16 @@ import {
   RecommendationsPage,
 } from "../pages";
 
-export type appRoute = {
+export type AppRoute = {
   path: string;
   label?: string;
 };
 
-type appRoutes = {
-  [key: string]: appRoute;
+type AppRoutes = {
+  [key: string]: AppRoute;
 };
 
-export const routes: appRoutes = {
+export const routes: AppRoutes = {
   HOME: {
     path: "/",
     label: "Home",

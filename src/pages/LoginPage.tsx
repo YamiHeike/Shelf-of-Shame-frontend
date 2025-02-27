@@ -7,12 +7,7 @@ import {
   useAuth,
   UserDto,
 } from "../components/Auth";
-import {
-  getValidationErrorMessage,
-  request,
-  reset,
-  setAuthToken,
-} from "../utils";
+import { getValidationErrorMessage, request, setAuthToken } from "../utils";
 import { type FormFieldError } from "../types";
 import { useState } from "react";
 import { FormAlert } from "../components/ui/FormAlert/FormAlert";
@@ -45,8 +40,8 @@ export const LoginPage = () => {
     }
   };
 
-  let emailMsg: string | null = null;
-  let passwordMsg: string | null = null;
+  let emailMsg;
+  let passwordMsg;
 
   if (error) {
     emailMsg = getValidationErrorMessage(error, "email");
@@ -72,11 +67,7 @@ export const LoginPage = () => {
             { type: "email", message: "Invalid email address" },
           ]}
         >
-          <Input
-            prefix={<MailOutlined />}
-            placeholder="Email"
-            onChange={() => reset(emailMsg)}
-          />
+          <Input prefix={<MailOutlined />} placeholder="Email" />
         </Form.Item>
         {emailMsg && <FormAlert errorMsg="Wrong email" />}
         <Form.Item
@@ -84,11 +75,7 @@ export const LoginPage = () => {
           label="Password"
           rules={[{ required: true, message: "Please enter your password" }]}
         >
-          <Input.Password
-            prefix={<LockOutlined />}
-            placeholder="Password"
-            onChange={() => reset(passwordMsg)}
-          />
+          <Input.Password prefix={<LockOutlined />} placeholder="Password" />
         </Form.Item>
         {passwordMsg && <FormAlert errorMsg="Wrong password" />}
 

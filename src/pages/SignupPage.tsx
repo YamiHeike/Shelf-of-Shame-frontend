@@ -2,12 +2,7 @@ import { Button, Form, Input } from "antd";
 import { LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AuthForm, useAuth, User, UserDto } from "../components/Auth";
-import {
-  getValidationErrorMessage,
-  request,
-  reset,
-  setAuthToken,
-} from "../utils";
+import { getValidationErrorMessage, request, setAuthToken } from "../utils";
 import { type FormFieldError } from "../types";
 import { useState } from "react";
 import { FormAlert } from "../components/ui/FormAlert/FormAlert";
@@ -71,11 +66,7 @@ export const SignupPage = () => {
           label="Username"
           rules={[{ required: true, message: "Please enter your username" }]}
         >
-          <Input
-            prefix={<UserOutlined />}
-            placeholder="Username"
-            onChange={() => reset(usernameMsg)}
-          />
+          <Input prefix={<UserOutlined />} placeholder="Username" />
         </Form.Item>
         {usernameMsg && <FormAlert errorMsg={usernameMsg} />}
         <Form.Item
@@ -86,11 +77,7 @@ export const SignupPage = () => {
             { type: "email", message: "Invalid email address" },
           ]}
         >
-          <Input
-            prefix={<MailOutlined />}
-            placeholder="Email"
-            onChange={() => reset(emailMsg)}
-          />
+          <Input prefix={<MailOutlined />} placeholder="Email" />
         </Form.Item>
         {emailMsg && <FormAlert errorMsg={emailMsg} />}
         <Form.Item
@@ -98,11 +85,7 @@ export const SignupPage = () => {
           label="Password"
           rules={[{ required: true, message: "Please enter your password" }]}
         >
-          <Input.Password
-            prefix={<LockOutlined />}
-            placeholder="Password"
-            onChange={() => reset(passwordMsg)}
-          />
+          <Input.Password prefix={<LockOutlined />} placeholder="Password" />
         </Form.Item>
         {passwordMsg && <FormAlert errorMsg={passwordMsg} />}
         <Form.Item

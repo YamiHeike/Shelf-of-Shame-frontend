@@ -10,8 +10,10 @@ export const FormAlert = ({ errorMsg }: FormAlertProps) => {
       message={errorMsg}
       type="error"
       style={{
-        marginBottom: 24,
+        marginBottom: 12,
+        fontSize: 14,
       }}
+      closable
     />
   );
 };

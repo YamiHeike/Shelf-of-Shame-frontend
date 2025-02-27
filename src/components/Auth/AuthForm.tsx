@@ -32,8 +32,7 @@ export const AuthForm = ({
         <Typography.Title level={2} className={styles.title}>
           {title}
         </Typography.Title>
-        {children}
-
+        <div className={styles.formWrapper}>{children}</div>
         <Typography.Text className={styles.footerText}>
           {footerText}
         </Typography.Text>

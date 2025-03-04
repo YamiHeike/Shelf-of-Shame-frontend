@@ -10,7 +10,7 @@ export const appFeatures = [
     icon: <BookOutlined style={{ fontSize: "32px", color: "#1890ff" }} />,
     title: "Tackle Your Tsundoku",
     description:
-      "Organize and track your unread books with ease, turning your ‘to-read’ pile into progress.",
+      "Organize and track your unread books with ease, turning your ‘to-read’ pile into a challenge.",
   },
   {
     icon: <FolderOpenOutlined style={{ fontSize: "32px", color: "#52c41a" }} />,

@@ -19,7 +19,14 @@ export const TooltipNavButton = ({
   return (
     <Tooltip title={title}>
       <Link to={to}>
-        <Button type="default" icon={Icon} {...rest}>
+        <Button
+          type="default"
+          icon={Icon}
+          style={{
+            fontSize: screens.xs ? "0.6rem" : "1rem",
+          }}
+          {...rest}
+        >
           {screens.md ? null : title}
         </Button>
       </Link>

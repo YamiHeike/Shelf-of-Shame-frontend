@@ -61,6 +61,7 @@ export const NavMenu = () => {
         top: 0,
         left: 0,
         width: "100%",
+        borderBottom: "1px solid #ddd",
       }}
     >
       <NavLink

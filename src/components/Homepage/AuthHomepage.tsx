@@ -33,7 +33,12 @@ export const AuthHomepage = () => {
   ];
 
   return user ? (
-    <Layout style={{ minHeight: "calc(100vh - 65px)", background: "#f5f5f5" }}>
+    <Layout
+      style={{
+        minHeight: "calc(100vh - 65px)",
+        background: "#f5f5f5",
+      }}
+    >
       {screens.lg && (
         <MotivationalQuotes motivationalQuotes={motivationalQuotes} />
       )}
@@ -64,9 +69,11 @@ export const AuthHomepage = () => {
             />
             <ButtonGroup />
             <Row justify="center" style={{ marginTop: 20 }}>
-              <TrophyOutlined
-                style={{ color: "#faad14", fontSize: 20, marginRight: 8 }}
-              />
+              {screens.xxl && (
+                <TrophyOutlined
+                  style={{ color: "#faad14", fontSize: 20, marginRight: 8 }}
+                />
+              )}
               <FooterText
                 text="You can do it! Think of how nice buying new books will feel
                 without this shameful pile! 📖🏆"
@@ -75,7 +82,7 @@ export const AuthHomepage = () => {
           </Card>
         </Content>
       </Layout>
-      {screens.lg && (
+      {screens.md && (
         <StatisticsOverview
           booksFinished={booksFinished}
           longestBook={longestBook}

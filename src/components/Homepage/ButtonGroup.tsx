@@ -41,7 +41,7 @@ export const ButtonGroup = () => {
         <Col xs={12} sm={8} md={6}>
           <TooltipNavButton
             to={routes.RECOMMENDATIONS.path}
-            title="Get Recommendations"
+            title="Recommendations"
             type="link"
             Icon={<BulbOutlined />}
             block

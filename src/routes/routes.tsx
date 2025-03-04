@@ -41,6 +41,7 @@ export const routes: AppRoutes = {
   },
   STATS: {
     path: "/stats",
+    
   },
   RECOMMENDATIONS: {
     path: "/recommendations",

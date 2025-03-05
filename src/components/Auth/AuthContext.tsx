@@ -11,8 +11,8 @@ type AuthContextType = {
 export const AuthContext = createContext<AuthContextType>({
   user: null,
   isAuthenticated: false,
-  login: async () => {},
-  logout: async () => {},
+  login: () => {},
+  logout: () => {},
 });
 
 type AuthProviderProps = {
@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const logout = () => {
     setUser(null);
-    
+    localStorage.removeItem("authToken");
   };
 
   return (
@@ -48,8 +48,5 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
   return context;
 };

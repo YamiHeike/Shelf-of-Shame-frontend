@@ -7,8 +7,7 @@
 .hero {
   @include center-content();
   width: 100%;
-  background-image: url("../assets/books.jpg");
-  background-position: center;
+  background: linear-gradient(135deg, #383677, #a61b40);
   background-size: cover;
   min-height: calc(100dvh - 65px);
 }

@@ -85,7 +85,7 @@ export const LoginPage = () => {
         {passwordMsg && <FormAlert errorMsg="Wrong password" />}
 
         <Form.Item>
-          <FormButton submitted={submitted} preSubmitText="Login" />
+          <FormButton submitted={submitted} preSubmitText="Sign In" />
         </Form.Item>
       </Form>
     </AuthForm>

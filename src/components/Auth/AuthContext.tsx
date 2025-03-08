@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { UserDto } from "./AuthTypes";
 
@@ -26,6 +26,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     return storedUser ? JSON.parse(storedUser) : null;
   });
   const isAuthenticated = !!user;
+  let logoutTimer: ReturnType<typeof setTimeout> | null;
 
   const login = (user: UserDto) => {
     setUser(user);
@@ -34,9 +35,44 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const logout = () => {
     setUser(null);
+    if (logoutTimer) {
+      clearTimeout(logoutTimer);
+      logoutTimer = null;
+    }
+
     localStorage.removeItem("auth_token");
     localStorage.removeItem("user");
   };
+
+  const scheduleAutoLogout = (token: string) => {
+    try {
+      const decoded = jwtDecode(token);
+      if (!decoded.exp) return;
+
+      if (logoutTimer) {
+        clearTimeout(logoutTimer);
+        logoutTimer = null;
+      }
+
+      const expiration = decoded.exp * 1000 - Date.now();
+      if (expiration > 0) {
+        logoutTimer = setTimeout(() => {
+          logout();
+        }, expiration);
+      } else {
+        logout();
+      }
+    } catch (error) {
+      console.error("Error decoding token:", error);
+      logout();
+    }
+  };
+
+  useEffect(() => {
+    if (user?.token) {
+      scheduleAutoLogout(user.token);
+    }
+  }, [user]);
 
   return (
     <AuthContext.Provider

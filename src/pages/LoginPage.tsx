@@ -1,5 +1,5 @@
 import { Button, Form, Input } from "antd";
-import { LockOutlined, MailOutlined } from "@ant-design/icons";
+import { LoadingOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   AuthCredentials,
@@ -11,14 +11,18 @@ import { getValidationErrorMessage, request, setAuthToken } from "../utils";
 import { type FormFieldError } from "../types";
 import { useState } from "react";
 import { FormAlert } from "../components/ui/FormAlert/FormAlert";
+import { FormButton } from "../components/ui/FormButton";
 
 export const LoginPage = () => {
   const [form] = Form.useForm();
   const [error, setError] = useState<FormFieldError | null>(null);
   const { login } = useAuth();
   const navigate = useNavigate();
+  const [submitted, setSubmitted] = useState(false);
+
   const onFinish = async (values: AuthCredentials) => {
     setError(null);
+    setSubmitted(true);
     try {
       const response = await request<UserDto, AuthCredentials>(
         "POST",
@@ -36,6 +40,7 @@ export const LoginPage = () => {
         });
       } else {
         setError({ message: "Something went wrong" });
+        setSubmitted(false);
       }
     }
   };
@@ -80,9 +85,7 @@ export const LoginPage = () => {
         {passwordMsg && <FormAlert errorMsg="Wrong password" />}
 
         <Form.Item>
-          <Button type="primary" htmlType="submit" block>
-            Login
-          </Button>
+          <FormButton submitted={submitted} preSubmitText="Login" />
         </Form.Item>
       </Form>
     </AuthForm>

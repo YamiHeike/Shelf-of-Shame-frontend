@@ -6,16 +6,19 @@ import { getValidationErrorMessage, request, setAuthToken } from "../utils";
 import { type FormFieldError } from "../types";
 import { useState } from "react";
 import { FormAlert } from "../components/ui/FormAlert/FormAlert";
+import { FormButton } from "../components/ui/FormButton";
 
 export const SignupPage = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const { login } = useAuth();
   const [error, setError] = useState<FormFieldError | null>(null);
+  const [submitted, setSubmitted] = useState(false);
 
   const onFinish = async (values: User) => {
     try {
       setError(null);
+      setSubmitted(true);
       const response = await request<UserDto, User>(
         "POST",
         "http://localhost:8080/signup",
@@ -29,6 +32,7 @@ export const SignupPage = () => {
       login(response.data);
       navigate("/");
     } catch (e: any) {
+      setSubmitted(false);
       if (e.response) {
         setError({
           message: e.response.data?.message || "Something went wrong",
@@ -111,9 +115,7 @@ export const SignupPage = () => {
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit" block>
-            Sign Up
-          </Button>
+          <FormButton submitted={submitted} preSubmitText="Sign Up" />
         </Form.Item>
       </Form>
     </AuthForm>

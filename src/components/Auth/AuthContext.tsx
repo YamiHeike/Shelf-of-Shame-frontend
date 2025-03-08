@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from "react";
+import { jwtDecode } from "jwt-decode";
 import { UserDto } from "./AuthTypes";
 
 type AuthContextType = {
@@ -20,16 +21,21 @@ type AuthProviderProps = {
 };
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<UserDto | null>(null);
+  const [user, setUser] = useState<UserDto | null>(() => {
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
   const isAuthenticated = !!user;
 
   const login = (user: UserDto) => {
     setUser(user);
+    localStorage.setItem("user", JSON.stringify(user));
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem("authToken");
+    localStorage.removeItem("auth_token");
+    localStorage.removeItem("user");
   };
 
   return (

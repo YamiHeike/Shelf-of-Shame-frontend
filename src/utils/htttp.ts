@@ -6,11 +6,11 @@ axios.defaults.headers.post["Content-type"] = "application/json";
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
 
 export const getAuthToken = () => {
-  return window.localStorage.getItem("auth_token");
+  return localStorage.getItem("auth_token");
 };
 
 export const setAuthToken = (token: string) => {
-  window.localStorage.setItem("auth_token", token);
+  localStorage.setItem("auth_token", token);
 };
 
 export const request = <T, D = undefined>(

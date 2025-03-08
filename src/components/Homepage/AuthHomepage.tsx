@@ -36,19 +36,25 @@ export const AuthHomepage = () => {
     <Layout
       style={{
         minHeight: "calc(100vh - 65px)",
-        background: "#f5f5f5",
       }}
     >
       {screens.lg && (
         <MotivationalQuotes motivationalQuotes={motivationalQuotes} />
       )}
-      <Layout style={{ padding: screens.sm ? "10px" : "20px" }}>
+      <Layout
+        style={{
+          padding: screens.sm ? "10px" : "20px",
+          background: !screens.lg
+            ? "linear-gradient(135deg, #383677, #a61b40)"
+            : "inherit",
+        }}
+      >
         <Content>
           <Card
             style={{
-              maxWidth: screens.md ? "90%" : 800,
-              margin: "auto",
-              borderRadius: 10,
+              maxWidth: screens.md ? "min(85%, 80rem)" : "95%",
+              margin: screens.sm ? "2em auto" : "auto",
+              borderRadius: "0.5em",
               boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
             }}
           >

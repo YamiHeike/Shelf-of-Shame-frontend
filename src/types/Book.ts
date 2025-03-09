@@ -1,11 +1,5 @@
 import { Author } from "./Author";
 
-export enum Status {
-  SHAME,
-  GLORY,
-  READING,
-}
-
 export type BookOutline = {
   title: string;
   author: Author[];

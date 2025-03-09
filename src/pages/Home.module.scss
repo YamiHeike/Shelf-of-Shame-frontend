@@ -1,11 +1,7 @@
-@mixin center-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+@use "../mixins.module.scss" as mixins;
 
 .hero {
-  @include center-content();
+  @include mixins.center-content();
   width: 100%;
   background: linear-gradient(135deg, #383677, #a61b40);
   background-size: cover;

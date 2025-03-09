@@ -1,7 +1,7 @@
+@use "../../mixins.module.scss" as mixins;
+
 .container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include mixins.center-content();
   height: calc(100dvh - 65px);
   background: linear-gradient(135deg, #383677, #bf2633);
 }

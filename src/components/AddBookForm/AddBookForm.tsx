@@ -235,9 +235,11 @@ const AddBookForm: React.FC<AddBookFormProps> = ({
               rules={[{ required: true, message: "Please select a status!" }]}
             >
               <Select placeholder="Select a status">
-                <Option value={Status.SHAME}>Shame</Option>
-                <Option value={Status.GLORY}>Glory</Option>
-                <Option value={Status.READING}>Reading</Option>
+                {Object.values(Status).map((status) => (
+                  <Option key={status} value={status}>
+                    {status}
+                  </Option>
+                ))}
               </Select>
             </Form.Item>
 

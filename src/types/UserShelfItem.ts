@@ -2,9 +2,9 @@ import { UserDto } from "../components";
 import { Book } from "./Book";
 
 export enum Status {
-  SHAME,
-  GLORY,
-  READING,
+  SHAME = "Shame",
+  GLORY = "Glory",
+  READING = "Reading",
 }
 
 export type UserShelfItem = {

@@ -2,7 +2,11 @@ import { Form, Input } from "antd";
 import { LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AuthForm, useAuth, User, UserDto } from "../components/Auth";
-import { getValidationErrorMessage, request, setAuthToken } from "../utils";
+import {
+  getValidationErrorMessage,
+  backendRequest,
+  setAuthToken,
+} from "../utils";
 import { type FormFieldError } from "../types";
 import { useState } from "react";
 import { FormAlert } from "../components/ui/FormAlert/FormAlert";
@@ -19,7 +23,7 @@ export const SignupPage = () => {
     try {
       setError(null);
       setSubmitted(true);
-      const response = await request<UserDto, User>(
+      const response = await backendRequest<UserDto, User>(
         "POST",
         "http://localhost:8080/signup",
         {

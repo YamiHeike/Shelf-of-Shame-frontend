@@ -13,7 +13,7 @@ export const setAuthToken = (token: string) => {
   localStorage.setItem("auth_token", token);
 };
 
-export const request = <T, D = undefined>(
+export const backendRequest = <T, D = undefined>(
   method: HttpMethod,
   url: string,
   data?: D

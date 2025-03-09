@@ -7,7 +7,11 @@ import {
   useAuth,
   UserDto,
 } from "../components/Auth";
-import { getValidationErrorMessage, request, setAuthToken } from "../utils";
+import {
+  getValidationErrorMessage,
+  backendRequest,
+  setAuthToken,
+} from "../utils";
 import { type FormFieldError } from "../types";
 import { useState } from "react";
 import { FormAlert } from "../components/ui/FormAlert/FormAlert";
@@ -24,7 +28,7 @@ export const LoginPage = () => {
     setError(null);
     setSubmitted(true);
     try {
-      const response = await request<UserDto, AuthCredentials>(
+      const response = await backendRequest<UserDto, AuthCredentials>(
         "POST",
         "http://localhost:8080/login",
         values

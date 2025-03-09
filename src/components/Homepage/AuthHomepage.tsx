@@ -8,6 +8,7 @@ import { ButtonGroup } from "./ButtonGroup";
 import { CurrentlyReading } from "./CurrentlyReading";
 import { StatisticsOverview } from "./StatisticsOverwiev";
 import { FooterText } from "../ui";
+import { BookOutline } from "../../types";
 
 const { Content } = Layout;
 const { useBreakpoint } = Grid;
@@ -21,9 +22,29 @@ export const AuthHomepage = () => {
   const booksFinished = 23;
   const longestBook = "War and Peace (1225 pages)";
   const favoriteGenre = "Fantasy";
-  const currentlyReading = [
-    { title: "The Name of the Wind", author: ["Patrick Rothfuss"] },
-    { title: "Dune", author: ["Frank Herbert"] },
+  const currentlyReading: BookOutline[] = [
+    {
+      title: "The Name of the Wind",
+      author: [
+        {
+          id: 1,
+          firstName: "Patrick",
+          lastName: "Rothfuss",
+        },
+      ],
+      numberOfPages: 880,
+    },
+    {
+      title: "Dune",
+      author: [
+        {
+          id: 2,
+          firstName: "Frank",
+          lastName: "Herbert",
+        },
+      ],
+      numberOfPages: 777,
+    },
   ];
   const motivationalQuotes = [
     "A reader lives a thousand lives before he dies. — George R.R. Martin",

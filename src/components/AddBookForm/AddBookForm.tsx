@@ -1,22 +1,10 @@
 import React, { useState } from "react";
-import {
-  Form,
-  Input,
-  Button,
-  Select,
-  message,
-  Typography,
-  Row,
-  Col,
-  Switch,
-} from "antd";
+import { Form, Input, Button, Select, message, Row, Col, Switch } from "antd";
 import { Author, Book, Genre, Status } from "../../types";
-import AddAuthorForm from "./AddAuthorForm";
 import { FooterText, Header } from "../ui";
 import axios from "axios";
 
 const { Option } = Select;
-const { Title } = Typography;
 
 interface AddBookFormProps {
   onAddBook: (
@@ -36,6 +24,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
 }) => {
   const [form] = Form.useForm();
   const [isAuthorNotFound, setIsAuthorNotFound] = useState<boolean>(false);
+  const [showAuthorModal, setShowAuthorModal] = useState(false);
   const [coverUrl, setCoverUrl] = useState<string>("");
 
   const handleFinish = async (values: any) => {
@@ -128,15 +117,41 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
             <Form.Item label="Author not found?">
               <Switch
                 checked={isAuthorNotFound}
-                onChange={(checked) => setIsAuthorNotFound(checked)}
+                onChange={(checked) => {
+                  setIsAuthorNotFound(checked);
+                  if (checked) setShowAuthorModal(true);
+                }}
               />
             </Form.Item>
             {isAuthorNotFound && (
-              <AddAuthorForm
-                onFinish={(values) => {
-                  form.setFieldsValue(values);
-                }}
-              />
+              <div>
+                <Header text="Add an Author" level={4} />
+
+                <Form.Item
+                  label="First Name"
+                  name="firstName"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter the author's first name!",
+                    },
+                  ]}
+                >
+                  <Input placeholder="Enter first name" />
+                </Form.Item>
+                <Form.Item
+                  label="Last Name"
+                  name="lastName"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter the author's last name!",
+                    },
+                  ]}
+                >
+                  <Input placeholder="Enter last name" />
+                </Form.Item>
+              </div>
             )}
 
             <Form.Item

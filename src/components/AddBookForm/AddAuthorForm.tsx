@@ -1,14 +1,14 @@
-import React from "react";
 import { Form, Input } from "antd";
+import { Header } from "../ui";
 
 interface AddAuthorFormProps {
   onFinish: (values: { firstName: string; lastName: string }) => void;
 }
 
-const AddAuthorForm: React.FC<AddAuthorFormProps> = ({ onFinish }) => {
+const AddAuthorForm = ({ onFinish }: AddAuthorFormProps) => {
   return (
     <div>
-      <h2>Add an Author</h2>
+      <Header text="Add an Author" level={4} />
       <Form onFinish={onFinish} layout="vertical">
         <Form.Item
           label="First Name"

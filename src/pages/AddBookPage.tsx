@@ -1,4 +1,4 @@
-import AddBookForm from "../components/AddBookForm/AddBookForm";
+import { AddBookForm } from "../components/AddBookForm";
 import { Author, Book, Genre, Status } from "../types";
 import { AuthPage } from "./AuthPage";
 

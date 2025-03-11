@@ -12,7 +12,7 @@ import {
 } from "antd";
 import { Author, Book, Genre, Status } from "../../types";
 import AddAuthorForm from "./AddAuthorForm";
-import { FooterText } from "../ui";
+import { FooterText, Header } from "../ui";
 import axios from "axios";
 
 const { Option } = Select;
@@ -29,7 +29,7 @@ interface AddBookFormProps {
   genres: Genre[];
 }
 
-const AddBookForm: React.FC<AddBookFormProps> = ({
+export const AddBookForm: React.FC<AddBookFormProps> = ({
   onAddBook,
   authors,
   genres,
@@ -46,7 +46,6 @@ const AddBookForm: React.FC<AddBookFormProps> = ({
           ? [{ id: -1, firstName: values.firstName, lastName: values.lastName }]
           : authors.filter((author) => author.id === values.authorId),
         numberOfPages: values.numberOfPages,
-        coverUrl: values.coverUrl,
         isbn: values.isbn,
         description: values.description,
       };
@@ -89,7 +88,7 @@ const AddBookForm: React.FC<AddBookFormProps> = ({
 
   return (
     <div style={{ padding: "1.5rem", maxWidth: "75rem", margin: "0 auto" }}>
-      <Title level={3}>Add Book to Your Shelf</Title>
+      <Header level={3} text="Add Book to Your Shelf" />
       <Form form={form} onFinish={handleFinish} layout="vertical">
         <Row gutter={[24, 16]}>
           <Col xs={24} md={12}>
@@ -265,5 +264,3 @@ const AddBookForm: React.FC<AddBookFormProps> = ({
     </div>
   );
 };
-
-export default AddBookForm;

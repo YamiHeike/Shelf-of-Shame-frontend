@@ -7,7 +7,6 @@ export type BookOutline = {
 };
 
 export interface Book extends BookOutline {
-  coverUrl: string;
   isbn: string;
   description: string;
 }

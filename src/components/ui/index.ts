@@ -1,3 +1,4 @@
+export * from "./FlexContainer";
 export * from "./FooterText";
 export * from "./Header";
 export * from "./NotFoundSwitch";

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, Input, Button, Select, message, Row, Col, Switch } from "antd";
 import { Author, Book, Genre, Status } from "../../types";
-import { FooterText, Header, NotFoundSwitch } from "../ui";
+import { CenteredContainer, FooterText, Header, NotFoundSwitch } from "../ui";
 import axios from "axios";
 
 const { Option } = Select;
@@ -91,6 +91,18 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
               >
                 <Input placeholder="Enter book title" />
               </Form.Item>
+              <CenteredContainer>
+                <NotFoundSwitch
+                  label="Didn't find your book?"
+                  value={isBookNotFound}
+                  onToggle={setIsBookNotFound}
+                />
+                <NotFoundSwitch
+                  label="Author not found?"
+                  value={isAuthorNotFound}
+                  onToggle={setIsAuthorNotFound}
+                />
+              </CenteredContainer>
               <Form.Item
                 label="Select Author"
                 name="authorId"
@@ -115,15 +127,10 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
                   ))}
                 </Select>
               </Form.Item>
-              <NotFoundSwitch
-                label="Author not found?"
-                value={isAuthorNotFound}
-                onToggle={setIsAuthorNotFound}
-              />
+
               {isAuthorNotFound && (
                 <div>
                   <Header text="Add an Author" level={4} />
-
                   <Form.Item
                     label="First Name"
                     name="firstName"
@@ -265,8 +272,6 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
         ) : (
           <Row gutter={[24, 16]}>
             <Col xs={24} md={12}>
-              {/* Found & Not Found logic should be placed within this Row Col structure */}
-
               <Form.Item
                 label="Select a book"
                 rules={[

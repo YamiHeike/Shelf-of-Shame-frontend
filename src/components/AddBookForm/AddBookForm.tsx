@@ -41,7 +41,6 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
       };
 
       onAddBook(book, values.difficulty, values.status, values.notes);
-
       form.resetFields();
       setCoverUrl("");
       message.success("Book added successfully!");
@@ -72,8 +71,6 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
       setCoverUrl("");
     }
   };
-
-  console.log("Cover url", coverUrl);
 
   return (
     <div style={{ padding: "1.5rem", maxWidth: "75rem", margin: "0 auto" }}>

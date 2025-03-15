@@ -26,6 +26,7 @@ export const BookMetadata = () => {
             message: "Difficulty must be between 1 and 10!",
           },
         ]}
+        getValueFromEvent={(event) => Number(event.target.value) || undefined}
       >
         <Input
           type="number"

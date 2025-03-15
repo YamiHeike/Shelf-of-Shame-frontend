@@ -1,9 +1,19 @@
 import styles from "./FlexContainer.module.scss";
 
-type CenteredContainerProps = {
+type FlexContainerProps = {
   children: React.ReactNode;
+  gap?: number;
 };
 
-export const CenteredContainer = ({ children }: CenteredContainerProps) => {
-  return <div className={styles.flexContainer}>{children}</div>;
+export const FlexContainer = ({ children, gap }: FlexContainerProps) => {
+  return (
+    <div
+      className={styles.flexContainer}
+      style={{
+        gap: gap,
+      }}
+    >
+      {children}
+    </div>
+  );
 };

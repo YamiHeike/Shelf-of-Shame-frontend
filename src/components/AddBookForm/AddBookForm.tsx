@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Form, Input, Button, Select, message, Row, Col, Switch } from "antd";
+import { Form, Input, Button, Select, message, Row, Col } from "antd";
 import { Author, Book, Genre, Status } from "../../types";
-import { CenteredContainer, FooterText, Header, NotFoundSwitch } from "../ui";
+import { FlexContainer, FooterText, Header, NotFoundSwitch } from "../ui";
 import axios from "axios";
-
-const { Option } = Select;
+import { BookMetadata } from "./BookMetadata";
+import { AuthorSelection } from "./AuthorSelection";
+import { BookDetails } from "./BookDetails";
 
 interface AddBookFormProps {
   onAddBook: (
@@ -66,14 +67,13 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
         setCoverUrl("");
       }
     } catch (error) {
+      console.error("Error fetching cover:", error);
       message.error("Failed to fetch cover");
       setCoverUrl("");
     }
   };
 
-  const filterAuthors = (input: string, option: any) => {
-    return option.children.toLowerCase().includes(input.toLowerCase());
-  };
+  console.log("Cover url", coverUrl);
 
   return (
     <div style={{ padding: "1.5rem", maxWidth: "75rem", margin: "0 auto" }}>
@@ -82,16 +82,13 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
         {isBookNotFound ? (
           <Row gutter={[24, 16]}>
             <Col xs={24} md={12}>
-              <Form.Item
-                label="Book Title"
-                name="title"
-                rules={[
-                  { required: true, message: "Please enter the book title!" },
-                ]}
-              >
-                <Input placeholder="Enter book title" />
-              </Form.Item>
-              <CenteredContainer>
+              <BookDetails
+                genres={genres}
+                coverUrl={coverUrl}
+                form={form}
+                onFetchCoverUrl={(isbn) => fetchCoverUrl(isbn)}
+              />
+              <FlexContainer>
                 <NotFoundSwitch
                   label="Didn't find your book?"
                   value={isBookNotFound}
@@ -102,171 +99,16 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
                   value={isAuthorNotFound}
                   onToggle={setIsAuthorNotFound}
                 />
-              </CenteredContainer>
-              <Form.Item
-                label="Select Author"
-                name="authorId"
-                rules={[
-                  {
-                    required: !isAuthorNotFound,
-                    message: "Please select an author!",
-                  },
-                ]}
-              >
-                <Select
-                  placeholder="Search for an author"
-                  showSearch
-                  optionFilterProp="children"
-                  filterOption={filterAuthors}
-                  disabled={isAuthorNotFound}
-                >
-                  {authors.map((author) => (
-                    <Option key={author.id} value={author.id}>
-                      {`${author.firstName} ${author.lastName}`}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
-
-              {isAuthorNotFound && (
-                <div>
-                  <Header text="Add an Author" level={4} />
-                  <Form.Item
-                    label="First Name"
-                    name="firstName"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please enter the author's first name!",
-                      },
-                    ]}
-                  >
-                    <Input placeholder="Enter first name" />
-                  </Form.Item>
-                  <Form.Item
-                    label="Last Name"
-                    name="lastName"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please enter the author's last name!",
-                      },
-                    ]}
-                  >
-                    <Input placeholder="Enter last name" />
-                  </Form.Item>
-                </div>
-              )}
-
-              <Form.Item
-                label="ISBN-10"
-                name="isbn"
-                rules={[
-                  { required: true, message: "Please enter the ISBN-10!" },
-                  {
-                    pattern: /^\d{10}$/,
-                    message: "Please enter a valid 10-digit ISBN.",
-                  },
-                ]}
-              >
-                <Input
-                  placeholder="Enter ISBN-10"
-                  onChange={(e) => {
-                    if (e.target.value.length === 10) {
-                      fetchCoverUrl(e.target.value);
-                    }
-                  }}
-                />
-              </Form.Item>
-
-              {coverUrl && (
-                <Form.Item label="Book Cover">
-                  <img
-                    src={coverUrl}
-                    alt="Book Cover"
-                    style={{ maxWidth: "100px" }}
-                  />
-                </Form.Item>
-              )}
-
-              <Form.Item
-                label="Genre"
-                name="genreId"
-                rules={[{ required: true, message: "Please select a genre!" }]}
-              >
-                <Select placeholder="Select a genre">
-                  {genres.map((genre) => (
-                    <Option key={genre.id} value={genre.id}>
-                      {genre.name}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
-
-              <Form.Item
-                label="Number of Pages"
-                name="numberOfPages"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please enter the number of pages!",
-                  },
-                ]}
-              >
-                <Input type="number" placeholder="Enter number of pages" />
-              </Form.Item>
+              </FlexContainer>
+              <AuthorSelection
+                authors={authors}
+                isAuthorNotFound={isAuthorNotFound}
+                onToggleAuthorNotFound={setIsAuthorNotFound}
+              />
             </Col>
 
             <Col xs={24} md={12}>
-              <Form.Item
-                label="Description"
-                name="description"
-                rules={[
-                  { required: true, message: "Please enter a description!" },
-                ]}
-              >
-                <Input.TextArea placeholder="Enter book description" rows={4} />
-              </Form.Item>
-              <Form.Item
-                label="Perceived Difficulty (1-10)"
-                name="difficulty"
-                rules={[
-                  { required: true, message: "Please enter the difficulty!" },
-                  {
-                    type: "number",
-                    min: 1,
-                    max: 10,
-                    message: "Difficulty must be between 1 and 10!",
-                  },
-                ]}
-              >
-                <Input
-                  type="number"
-                  placeholder="Enter difficulty (1-10)"
-                  min={1}
-                  max={10}
-                />
-              </Form.Item>
-              <Form.Item
-                label="Status"
-                name="status"
-                rules={[{ required: true, message: "Please select a status!" }]}
-              >
-                <Select placeholder="Select a status">
-                  {Object.values(Status).map((status) => (
-                    <Option key={status} value={status}>
-                      {status}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
-
-              <Form.Item label="Notes" name="notes">
-                <Input.TextArea
-                  placeholder="Enter any notes about the book"
-                  rows={4}
-                />
-              </Form.Item>
+              <BookMetadata />
             </Col>
           </Row>
         ) : (

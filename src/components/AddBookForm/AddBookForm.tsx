@@ -124,7 +124,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
           </Row>
         ) : (
           <Row gutter={[24, 16]}>
-            <Col xs={24} md={12}>
+            <Col xs={24}>
               <Form.Item
                 label="Select a book"
                 rules={[

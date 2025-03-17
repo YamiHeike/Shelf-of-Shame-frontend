@@ -1,5 +1,5 @@
 import { Form, Input, Select } from "antd";
-import { Status } from "../../types"; // Ensure Status is correctly imported
+import { Status } from "../../types";
 
 const { Option } = Select;
 

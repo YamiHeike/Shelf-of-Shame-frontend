@@ -1,6 +1,6 @@
 import { Form, Input, Select, Button, message, FormInstance } from "antd";
 import { Genre } from "../../types";
-import { FlexContainer } from "../ui"; // Assuming FlexContainer is in a separate file
+import { FlexContainer } from "../ui";
 
 const { Option } = Select;
 

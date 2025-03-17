@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const fetchCoverUrl = async (isbn: string): Promise<string> => {
+export const fetchCoverUrl = async (isbn: string) => {
   try {
     const response = await axios.get(
       `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg`,
@@ -9,12 +9,13 @@ export const fetchCoverUrl = async (isbn: string): Promise<string> => {
       }
     );
     if (response.status === 200) {
-      return URL.createObjectURL(response.data);
+      const imageUrl = URL.createObjectURL(response.data);
+      return imageUrl;
     } else {
-      return "";
+      return null;
     }
   } catch (error) {
-    console.log(`Error fetching cover for ${isbn}`, error);
-    return "";
+    console.log("Error fetching cover:", error);
+    return null;
   }
 };

@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Form, Input, Button, Select, message, Row, Col } from "antd";
+import { Form, Input, Button, message, Row, Col } from "antd";
 import { Author, Book, Genre, Status } from "../../types";
 import { FlexContainer, FooterText, Header, NotFoundSwitch } from "../ui";
-import axios from "axios";
 import { BookMetadata } from "./BookMetadata";
 import { AuthorSelection } from "./AuthorSelection";
 import { BookDetails } from "./BookDetails";
+import { fetchCoverUrl } from "../../utils";
+import { HttpState } from "../../types/HttpState";
 
 interface AddBookFormProps {
   onAddBook: (
@@ -26,7 +27,12 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
   const [form] = Form.useForm();
   const [isAuthorNotFound, setIsAuthorNotFound] = useState(false);
   const [isBookNotFound, setIsBookNotFound] = useState(false);
-  const [coverUrl, setCoverUrl] = useState("");
+  // const [coverUrl, setCoverUrl] = useState("");
+  const [coverUrl, setCoverUrl] = useState<HttpState<string>>({
+    loading: false,
+    data: null,
+    error: false,
+  });
 
   const handleFinish = async (values: any) => {
     try {
@@ -42,13 +48,18 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
 
       onAddBook(book, values.difficulty, values.status, values.notes);
       form.resetFields();
-      setCoverUrl("");
+      setCoverUrl({
+        loading: false,
+        data: null,
+        error: false,
+      });
       message.success("Book added successfully!");
     } catch (error) {
       message.error("An error occurred. Please try again.");
     }
   };
 
+  /*
   const fetchCoverUrl = async (isbn: string) => {
     try {
       const response = await axios.get(
@@ -70,6 +81,28 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
       message.error("Failed to fetch cover");
       setCoverUrl("");
     }
+  };*/
+
+  const handlePreview = async (isbn: string) => {
+    setCoverUrl({
+      loading: true,
+      data: null,
+      error: false,
+    });
+    const url = await fetchCoverUrl(isbn);
+    if (url) {
+      setCoverUrl({
+        loading: false,
+        data: url,
+        error: false,
+      });
+    } else {
+      setCoverUrl({
+        loading: false,
+        data: null,
+        error: true,
+      });
+    }
   };
 
   return (
@@ -83,7 +116,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
                 genres={genres}
                 coverUrl={coverUrl}
                 form={form}
-                onFetchCoverUrl={(isbn) => fetchCoverUrl(isbn)}
+                onFetchCoverUrl={(isbn) => handlePreview(isbn)}
               />
               <FlexContainer>
                 <NotFoundSwitch

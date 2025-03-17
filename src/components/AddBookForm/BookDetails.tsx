@@ -1,12 +1,13 @@
 import { Form, Input, Select, Button, message, FormInstance } from "antd";
 import { Genre } from "../../types";
 import { FlexContainer } from "../ui";
+import { HttpState } from "../../types/HttpState";
 
 const { Option } = Select;
 
 interface BookDetailsProps {
   genres: Genre[];
-  coverUrl: string;
+  coverUrl: HttpState<string>;
   onFetchCoverUrl: (isbn: string) => void;
   form: FormInstance<any>;
 }
@@ -61,9 +62,13 @@ export const BookDetails: React.FC<BookDetailsProps> = ({
         </FlexContainer>
       </Form.Item>
 
-      {coverUrl && (
+      {coverUrl.data && (
         <Form.Item label="Book Cover">
-          <img src={coverUrl} alt="Book Cover" style={{ maxWidth: "100px" }} />
+          <img
+            src={coverUrl.data}
+            alt="Book Cover"
+            style={{ maxWidth: "100px" }}
+          />
         </Form.Item>
       )}
 

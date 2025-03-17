@@ -1,7 +1,9 @@
-import { Form, Input, Select, Button, message, FormInstance } from "antd";
+import { Form, Input, Select, Button, message, FormInstance, Spin } from "antd";
 import { Genre } from "../../types";
 import { FlexContainer } from "../ui";
 import { HttpState } from "../../types/HttpState";
+import { LoadingOutlined } from "@ant-design/icons";
+import defaultCover from "../../assets/default_cover.png";
 
 const { Option } = Select;
 
@@ -43,33 +45,36 @@ export const BookDetails: React.FC<BookDetailsProps> = ({
           <Input
             placeholder="Enter ISBN-10"
             onChange={(e) => {
-              form.setFieldsValue({ isbn: e.target.value }); // Ensures the form updates
+              form.setFieldsValue({ isbn: e.target.value });
             }}
           />
           <Button
             type="dashed"
-            onClick={() => {
-              const isbn = form.getFieldValue("isbn"); // This will now return the correct value
-              if (isbn) {
-                onFetchCoverUrl(isbn);
-              } else {
-                message.warning("Please enter an ISBN first.");
-              }
-            }}
+            onClick={() => onFetchCoverUrl(form.getFieldValue("isbn"))}
           >
             Cover preview
           </Button>
         </FlexContainer>
       </Form.Item>
 
-      {coverUrl.data && (
-        <Form.Item label="Book Cover">
-          <img
-            src={coverUrl.data}
-            alt="Book Cover"
-            style={{ maxWidth: "100px" }}
-          />
-        </Form.Item>
+      {coverUrl.loading ? (
+        <Spin
+          indicator={<LoadingOutlined spin />}
+          style={{
+            marginBottom: "10px",
+          }}
+        />
+      ) : (
+        coverUrl.data && (
+          <Form.Item>
+            <img
+              src={coverUrl.data}
+              alt="Book Cover"
+              style={{ maxWidth: "100px" }}
+            />
+            {coverUrl.data === defaultCover && <p>Cover not found</p>}
+          </Form.Item>
+        )
       )}
 
       <Form.Item

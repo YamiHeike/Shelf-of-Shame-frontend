@@ -1,4 +1,5 @@
 import axios from "axios";
+import defaultCover from "../assets/default_cover.png";
 
 export const fetchCoverUrl = async (isbn: string) => {
   try {
@@ -10,12 +11,31 @@ export const fetchCoverUrl = async (isbn: string) => {
     );
     if (response.status === 200) {
       const imageUrl = URL.createObjectURL(response.data);
+      const isBroken = await checkImageDimensions(imageUrl);
+      if (isBroken) {
+        return defaultCover;
+      }
       return imageUrl;
     } else {
-      return null;
+      return defaultCover;
     }
   } catch (error) {
     console.log("Error fetching cover:", error);
-    return null;
+    return defaultCover;
   }
+};
+
+const checkImageDimensions = (imageUrl: string): Promise<boolean> => {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.src = imageUrl;
+    img.onload = () => {
+      if (img.width <= 30 && img.height <= 50) {
+        resolve(true);
+      } else {
+        resolve(false);
+      }
+    };
+    img.onerror = () => resolve(true);
+  });
 };

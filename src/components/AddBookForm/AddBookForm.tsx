@@ -27,7 +27,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
   const [form] = Form.useForm();
   const [isAuthorNotFound, setIsAuthorNotFound] = useState(false);
   const [isBookNotFound, setIsBookNotFound] = useState(false);
-  // const [coverUrl, setCoverUrl] = useState("");
+  const [messageApi, contextHolder] = message.useMessage();
   const [coverUrl, setCoverUrl] = useState<HttpState<string>>({
     loading: false,
     data: null,
@@ -53,37 +53,17 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
         data: null,
         error: false,
       });
-      message.success("Book added successfully!");
+      messageApi.success("Book added successfully!");
     } catch (error) {
-      message.error("An error occurred. Please try again.");
+      messageApi.error("An error occurred. Please try again.");
     }
   };
 
-  /*
-  const fetchCoverUrl = async (isbn: string) => {
-    try {
-      const response = await axios.get(
-        `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg`,
-        {
-          responseType: "blob",
-        }
-      );
-      if (response.status === 200) {
-        const imageUrl = URL.createObjectURL(response.data);
-        setCoverUrl(imageUrl);
-        form.setFieldsValue({ coverUrl: imageUrl });
-      } else {
-        message.warning("No cover found for this ISBN.");
-        setCoverUrl("");
-      }
-    } catch (error) {
-      console.error("Error fetching cover:", error);
-      message.error("Failed to fetch cover");
-      setCoverUrl("");
-    }
-  };*/
-
   const handlePreview = async (isbn: string) => {
+    if (!isbn || isbn.length !== 10) {
+      messageApi.warning("Enter a ISBN-10 first");
+      return;
+    }
     setCoverUrl({
       loading: true,
       data: null,
@@ -107,6 +87,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
 
   return (
     <div style={{ padding: "1.5rem", maxWidth: "75rem", margin: "0 auto" }}>
+      {contextHolder}
       <Header level={3} text="Add Book to Your Shelf" />
       <Form form={form} onFinish={handleFinish} layout="vertical">
         {isBookNotFound ? (

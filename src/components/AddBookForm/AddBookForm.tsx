@@ -7,7 +7,6 @@ import { AuthorSelection } from "./AuthorSelection";
 import { BookDetails } from "./BookDetails";
 import { fetchCoverUrl } from "../../utils";
 import { HttpState } from "../../types/HttpState";
-import { AddExistingBookForm } from "./AddExistingBookForm";
 
 interface AddBookFormProps {
   onAddBook: (
@@ -18,28 +17,25 @@ interface AddBookFormProps {
   ) => void;
   authors: Author[];
   genres: Genre[];
-  books: Book[];
+  isBookNotFound: boolean;
+  onToggle: () => void;
 }
 
 export const AddBookForm: React.FC<AddBookFormProps> = ({
   onAddBook,
   authors,
   genres,
-  books,
+  isBookNotFound,
+  onToggle,
 }) => {
   const [form] = Form.useForm();
   const [isAuthorNotFound, setIsAuthorNotFound] = useState(false);
-  const [isBookNotFound, setIsBookNotFound] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
   const [coverUrl, setCoverUrl] = useState<HttpState<string>>({
     loading: false,
     data: null,
     error: false,
   });
-
-  const handleAddExistingBook = (isbn: string) => {
-    console.log("Adding book isbn:", isbn);
-  };
 
   const handleFinish = async (values: any) => {
     try {
@@ -92,65 +88,51 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
     }
   };
 
-  const handleToggle = () => {
-    setIsBookNotFound((prev) => !prev);
-  };
-
   return (
     <>
       {contextHolder}
-
-      {isBookNotFound ? (
-        <Form form={form} onFinish={handleFinish} layout="vertical">
-          <Row gutter={[24, 16]}>
-            <Col xs={24} md={12}>
-              <BookDetails
-                genres={genres}
-                coverUrl={coverUrl}
-                form={form}
-                onFetchCoverUrl={(isbn) => handlePreview(isbn)}
+      <Form form={form} onFinish={handleFinish} layout="vertical">
+        <Row gutter={[24, 16]}>
+          <Col xs={24} md={12}>
+            <BookDetails
+              genres={genres}
+              coverUrl={coverUrl}
+              form={form}
+              onFetchCoverUrl={(isbn) => handlePreview(isbn)}
+            />
+            <FlexContainer>
+              <NotFoundSwitch
+                label="Didn't find your book?"
+                value={isBookNotFound}
+                onToggle={onToggle}
               />
-              <FlexContainer>
-                <NotFoundSwitch
-                  label="Didn't find your book?"
-                  value={isBookNotFound}
-                  onToggle={setIsBookNotFound}
-                />
-                <NotFoundSwitch
-                  label="Author not found?"
-                  value={isAuthorNotFound}
-                  onToggle={setIsAuthorNotFound}
-                />
-              </FlexContainer>
-              <AuthorSelection
-                authors={authors}
-                isAuthorNotFound={isAuthorNotFound}
-                onToggleAuthorNotFound={setIsAuthorNotFound}
+              <NotFoundSwitch
+                label="Author not found?"
+                value={isAuthorNotFound}
+                onToggle={setIsAuthorNotFound}
               />
-            </Col>
+            </FlexContainer>
+            <AuthorSelection
+              authors={authors}
+              isAuthorNotFound={isAuthorNotFound}
+              onToggleAuthorNotFound={setIsAuthorNotFound}
+            />
+          </Col>
 
-            <Col xs={24} md={12}>
-              <BookMetadata />
-            </Col>
-          </Row>
-          <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              style={{ width: "100%", maxWidth: "200px" }}
-            >
-              Add to Shelf
-            </Button>
-          </Form.Item>
-        </Form>
-      ) : (
-        <AddExistingBookForm
-          isBookNotFound={isBookNotFound}
-          onToggle={handleToggle}
-          books={books}
-          onAddBook={handleAddExistingBook}
-        />
-      )}
+          <Col xs={24} md={12}>
+            <BookMetadata />
+          </Col>
+        </Row>
+        <Form.Item>
+          <Button
+            type="primary"
+            htmlType="submit"
+            style={{ width: "100%", maxWidth: "200px" }}
+          >
+            Add to Shelf
+          </Button>
+        </Form.Item>
+      </Form>
     </>
   );
 };

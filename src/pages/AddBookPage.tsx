@@ -1,9 +1,12 @@
 import { useState } from "react";
-import { FooterText, Header } from "../components";
-import { AddBookForm } from "../components/AddBookForm";
-import { Author, Book, Genre, Status } from "../types";
+import {
+  FooterText,
+  Header,
+  AddBookForm,
+  AddExistingBookForm,
+} from "../components";
+import { Author, Book, Genre } from "../types";
 import { AuthPage } from "./AuthPage";
-import { AddExistingBookForm } from "../components/AddBookForm/AddExistingBookForm";
 
 const authors: Author[] = [
   { id: 1, firstName: "F. Scott", lastName: "Fitzgerald" },
@@ -55,24 +58,8 @@ const books: Book[] = [
 export const AddBookPage = () => {
   const [isBookNotFound, setIsBookNotFound] = useState(false);
 
-  const handleAddBook = (
-    book: Book,
-    difficulty: number,
-    status: Status,
-    notes: string
-  ) => {
-    console.log("Adding book:", book);
-    console.log("Difficulty:", difficulty);
-    console.log("Status:", status);
-    console.log("Notes:", notes);
-  };
-
   const handleToggle = () => {
     setIsBookNotFound((prev) => !prev);
-  };
-
-  const handleAddExistingBook = (isbn: string) => {
-    console.log("Adding book isbn:", isbn);
   };
 
   return (
@@ -85,7 +72,6 @@ export const AddBookPage = () => {
             <Header level={3} text="Add Book to Your Shelf" />
             {isBookNotFound ? (
               <AddBookForm
-                onAddBook={handleAddBook}
                 authors={authors}
                 genres={genres}
                 onToggle={handleToggle}
@@ -96,7 +82,6 @@ export const AddBookPage = () => {
                 isBookNotFound={isBookNotFound}
                 onToggle={handleToggle}
                 books={books}
-                onAddBook={handleAddExistingBook}
               />
             )}
 

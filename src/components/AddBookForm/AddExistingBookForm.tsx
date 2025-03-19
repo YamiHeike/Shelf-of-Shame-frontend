@@ -5,7 +5,6 @@ import { NotFoundSwitch } from "../ui";
 type AddExistingBookProps = {
   isBookNotFound: boolean;
   onToggle: () => void;
-  onAddBook: (isbn: string) => void;
   books: Book[];
 };
 
@@ -15,7 +14,6 @@ export const AddExistingBookForm = ({
   isBookNotFound,
   books,
   onToggle,
-  onAddBook,
 }: AddExistingBookProps) => {
   const filterBooks = (input: string, option: any) => {
     return option.children.toLowerCase().includes(input.toLowerCase());
@@ -28,9 +26,9 @@ export const AddExistingBookForm = ({
       const bookDto: AddExistingBookDto = {
         isbn: values.isbn,
       };
-      onAddBook(bookDto.isbn);
+      console.log("Adding book isbn:", bookDto.isbn);
       form.resetFields();
-      messageApi.success("Book added! Be sure to read it one day!");
+      messageApi.success("Book added! Make sure you read it one day!");
     } catch (error) {
       console.log(error);
       message.error("An error has occurred. Please, try again");
@@ -38,7 +36,7 @@ export const AddExistingBookForm = ({
   };
 
   return (
-    <Form onFinish={handleFinish}>
+    <Form onFinish={handleFinish} form={form}>
       {contextHolder}
       <Row gutter={[24, 16]}>
         <Col xs={16}>

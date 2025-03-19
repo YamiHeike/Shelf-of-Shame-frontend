@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Button, message, Row, Col } from "antd";
-import { Author, Book, Genre, Status } from "../../types";
+import { Author, Book, Genre, UserShelfItemDto } from "../../types";
 import { FlexContainer, NotFoundSwitch } from "../ui";
 import { BookMetadata } from "./BookMetadata";
 import { AuthorSelection } from "./AuthorSelection";
@@ -9,12 +9,6 @@ import { fetchCoverUrl } from "../../utils";
 import { HttpState } from "../../types/HttpState";
 
 interface AddBookFormProps {
-  onAddBook: (
-    book: Book,
-    difficulty: number,
-    status: Status,
-    notes: string
-  ) => void;
   authors: Author[];
   genres: Genre[];
   isBookNotFound: boolean;
@@ -22,13 +16,12 @@ interface AddBookFormProps {
 }
 
 export const AddBookForm: React.FC<AddBookFormProps> = ({
-  onAddBook,
   authors,
   genres,
   isBookNotFound,
   onToggle,
 }) => {
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<UserShelfItemDto>();
   const [isAuthorNotFound, setIsAuthorNotFound] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
   const [coverUrl, setCoverUrl] = useState<HttpState<string>>({
@@ -49,7 +42,21 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
         description: values.description,
       };
 
-      onAddBook(book, values.difficulty, values.status, values.notes);
+      const bookDto: UserShelfItemDto = {
+        book,
+        notes: values.notes,
+        difficulty: values.difficulty,
+        status: values.status,
+      };
+
+      console.log(
+        "Adding book:",
+        bookDto.book,
+        bookDto.notes,
+        bookDto.difficulty,
+        bookDto.status
+      );
+
       form.resetFields();
       setCoverUrl({
         loading: false,

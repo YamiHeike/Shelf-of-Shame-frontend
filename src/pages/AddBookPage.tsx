@@ -20,7 +20,7 @@ export const AddBookPage = () => {
       title: "War and Peace",
       author: [{ id: 1, firstName: "Leo", lastName: "Tolstoy" }],
       numberOfPages: 1225,
-      isbn: "978-0199232765",
+      isbn: "0199232765",
       description:
         "A historical novel that intertwines the lives of five aristocratic families during the Napoleonic Wars.",
     },
@@ -28,7 +28,7 @@ export const AddBookPage = () => {
       title: "1984",
       author: [{ id: 2, firstName: "George", lastName: "Orwell" }],
       numberOfPages: 328,
-      isbn: "978-0451524935",
+      isbn: "0451524935",
       description:
         "A dystopian social science fiction novel and cautionary tale about the dangers of totalitarianism.",
     },
@@ -36,7 +36,7 @@ export const AddBookPage = () => {
       title: "Pride and Prejudice",
       author: [{ id: 3, firstName: "Jane", lastName: "Austen" }],
       numberOfPages: 279,
-      isbn: "978-1503290563",
+      isbn: "1503290563",
       description:
         "A romantic novel that critiques the British landed gentry at the end of the 18th century.",
     },
@@ -44,7 +44,7 @@ export const AddBookPage = () => {
       title: "Moby-Dick",
       author: [{ id: 4, firstName: "Herman", lastName: "Melville" }],
       numberOfPages: 635,
-      isbn: "978-0142437247",
+      isbn: "0142437247",
       description:
         "A narrative of Captain Ahab's obsessive quest to avenge the giant white whale that bit off his leg.",
     },

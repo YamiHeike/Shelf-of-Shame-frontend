@@ -15,6 +15,41 @@ export const AddBookPage = () => {
     { id: "3", name: "Science Fiction" },
   ];
 
+  const books: Book[] = [
+    {
+      title: "War and Peace",
+      author: [{ id: 1, firstName: "Leo", lastName: "Tolstoy" }],
+      numberOfPages: 1225,
+      isbn: "978-0199232765",
+      description:
+        "A historical novel that intertwines the lives of five aristocratic families during the Napoleonic Wars.",
+    },
+    {
+      title: "1984",
+      author: [{ id: 2, firstName: "George", lastName: "Orwell" }],
+      numberOfPages: 328,
+      isbn: "978-0451524935",
+      description:
+        "A dystopian social science fiction novel and cautionary tale about the dangers of totalitarianism.",
+    },
+    {
+      title: "Pride and Prejudice",
+      author: [{ id: 3, firstName: "Jane", lastName: "Austen" }],
+      numberOfPages: 279,
+      isbn: "978-1503290563",
+      description:
+        "A romantic novel that critiques the British landed gentry at the end of the 18th century.",
+    },
+    {
+      title: "Moby-Dick",
+      author: [{ id: 4, firstName: "Herman", lastName: "Melville" }],
+      numberOfPages: 635,
+      isbn: "978-0142437247",
+      description:
+        "A narrative of Captain Ahab's obsessive quest to avenge the giant white whale that bit off his leg.",
+    },
+  ];
+
   const handleAddBook = (
     book: Book,
     difficulty: number,
@@ -35,6 +70,7 @@ export const AddBookPage = () => {
             onAddBook={handleAddBook}
             authors={authors}
             genres={genres}
+            books={books}
           />
         </div>
       }

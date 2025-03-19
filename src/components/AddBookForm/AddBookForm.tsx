@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Input, Button, message, Row, Col } from "antd";
+import { Form, Button, message, Row, Col, Select } from "antd";
 import { Author, Book, Genre, Status } from "../../types";
 import { FlexContainer, FooterText, Header, NotFoundSwitch } from "../ui";
 import { BookMetadata } from "./BookMetadata";
@@ -7,6 +7,8 @@ import { AuthorSelection } from "./AuthorSelection";
 import { BookDetails } from "./BookDetails";
 import { fetchCoverUrl } from "../../utils";
 import { HttpState } from "../../types/HttpState";
+
+const { Option } = Select;
 
 interface AddBookFormProps {
   onAddBook: (
@@ -17,12 +19,14 @@ interface AddBookFormProps {
   ) => void;
   authors: Author[];
   genres: Genre[];
+  books: Book[];
 }
 
 export const AddBookForm: React.FC<AddBookFormProps> = ({
   onAddBook,
   authors,
   genres,
+  books,
 }) => {
   const [form] = Form.useForm();
   const [isAuthorNotFound, setIsAuthorNotFound] = useState(false);
@@ -57,6 +61,10 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
     } catch (error) {
       messageApi.error("An error occurred. Please try again.");
     }
+  };
+
+  const filterBooks = (input: string, option: any) => {
+    return option.children.toLowerCase().includes(input.toLowerCase());
   };
 
   const handlePreview = async (isbn: string) => {
@@ -124,7 +132,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
           </Row>
         ) : (
           <Row gutter={[24, 16]}>
-            <Col xs={24}>
+            <Col xs={16}>
               <Form.Item
                 label="Select a book"
                 rules={[
@@ -134,7 +142,26 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
                   },
                 ]}
               >
-                <Input placeholder="Search books" name="book_title" />
+                {/*<Input placeholder="Search books" name="book_title" />*/}
+                <Select
+                  placeholder="Search for books"
+                  showSearch
+                  optionFilterProp="children"
+                  filterOption={filterBooks}
+                >
+                  {books.map((book) => {
+                    const authorNames = book.author.map(
+                      (author) => `${author.firstName} ${author.lastName}`
+                    );
+                    const authors = authorNames.join(", ");
+
+                    return (
+                      <Option key={book.isbn} value={book.isbn}>
+                        {`${book.title} (${authors})`}
+                      </Option>
+                    );
+                  })}
+                </Select>
               </Form.Item>
               <NotFoundSwitch
                 label="Didn't find your book?"

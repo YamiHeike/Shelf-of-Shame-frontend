@@ -1,3 +1,4 @@
+import { FooterText, Header } from "../components";
 import { AddBookForm } from "../components/AddBookForm";
 import { Author, Book, Genre, Status } from "../types";
 import { AuthPage } from "./AuthPage";
@@ -66,12 +67,18 @@ export const AddBookPage = () => {
     <AuthPage
       Page={
         <div style={{ padding: "24px" }}>
-          <AddBookForm
-            onAddBook={handleAddBook}
-            authors={authors}
-            genres={genres}
-            books={books}
-          />
+          <div
+            style={{ padding: "1.5rem", maxWidth: "75rem", margin: "0 auto" }}
+          >
+            <Header level={3} text="Add Book to Your Shelf" />
+            <AddBookForm
+              onAddBook={handleAddBook}
+              authors={authors}
+              genres={genres}
+              books={books}
+            />
+            <FooterText text="Tracking all of your unread books makes creating a reading plan way easier! ✨" />
+          </div>
         </div>
       }
     />

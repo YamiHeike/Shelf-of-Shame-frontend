@@ -1,14 +1,13 @@
 import React, { useState } from "react";
-import { Form, Button, message, Row, Col, Select } from "antd";
+import { Form, Button, message, Row, Col } from "antd";
 import { Author, Book, Genre, Status } from "../../types";
-import { FlexContainer, FooterText, Header, NotFoundSwitch } from "../ui";
+import { FlexContainer, NotFoundSwitch } from "../ui";
 import { BookMetadata } from "./BookMetadata";
 import { AuthorSelection } from "./AuthorSelection";
 import { BookDetails } from "./BookDetails";
 import { fetchCoverUrl } from "../../utils";
 import { HttpState } from "../../types/HttpState";
-
-const { Option } = Select;
+import { AddExistingBookForm } from "./AddExistingBookForm";
 
 interface AddBookFormProps {
   onAddBook: (
@@ -38,6 +37,10 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
     error: false,
   });
 
+  const handleAddExistingBook = (isbn: string) => {
+    console.log("Adding book isbn:", isbn);
+  };
+
   const handleFinish = async (values: any) => {
     try {
       const book: Book = {
@@ -61,10 +64,6 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
     } catch (error) {
       messageApi.error("An error occurred. Please try again.");
     }
-  };
-
-  const filterBooks = (input: string, option: any) => {
-    return option.children.toLowerCase().includes(input.toLowerCase());
   };
 
   const handlePreview = async (isbn: string) => {
@@ -93,12 +92,16 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
     }
   };
 
+  const handleToggle = () => {
+    setIsBookNotFound((prev) => !prev);
+  };
+
   return (
-    <div style={{ padding: "1.5rem", maxWidth: "75rem", margin: "0 auto" }}>
+    <>
       {contextHolder}
-      <Header level={3} text="Add Book to Your Shelf" />
-      <Form form={form} onFinish={handleFinish} layout="vertical">
-        {isBookNotFound ? (
+
+      {isBookNotFound ? (
+        <Form form={form} onFinish={handleFinish} layout="vertical">
           <Row gutter={[24, 16]}>
             <Col xs={24} md={12}>
               <BookDetails
@@ -130,60 +133,24 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
               <BookMetadata />
             </Col>
           </Row>
-        ) : (
-          <Row gutter={[24, 16]}>
-            <Col xs={16}>
-              <Form.Item
-                name="isbn"
-                label="Select a book"
-                rules={[
-                  {
-                    required: !isBookNotFound,
-                    message: "Select the book to add",
-                  },
-                ]}
-              >
-                {/*<Input placeholder="Search books" name="book_title" />*/}
-                <Select
-                  placeholder="Search for books"
-                  showSearch
-                  optionFilterProp="children"
-                  filterOption={filterBooks}
-                >
-                  {books.map((book) => {
-                    const authorNames = book.author.map(
-                      (author) => `${author.firstName} ${author.lastName}`
-                    );
-                    const authors = authorNames.join(", ");
-
-                    return (
-                      <Option key={book.isbn} value={book.isbn}>
-                        {`${book.title} (${authors})`}
-                      </Option>
-                    );
-                  })}
-                </Select>
-              </Form.Item>
-              <NotFoundSwitch
-                label="Didn't find your book?"
-                value={isBookNotFound}
-                onToggle={setIsBookNotFound}
-              />
-            </Col>
-          </Row>
-        )}
-
-        <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            style={{ width: "100%", maxWidth: "200px" }}
-          >
-            Add to Shelf
-          </Button>
-        </Form.Item>
-      </Form>
-      <FooterText text="Tracking all of your unread books makes creating a reading plan way easier! ✨" />
-    </div>
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              style={{ width: "100%", maxWidth: "200px" }}
+            >
+              Add to Shelf
+            </Button>
+          </Form.Item>
+        </Form>
+      ) : (
+        <AddExistingBookForm
+          isBookNotFound={isBookNotFound}
+          onToggle={handleToggle}
+          books={books}
+          onAddBook={handleAddExistingBook}
+        />
+      )}
+    </>
   );
 };

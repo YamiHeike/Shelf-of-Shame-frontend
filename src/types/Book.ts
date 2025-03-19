@@ -1,5 +1,9 @@
 import { Author } from "./Author";
 
+export type AddExistingBookDto = {
+  isbn: string;
+};
+
 export type BookOutline = {
   title: string;
   author: Author[];

@@ -119,7 +119,7 @@ export const SignupPage = () => {
         </Form.Item>
 
         <Form.Item>
-          <FormButton submitted={submitted} preSubmitText="Sign Up" />
+          <FormButton submitted={submitted} block preSubmitText="Sign Up" />
         </Form.Item>
       </Form>
     </AuthForm>

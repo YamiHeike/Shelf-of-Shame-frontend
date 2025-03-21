@@ -1,33 +1,39 @@
 import React, { useState } from "react";
-import { Form, Input, Button, Select, message, Row, Col, Switch } from "antd";
-import { Author, Book, Genre, Status } from "../../types";
-import { FooterText, Header } from "../ui";
-import axios from "axios";
-
-const { Option } = Select;
+import { Form, Button, message, Row, Col } from "antd";
+import { Author, Book, Genre, UserShelfItemDto } from "../../types";
+import { FlexContainer, NotFoundSwitch } from "../ui";
+import { BookMetadata } from "./BookMetadata";
+import { AuthorSelection } from "./AuthorSelection";
+import { BookDetails } from "./BookDetails";
+import { fetchCoverUrl } from "../../utils";
+import { HttpState } from "../../types/HttpState";
+import { FormButton } from "../ui/FormButton";
 
 interface AddBookFormProps {
-  onAddBook: (
-    book: Book,
-    difficulty: number,
-    status: Status,
-    notes: string
-  ) => void;
   authors: Author[];
   genres: Genre[];
+  isBookNotFound: boolean;
+  onToggle: () => void;
 }
 
 export const AddBookForm: React.FC<AddBookFormProps> = ({
-  onAddBook,
   authors,
   genres,
+  isBookNotFound,
+  onToggle,
 }) => {
-  const [form] = Form.useForm();
-  const [isAuthorNotFound, setIsAuthorNotFound] = useState<boolean>(false);
-  const [showAuthorModal, setShowAuthorModal] = useState(false);
-  const [coverUrl, setCoverUrl] = useState<string>("");
+  const [form] = Form.useForm<UserShelfItemDto>();
+  const [submitted, setSubmitted] = useState(false);
+  const [isAuthorNotFound, setIsAuthorNotFound] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
+  const [coverUrl, setCoverUrl] = useState<HttpState<string>>({
+    loading: false,
+    data: null,
+    error: false,
+  });
 
   const handleFinish = async (values: any) => {
+    setSubmitted(true);
     try {
       const book: Book = {
         title: values.title,
@@ -39,243 +45,108 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
         description: values.description,
       };
 
-      onAddBook(book, values.difficulty, values.status, values.notes);
+      const bookDto: UserShelfItemDto = {
+        book,
+        notes: values.notes,
+        difficulty: values.difficulty,
+        status: values.status,
+      };
+
+      console.log(
+        "Adding book:",
+        bookDto.book,
+        bookDto.notes,
+        bookDto.difficulty,
+        bookDto.status
+      );
 
       form.resetFields();
-      setCoverUrl("");
-      message.success("Book added successfully!");
+      setCoverUrl({
+        loading: false,
+        data: null,
+        error: false,
+      });
+      setSubmitted(false);
+      messageApi.success("Book added successfully!");
     } catch (error) {
-      message.error("An error occurred. Please try again.");
+      messageApi.error("An error occurred. Please try again.");
+      setSubmitted(false);
     }
   };
 
-  const fetchCoverUrl = async (isbn: string) => {
-    try {
-      const response = await axios.get(
-        `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg`,
-        {
-          responseType: "blob",
-        }
-      );
-      if (response.status === 200) {
-        const imageUrl = URL.createObjectURL(response.data);
-        setCoverUrl(imageUrl);
-        form.setFieldsValue({ coverUrl: imageUrl });
-      } else {
-        message.warning("No cover found for this ISBN.");
-        setCoverUrl("");
-      }
-    } catch (error) {
-      message.error("Failed to fetch cover");
-      setCoverUrl("");
+  const handlePreview = async (isbn: string) => {
+    if (!isbn || isbn.length !== 10) {
+      messageApi.warning("Enter a ISBN-10 first");
+      return;
     }
-  };
-
-  const filterAuthors = (input: string, option: any) => {
-    return option.children.toLowerCase().includes(input.toLowerCase());
+    setCoverUrl({
+      loading: true,
+      data: null,
+      error: false,
+    });
+    const url = await fetchCoverUrl(isbn);
+    if (url) {
+      setCoverUrl({
+        loading: false,
+        data: url,
+        error: false,
+      });
+    } else {
+      setCoverUrl({
+        loading: false,
+        data: null,
+        error: true,
+      });
+    }
   };
 
   return (
-    <div style={{ padding: "1.5rem", maxWidth: "75rem", margin: "0 auto" }}>
-      <Header level={3} text="Add Book to Your Shelf" />
+    <>
+      {contextHolder}
       <Form form={form} onFinish={handleFinish} layout="vertical">
         <Row gutter={[24, 16]}>
           <Col xs={24} md={12}>
-            <Form.Item
-              label="Book Title"
-              name="title"
-              rules={[
-                { required: true, message: "Please enter the book title!" },
-              ]}
-            >
-              <Input placeholder="Enter book title" />
-            </Form.Item>
-            <Form.Item
-              label="Select Author"
-              name="authorId"
-              rules={[
-                {
-                  required: !isAuthorNotFound,
-                  message: "Please select an author!",
-                },
-              ]}
-            >
-              <Select
-                placeholder="Search for an author"
-                showSearch
-                optionFilterProp="children"
-                filterOption={filterAuthors}
-                disabled={isAuthorNotFound}
-              >
-                {authors.map((author) => (
-                  <Option key={author.id} value={author.id}>
-                    {`${author.firstName} ${author.lastName}`}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
-            <Form.Item label="Author not found?">
-              <Switch
-                checked={isAuthorNotFound}
-                onChange={(checked) => {
-                  setIsAuthorNotFound(checked);
-                  if (checked) setShowAuthorModal(true);
-                }}
+            <BookDetails
+              genres={genres}
+              coverUrl={coverUrl}
+              form={form}
+              onFetchCoverUrl={(isbn) => handlePreview(isbn)}
+            />
+            <FlexContainer>
+              <NotFoundSwitch
+                label="Didn't find your book?"
+                value={isBookNotFound}
+                onToggle={onToggle}
               />
-            </Form.Item>
-            {isAuthorNotFound && (
-              <div>
-                <Header text="Add an Author" level={4} />
-
-                <Form.Item
-                  label="First Name"
-                  name="firstName"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please enter the author's first name!",
-                    },
-                  ]}
-                >
-                  <Input placeholder="Enter first name" />
-                </Form.Item>
-                <Form.Item
-                  label="Last Name"
-                  name="lastName"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please enter the author's last name!",
-                    },
-                  ]}
-                >
-                  <Input placeholder="Enter last name" />
-                </Form.Item>
-              </div>
-            )}
-
-            <Form.Item
-              label="ISBN-10"
-              name="isbn"
-              rules={[
-                { required: true, message: "Please enter the ISBN-10!" },
-                {
-                  pattern: /^\d{10}$/,
-                  message: "Please enter a valid 10-digit ISBN.",
-                },
-              ]}
-            >
-              <Input
-                placeholder="Enter ISBN-10"
-                onChange={(e) => {
-                  if (e.target.value.length === 10) {
-                    fetchCoverUrl(e.target.value);
-                  }
-                }}
+              <NotFoundSwitch
+                label="Author not found?"
+                value={isAuthorNotFound}
+                onToggle={setIsAuthorNotFound}
               />
-            </Form.Item>
-
-            {coverUrl && (
-              <Form.Item label="Book Cover">
-                <img
-                  src={coverUrl}
-                  alt="Book Cover"
-                  style={{ maxWidth: "100px" }}
-                />
-              </Form.Item>
-            )}
-
-            <Form.Item
-              label="Genre"
-              name="genreId"
-              rules={[{ required: true, message: "Please select a genre!" }]}
-            >
-              <Select placeholder="Select a genre">
-                {genres.map((genre) => (
-                  <Option key={genre.id} value={genre.id}>
-                    {genre.name}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
-
-            <Form.Item
-              label="Number of Pages"
-              name="numberOfPages"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the number of pages!",
-                },
-              ]}
-            >
-              <Input type="number" placeholder="Enter number of pages" />
-            </Form.Item>
+            </FlexContainer>
+            <AuthorSelection
+              authors={authors}
+              isAuthorNotFound={isAuthorNotFound}
+              onToggleAuthorNotFound={setIsAuthorNotFound}
+            />
           </Col>
 
           <Col xs={24} md={12}>
-            <Form.Item
-              label="Description"
-              name="description"
-              rules={[
-                { required: true, message: "Please enter a description!" },
-              ]}
-            >
-              <Input.TextArea placeholder="Enter book description" rows={4} />
-            </Form.Item>
-            <Form.Item
-              label="Perceived Difficulty (1-10)"
-              name="difficulty"
-              rules={[
-                { required: true, message: "Please enter the difficulty!" },
-                {
-                  type: "number",
-                  min: 1,
-                  max: 10,
-                  message: "Difficulty must be between 1 and 10!",
-                },
-              ]}
-            >
-              <Input
-                type="number"
-                placeholder="Enter difficulty (1-10)"
-                min={1}
-                max={10}
-              />
-            </Form.Item>
-            <Form.Item
-              label="Status"
-              name="status"
-              rules={[{ required: true, message: "Please select a status!" }]}
-            >
-              <Select placeholder="Select a status">
-                {Object.values(Status).map((status) => (
-                  <Option key={status} value={status}>
-                    {status}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
-
-            <Form.Item label="Notes" name="notes">
-              <Input.TextArea
-                placeholder="Enter any notes about the book"
-                rows={4}
-              />
-            </Form.Item>
+            <BookMetadata />
           </Col>
         </Row>
         <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            style={{ width: "100%", maxWidth: "200px" }}
-          >
-            Add to Shelf
-          </Button>
+          <FormButton
+            submitted={submitted}
+            preSubmitText="Add to Shelf"
+            postSubmitText="Adding..."
+            style={{
+              maxWidth: 200,
+              width: "100%",
+            }}
+          />
         </Form.Item>
       </Form>
-      <FooterText text="Tracking all of your unread books makes creating a reading plan way easier! ✨" />
-    </div>
+    </>
   );
 };

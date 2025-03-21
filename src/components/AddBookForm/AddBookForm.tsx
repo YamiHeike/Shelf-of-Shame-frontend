@@ -7,6 +7,7 @@ import { AuthorSelection } from "./AuthorSelection";
 import { BookDetails } from "./BookDetails";
 import { fetchCoverUrl } from "../../utils";
 import { HttpState } from "../../types/HttpState";
+import { FormButton } from "../ui/FormButton";
 
 interface AddBookFormProps {
   authors: Author[];
@@ -22,6 +23,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
   onToggle,
 }) => {
   const [form] = Form.useForm<UserShelfItemDto>();
+  const [submitted, setSubmitted] = useState(false);
   const [isAuthorNotFound, setIsAuthorNotFound] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
   const [coverUrl, setCoverUrl] = useState<HttpState<string>>({
@@ -31,6 +33,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
   });
 
   const handleFinish = async (values: any) => {
+    setSubmitted(true);
     try {
       const book: Book = {
         title: values.title,
@@ -63,9 +66,11 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
         data: null,
         error: false,
       });
+      setSubmitted(false);
       messageApi.success("Book added successfully!");
     } catch (error) {
       messageApi.error("An error occurred. Please try again.");
+      setSubmitted(false);
     }
   };
 
@@ -131,13 +136,15 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
           </Col>
         </Row>
         <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            style={{ width: "100%", maxWidth: "200px" }}
-          >
-            Add to Shelf
-          </Button>
+          <FormButton
+            submitted={submitted}
+            preSubmitText="Add to Shelf"
+            postSubmitText="Adding..."
+            style={{
+              maxWidth: 200,
+              width: "100%",
+            }}
+          />
         </Form.Item>
       </Form>
     </>

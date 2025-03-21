@@ -1,6 +1,8 @@
 import { Button, Col, Form, message, Row, Select } from "antd";
 import { AddExistingBookDto, Book } from "../../types";
 import { NotFoundSwitch } from "../ui";
+import { FormButton } from "../ui/FormButton";
+import { useState } from "react";
 
 type AddExistingBookProps = {
   isBookNotFound: boolean;
@@ -19,9 +21,11 @@ export const AddExistingBookForm = ({
     return option.children.toLowerCase().includes(input.toLowerCase());
   };
 
+  const [submitted, setSubmitted] = useState(false);
   const [form] = Form.useForm<AddExistingBookDto>();
   const [messageApi, contextHolder] = message.useMessage();
   const handleFinish = async (values: AddExistingBookDto) => {
+    setSubmitted(true);
     try {
       const bookDto: AddExistingBookDto = {
         isbn: values.isbn,
@@ -29,9 +33,11 @@ export const AddExistingBookForm = ({
       console.log("Adding book isbn:", bookDto.isbn);
       form.resetFields();
       messageApi.success("Book added! Make sure you read it one day!");
+      setSubmitted(false);
     } catch (error) {
       console.log(error);
       message.error("An error has occurred. Please, try again");
+      setSubmitted(false);
     }
   };
 
@@ -75,17 +81,19 @@ export const AddExistingBookForm = ({
             value={isBookNotFound}
             onToggle={onToggle}
           />
+          <Form.Item>
+            <FormButton
+              submitted={submitted}
+              preSubmitText="Add to Shelf"
+              postSubmitText="Adding..."
+              style={{
+                maxWidth: 200,
+                width: "100%",
+              }}
+            />
+          </Form.Item>
         </Col>
       </Row>
-      <Form.Item>
-        <Button
-          type="primary"
-          htmlType="submit"
-          style={{ width: "100%", maxWidth: "200px" }}
-        >
-          Add to Shelf
-        </Button>
-      </Form.Item>
     </Form>
   );
 };

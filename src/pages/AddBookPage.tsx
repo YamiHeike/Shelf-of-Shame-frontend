@@ -67,7 +67,12 @@ export const AddBookPage = () => {
       Page={
         <div style={{ padding: "24px" }}>
           <div
-            style={{ padding: "1.5rem", maxWidth: "75rem", margin: "0 auto" }}
+            style={{
+              padding: "1.5rem",
+              width: "90%",
+              maxWidth: !isBookNotFound ? "50rem" : "70rem",
+              margin: "0 auto",
+            }}
           >
             <Header level={3} text="Add Book to Your Shelf" />
             {isBookNotFound ? (

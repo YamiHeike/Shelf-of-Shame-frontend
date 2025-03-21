@@ -19,4 +19,7 @@ export type UserShelfItemDto = {
 
 export type AddExistingBookDto = {
   isbn: string;
+  notes: string;
+  difficulty: number;
+  status: Status;
 };

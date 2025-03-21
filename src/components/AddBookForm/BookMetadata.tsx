@@ -7,14 +7,6 @@ export const BookMetadata = () => {
   return (
     <>
       <Form.Item
-        label="Description"
-        name="description"
-        rules={[{ required: true, message: "Please enter a description!" }]}
-      >
-        <Input.TextArea placeholder="Enter book description" rows={4} />
-      </Form.Item>
-
-      <Form.Item
         label="Perceived Difficulty (1-10)"
         name="difficulty"
         rules={[

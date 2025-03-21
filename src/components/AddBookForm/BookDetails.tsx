@@ -103,6 +103,13 @@ export const BookDetails: React.FC<BookDetailsProps> = ({
       >
         <Input type="number" placeholder="Enter number of pages" />
       </Form.Item>
+      <Form.Item
+        label="Description"
+        name="description"
+        rules={[{ required: true, message: "Please enter a description!" }]}
+      >
+        <Input.TextArea placeholder="Enter book description" rows={4} />
+      </Form.Item>
     </>
   );
 };

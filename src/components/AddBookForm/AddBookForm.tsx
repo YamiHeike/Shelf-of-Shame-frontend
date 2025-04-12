@@ -40,21 +40,30 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
 
   const handleFinish = async (values: any) => {
     setSubmitted(true);
+    let addAuthorResponse;
 
-    const addAuthorResponse = await backendRequest<Author, CreateAuthorDto>(
-      "POST",
-      "http://localhost:8080/authors/new",
-      {
-        firstName: values.firstName,
-        lastName: values.lastName,
-      }
-    );
+    if (isAuthorNotFound) {
+      addAuthorResponse = await backendRequest<Author, CreateAuthorDto>(
+        "POST",
+        "http://localhost:8080/authors/new",
+        {
+          firstName: values.firstName,
+          lastName: values.lastName,
+        }
+      );
+    }
 
     try {
       const book: Book = {
         title: values.title,
         author: isAuthorNotFound
-          ? [addAuthorResponse.data]
+          ? [
+              addAuthorResponse?.data ?? {
+                id: -1,
+                firstName: "",
+                lastName: "",
+              },
+            ]
           : authors.filter((author) => author.id === values.authorId),
         numberOfPages: values.numberOfPages,
         isbn: values.isbn,

@@ -1,11 +1,17 @@
 import React, { useState } from "react";
 import { Form, message, Row, Col } from "antd";
-import { Author, Book, Genre, UserShelfItemDto } from "../../types";
+import {
+  Author,
+  Book,
+  CreateAuthorDto,
+  Genre,
+  UserShelfItemDto,
+} from "../../types";
 import { FlexContainer, NotFoundSwitch } from "../ui";
 import { BookMetadata } from "./BookMetadata";
 import { AuthorSelection } from "./AuthorSelection";
 import { BookDetails } from "./BookDetails";
-import { fetchCoverUrl } from "../../utils";
+import { backendRequest, fetchCoverUrl } from "../../utils";
 import { HttpState } from "../../types/HttpState";
 import { FormButton } from "../ui/FormButton";
 
@@ -34,11 +40,21 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
 
   const handleFinish = async (values: any) => {
     setSubmitted(true);
+
+    const addAuthorResponse = await backendRequest<Author, CreateAuthorDto>(
+      "POST",
+      "http://localhost:8080/authors/new",
+      {
+        firstName: values.firstName,
+        lastName: values.lastName,
+      }
+    );
+
     try {
       const book: Book = {
         title: values.title,
         author: isAuthorNotFound
-          ? [{ id: -1, firstName: values.firstName, lastName: values.lastName }]
+          ? [addAuthorResponse.data]
           : authors.filter((author) => author.id === values.authorId),
         numberOfPages: values.numberOfPages,
         isbn: values.isbn,

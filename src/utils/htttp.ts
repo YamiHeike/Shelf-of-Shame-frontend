@@ -1,4 +1,5 @@
 import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
+import { Author } from "../types";
 
 axios.defaults.baseURL = "https://localhost:8080";
 axios.defaults.headers.post["Content-type"] = "application/json";
@@ -34,4 +35,12 @@ export const backendRequest = <T, D = undefined>(
     ...(method !== "GET" && method !== "DELETE" && { data }),
   };
   return axios(config);
+};
+
+export const getAuthors = async () => {
+  const authors = await backendRequest<Author[]>(
+    "GET",
+    "http://localhost:8080/authors"
+  );
+  return authors?.data ?? [];
 };

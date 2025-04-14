@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FooterText,
   Header,
@@ -7,12 +7,8 @@ import {
 } from "../components";
 import { Author, Book, Genre } from "../types";
 import { AuthPage } from "./AuthPage";
-
-const authors: Author[] = [
-  { id: 1, firstName: "F. Scott", lastName: "Fitzgerald" },
-  { id: 2, firstName: "George", lastName: "Orwell" },
-  { id: 3, firstName: "Leo", lastName: "Tolstoy" },
-];
+import { getAuthors } from "../utils";
+import { HttpState } from "../types/HttpState";
 
 const genres: Genre[] = [
   { id: "1", name: "Fiction" },
@@ -57,10 +53,42 @@ const books: Book[] = [
 
 export const AddBookPage = () => {
   const [isBookNotFound, setIsBookNotFound] = useState(false);
+  const [authorList, setAuthorList] = useState<HttpState<Author[]>>({
+    loading: false,
+    error: false,
+    data: [],
+  });
 
   const handleToggle = () => {
     setIsBookNotFound((prev) => !prev);
   };
+
+  // TODO: move to context
+  useEffect(() => {
+    const getAuthorList = async () => {
+      try {
+        const authList = await getAuthors();
+        setAuthorList({
+          loading: false,
+          error: false,
+          data: authList,
+        });
+      } catch (e) {
+        setAuthorList({
+          loading: false,
+          error: true,
+          data: null,
+        });
+      }
+    };
+
+    getAuthorList();
+  }, []);
+
+  // TODO: Loader component
+  if (!authorList.data || authorList.data.length < 1) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <AuthPage
@@ -77,7 +105,7 @@ export const AddBookPage = () => {
             <Header level={3} text="Add Book to Your Shelf" />
             {isBookNotFound ? (
               <AddBookForm
-                authors={authors}
+                authors={authorList.data}
                 genres={genres}
                 onToggle={handleToggle}
                 isBookNotFound={isBookNotFound}

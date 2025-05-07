@@ -56,7 +56,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
     try {
       const book: Book = {
         title: values.title,
-        author: isAuthorNotFound
+        authors: isAuthorNotFound
           ? [
               addAuthorResponse?.data ?? {
                 id: -1,
@@ -68,6 +68,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
         numberOfPages: values.numberOfPages,
         isbn: values.isbn,
         description: values.description,
+        genre: values.genre,
       };
 
       const bookDto: UserShelfItemDto = {

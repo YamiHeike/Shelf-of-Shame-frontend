@@ -79,7 +79,7 @@ export const BookDetails: React.FC<BookDetailsProps> = ({
 
       <Form.Item
         label="Genre"
-        name="genreId"
+        name="genre"
         rules={[{ required: true, message: "Please select a genre!" }]}
       >
         <Select placeholder="Select a genre">

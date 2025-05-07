@@ -68,7 +68,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
         numberOfPages: values.numberOfPages,
         isbn: values.isbn,
         description: values.description,
-        genre: values.genre,
+        genres: [parseInt(values.genre)],
       };
 
       const bookDto: UserShelfItemDto = {

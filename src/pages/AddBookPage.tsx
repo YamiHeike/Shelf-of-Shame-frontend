@@ -11,10 +11,10 @@ import { getAuthors } from "../utils";
 import { HttpState } from "../types/HttpState";
 
 const genres: Genre[] = [
-  { id: "1", name: "Fiction" },
-  { id: "2", name: "Non-Fiction" },
-  { id: "3", name: "Science Fiction" },
-  { id: "4", name: "Fantasy" },
+  { id: 1, name: "Fiction" },
+  { id: 2, name: "Non-Fiction" },
+  { id: 3, name: "Science Fiction" },
+  { id: 4, name: "Fantasy" },
 ];
 
 const books: Book[] = [
@@ -25,7 +25,7 @@ const books: Book[] = [
     isbn: "0199232765",
     description:
       "A historical novel that intertwines the lives of five aristocratic families during the Napoleonic Wars.",
-    genre: "Fiction",
+    genres: [1],
   },
   {
     title: "1984",
@@ -34,7 +34,7 @@ const books: Book[] = [
     isbn: "0451524935",
     description:
       "A dystopian social science fiction novel and cautionary tale about the dangers of totalitarianism.",
-    genre: "Fiction",
+    genres: [3],
   },
   {
     title: "Pride and Prejudice",
@@ -43,7 +43,7 @@ const books: Book[] = [
     isbn: "1503290563",
     description:
       "A romantic novel that critiques the British landed gentry at the end of the 18th century.",
-    genre: "Fiction",
+    genres: [1],
   },
   {
     title: "Moby-Dick",
@@ -52,7 +52,7 @@ const books: Book[] = [
     isbn: "0142437247",
     description:
       "A narrative of Captain Ahab's obsessive quest to avenge the giant white whale that bit off his leg.",
-    genre: "Fiction",
+    genres: [1],
   },
 ];
 

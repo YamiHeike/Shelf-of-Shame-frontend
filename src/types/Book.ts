@@ -9,11 +9,11 @@ export type BookOutline = {
 export interface Book extends BookOutline {
   isbn: string;
   description: string;
-  genre: string;
+  genres: number[];
 }
 
 export type Genre = {
-  id: string;
+  id: number;
   name: string;
 };
 

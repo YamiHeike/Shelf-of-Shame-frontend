@@ -71,6 +71,12 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
         genres: [parseInt(values.genre)],
       };
 
+      const res = await backendRequest<Book, Book>(
+        "POST",
+        "http://localhost:8080/books/new",
+        book
+      );
+
       const bookDto: UserShelfItemDto = {
         book,
         notes: values.notes,

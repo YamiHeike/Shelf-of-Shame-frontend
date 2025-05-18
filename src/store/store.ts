@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { authorsReducer } from "./authorsSlice";
 
-const store = configureStore({
+export const store = configureStore({
   reducer: {
     authors: authorsReducer,
   },

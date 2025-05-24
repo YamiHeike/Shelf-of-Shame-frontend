@@ -5,10 +5,10 @@ import {
   AddBookForm,
   AddExistingBookForm,
 } from "../components";
-import { Author, Book, Genre } from "../types";
+import { Book, Genre } from "../types";
 import { AuthPage } from "./AuthPage";
-import { getAuthors } from "../utils";
-import { HttpState } from "../types/HttpState";
+import { useAppDispatch, useAppSelector } from "../hooks/redux_utils";
+import { fetchAuthors } from "../store/authorThunks";
 
 const genres: Genre[] = [
   { id: 1, name: "Fiction" },
@@ -58,41 +58,30 @@ const books: Book[] = [
 
 export const AddBookPage = () => {
   const [isBookNotFound, setIsBookNotFound] = useState(false);
-  const [authorList, setAuthorList] = useState<HttpState<Author[]>>({
-    loading: false,
-    error: false,
-    data: [],
-  });
+  const dispatch = useAppDispatch();
+  const {
+    list: authorList,
+    loading,
+    error,
+  } = useAppSelector((state) => state.authors);
 
   const handleToggle = () => {
     setIsBookNotFound((prev) => !prev);
   };
 
-  // TODO: move to context
   useEffect(() => {
-    const getAuthorList = async () => {
-      try {
-        const authList = await getAuthors();
-        setAuthorList({
-          loading: false,
-          error: false,
-          data: authList,
-        });
-      } catch (e) {
-        setAuthorList({
-          loading: false,
-          error: true,
-          data: null,
-        });
-      }
-    };
-
-    getAuthorList();
-  }, []);
+    dispatch(fetchAuthors());
+  }, [dispatch]);
 
   // TODO: Loader component
-  if (!authorList.data || authorList.data.length < 1) {
+  if (loading) {
     return <p>Loading...</p>;
+  }
+
+  // TODO: Error component
+
+  if (error) {
+    return <p>{error}</p>;
   }
 
   return (
@@ -110,7 +99,7 @@ export const AddBookPage = () => {
             <Header level={3} text="Add Book to Your Shelf" />
             {isBookNotFound ? (
               <AddBookForm
-                authors={authorList.data}
+                authors={authorList}
                 genres={genres}
                 onToggle={handleToggle}
                 isBookNotFound={isBookNotFound}

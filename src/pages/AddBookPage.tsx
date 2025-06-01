@@ -9,6 +9,7 @@ import { Book, Genre } from "../types";
 import { AuthPage } from "./AuthPage";
 import { useAppDispatch, useAppSelector } from "../hooks/redux_utils";
 import { fetchAuthors } from "../store/authorThunks";
+import { FormValidationContextProvider } from "../components/BookForm/FormValidationContext";
 
 const genres: Genre[] = [
   { id: 1, name: "Fiction" },
@@ -85,37 +86,39 @@ export const AddBookPage = () => {
   }
 
   return (
-    <AuthPage
-      Page={
-        <div style={{ padding: "24px" }}>
-          <div
-            style={{
-              padding: "1.5rem",
-              width: "90%",
-              maxWidth: !isBookNotFound ? "50rem" : "70rem",
-              margin: "0 auto",
-            }}
-          >
-            <Header level={3} text="Add Book to Your Shelf" />
-            {isBookNotFound ? (
-              <AddBookForm
-                authors={authorList}
-                genres={genres}
-                onToggle={handleToggle}
-                isBookNotFound={isBookNotFound}
-              />
-            ) : (
-              <AddExistingBookForm
-                isBookNotFound={isBookNotFound}
-                onToggle={handleToggle}
-                books={books}
-              />
-            )}
+    <FormValidationContextProvider>
+      <AuthPage
+        Page={
+          <div style={{ padding: "24px" }}>
+            <div
+              style={{
+                padding: "1.5rem",
+                width: "90%",
+                maxWidth: !isBookNotFound ? "50rem" : "70rem",
+                margin: "0 auto",
+              }}
+            >
+              <Header level={3} text="Add Book to Your Shelf" />
+              {isBookNotFound ? (
+                <AddBookForm
+                  authors={authorList}
+                  genres={genres}
+                  onToggle={handleToggle}
+                  isBookNotFound={isBookNotFound}
+                />
+              ) : (
+                <AddExistingBookForm
+                  isBookNotFound={isBookNotFound}
+                  onToggle={handleToggle}
+                  books={books}
+                />
+              )}
 
-            <FooterText text="Tracking all of your unread books makes creating a reading plan way easier! ✨" />
+              <FooterText text="Tracking all of your unread books makes creating a reading plan way easier! ✨" />
+            </div>
           </div>
-        </div>
-      }
-    />
+        }
+      />
+    </FormValidationContextProvider>
   );
 };

@@ -4,6 +4,7 @@ import { FlexContainer } from "../ui";
 import { HttpState } from "../../types/HttpState";
 import { LoadingOutlined } from "@ant-design/icons";
 import defaultCover from "../../assets/default_cover.png";
+import { useFormValidationContext } from "./FormValidationContext";
 
 const { Option } = Select;
 
@@ -20,6 +21,8 @@ export const BookDetails: React.FC<BookDetailsProps> = ({
   onFetchCoverUrl,
   form,
 }) => {
+  const { bookDescriptionLimit } = useFormValidationContext();
+
   return (
     <>
       <Form.Item
@@ -108,7 +111,14 @@ export const BookDetails: React.FC<BookDetailsProps> = ({
         name="description"
         rules={[{ required: true, message: "Please enter a description!" }]}
       >
-        <Input.TextArea placeholder="Enter book description" rows={4} />
+        <Input.TextArea
+          placeholder="Enter book description"
+          rows={4}
+          showCount={{
+            formatter: ({ count }) => `${count}/${bookDescriptionLimit}`,
+          }}
+          maxLength={bookDescriptionLimit}
+        />
       </Form.Item>
     </>
   );

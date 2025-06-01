@@ -4,6 +4,7 @@ import {
   Author,
   Book,
   CreateAuthorDto,
+  FormFieldError,
   Genre,
   UserShelfItemDto,
 } from "../../types";
@@ -31,7 +32,9 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
   const [form] = Form.useForm<UserShelfItemDto>();
   const [submitted, setSubmitted] = useState(false);
   const [isAuthorNotFound, setIsAuthorNotFound] = useState(false);
+  const [error, setError] = useState<FormFieldError | null>(null);
   const [messageApi, contextHolder] = message.useMessage();
+
   const [coverUrl, setCoverUrl] = useState<HttpState<string>>({
     loading: false,
     data: null,
@@ -71,7 +74,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
         genres: [parseInt(values.genre)],
       };
 
-      const res = await backendRequest<Book, Book>(
+      await backendRequest<Book, Book>(
         "POST",
         "http://localhost:8080/books/new",
         book

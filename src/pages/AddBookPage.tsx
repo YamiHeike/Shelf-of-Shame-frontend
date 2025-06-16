@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from "../hooks/redux_utils";
 import { fetchAuthors } from "../store/authorThunks";
 import { FormValidationContextProvider } from "../components/BookForm/FormValidationContext";
 import { fetchBooks } from "../store/bookThunks";
+import { fetchGenres } from "../store/genreThunk";
 
 const genres: Genre[] = [
   { id: 1, name: "Fiction" },
@@ -33,6 +34,12 @@ export const AddBookPage = () => {
     error: bookError,
   } = useAppSelector((state) => state.books);
 
+  const {
+    list: genresLit,
+    loading: genresLoading,
+    error: genresError,
+  } = useAppSelector((state) => state.genres);
+
   const handleToggle = () => {
     setIsBookNotFound((prev) => !prev);
   };
@@ -40,20 +47,22 @@ export const AddBookPage = () => {
   useEffect(() => {
     dispatch(fetchAuthors());
     dispatch(fetchBooks());
+    dispatch(fetchGenres());
   }, [dispatch]);
 
   // TODO: Loader component
-  if (authorLoading || bookLoading) {
+  if (authorLoading || bookLoading || genresLoading) {
     return <p>Loading...</p>;
   }
 
   // TODO: Error component
 
-  if (authorError || bookError) {
+  if (authorError || bookError || genresError) {
     return (
       <>
         {authorError && <p>{authorError}</p>}
         {bookError && <p>{bookError}</p>}
+        {genresError && <p>{genresError}</p>}
       </>
     );
   }
@@ -75,7 +84,7 @@ export const AddBookPage = () => {
               {isBookNotFound ? (
                 <AddBookForm
                   authors={authorList}
-                  genres={genres}
+                  genres={genresLit}
                   onToggle={handleToggle}
                   isBookNotFound={isBookNotFound}
                 />

@@ -5,11 +5,12 @@ import {
   AddBookForm,
   AddExistingBookForm,
 } from "../components";
-import { Book, Genre } from "../types";
+import { Genre } from "../types";
 import { AuthPage } from "./AuthPage";
 import { useAppDispatch, useAppSelector } from "../hooks/redux_utils";
 import { fetchAuthors } from "../store/authorThunks";
 import { FormValidationContextProvider } from "../components/BookForm/FormValidationContext";
+import { fetchBooks } from "../store/bookThunks";
 
 const genres: Genre[] = [
   { id: 1, name: "Fiction" },
@@ -18,53 +19,19 @@ const genres: Genre[] = [
   { id: 4, name: "Fantasy" },
 ];
 
-const books: Book[] = [
-  {
-    title: "War and Peace",
-    authors: [{ id: 1, firstName: "Leo", lastName: "Tolstoy" }],
-    numberOfPages: 1225,
-    isbn: "0199232765",
-    description:
-      "A historical novel that intertwines the lives of five aristocratic families during the Napoleonic Wars.",
-    genres: [1],
-  },
-  {
-    title: "1984",
-    authors: [{ id: 2, firstName: "George", lastName: "Orwell" }],
-    numberOfPages: 328,
-    isbn: "0451524935",
-    description:
-      "A dystopian social science fiction novel and cautionary tale about the dangers of totalitarianism.",
-    genres: [3],
-  },
-  {
-    title: "Pride and Prejudice",
-    authors: [{ id: 3, firstName: "Jane", lastName: "Austen" }],
-    numberOfPages: 279,
-    isbn: "1503290563",
-    description:
-      "A romantic novel that critiques the British landed gentry at the end of the 18th century.",
-    genres: [1],
-  },
-  {
-    title: "Moby-Dick",
-    authors: [{ id: 4, firstName: "Herman", lastName: "Melville" }],
-    numberOfPages: 635,
-    isbn: "0142437247",
-    description:
-      "A narrative of Captain Ahab's obsessive quest to avenge the giant white whale that bit off his leg.",
-    genres: [1],
-  },
-];
-
 export const AddBookPage = () => {
   const [isBookNotFound, setIsBookNotFound] = useState(false);
   const dispatch = useAppDispatch();
   const {
     list: authorList,
-    loading,
-    error,
+    loading: authorLoading,
+    error: authorError,
   } = useAppSelector((state) => state.authors);
+  const {
+    list: bookList,
+    loading: bookLoading,
+    error: bookError,
+  } = useAppSelector((state) => state.books);
 
   const handleToggle = () => {
     setIsBookNotFound((prev) => !prev);
@@ -72,17 +39,23 @@ export const AddBookPage = () => {
 
   useEffect(() => {
     dispatch(fetchAuthors());
+    dispatch(fetchBooks());
   }, [dispatch]);
 
   // TODO: Loader component
-  if (loading) {
+  if (authorLoading || bookLoading) {
     return <p>Loading...</p>;
   }
 
   // TODO: Error component
 
-  if (error) {
-    return <p>{error}</p>;
+  if (authorError || bookError) {
+    return (
+      <>
+        {authorError && <p>{authorError}</p>}
+        {bookError && <p>{bookError}</p>}
+      </>
+    );
   }
 
   return (
@@ -110,7 +83,7 @@ export const AddBookPage = () => {
                 <AddExistingBookForm
                   isBookNotFound={isBookNotFound}
                   onToggle={handleToggle}
-                  books={books}
+                  books={bookList}
                 />
               )}
 

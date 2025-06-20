@@ -149,8 +149,6 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
     }
   };
 
-  // TODO: validation errors and Form Item naming
-
   return (
     <>
       {contextHolder}
@@ -167,7 +165,10 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
               <NotFoundSwitch
                 label="Didn't find your book?"
                 value={isBookNotFound}
-                onToggle={onToggle}
+                onToggle={() => {
+                  onToggle();
+                  clearErrors();
+                }}
               />
               <NotFoundSwitch
                 label="Author not found?"

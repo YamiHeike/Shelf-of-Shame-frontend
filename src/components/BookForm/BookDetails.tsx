@@ -1,11 +1,10 @@
-import { Form, Input, Select, Button, message, FormInstance, Spin } from "antd";
+import { Form, Input, Select, Button, FormInstance, Spin } from "antd";
 import { Genre } from "../../types";
-import { FlexContainer } from "../ui";
+import { FlexContainer, ValidatedField } from "../ui";
 import { HttpState } from "../../types/HttpState";
 import { LoadingOutlined } from "@ant-design/icons";
 import defaultCover from "../../assets/default_cover.png";
 import { useFormValidationContext } from "./FormValidationContext";
-import { FormAlert } from "../ui/FormAlert/FormAlert";
 
 const { Option } = Select;
 
@@ -41,41 +40,43 @@ export const BookDetails: React.FC<BookDetailsProps> = ({
 
   return (
     <>
-      <Form.Item
-        label="Book Title"
-        name="title"
-        rules={[{ required: true, message: "Please enter the book title!" }]}
-      >
-        <Input placeholder="Enter book title" />
-      </Form.Item>
-      {titleMessage && <FormAlert errorMsg={titleMessage} />}
-      <Form.Item
-        label="ISBN-10"
-        name="isbn"
-        rules={[
-          { required: true, message: "Please enter the ISBN-10!" },
-          {
-            pattern: /^\d{10}$/,
-            message: "Please enter a valid 10-digit ISBN.",
-          },
-        ]}
-      >
-        <FlexContainer gap={15}>
-          <Input
-            placeholder="Enter ISBN-10"
-            onChange={(e) => {
-              form.setFieldsValue({ isbn: e.target.value });
-            }}
-          />
-          <Button
-            type="dashed"
-            onClick={() => onFetchCoverUrl(form.getFieldValue("isbn"))}
-          >
-            Cover preview
-          </Button>
-        </FlexContainer>
-      </Form.Item>
-      {isbnMessage && <FormAlert errorMsg={isbnMessage} />}
+      <ValidatedField errorMsg={titleMessage}>
+        <Form.Item
+          label="Book Title"
+          name="title"
+          rules={[{ required: true, message: "Please enter the book title!" }]}
+        >
+          <Input placeholder="Enter book title" />
+        </Form.Item>
+      </ValidatedField>
+      <ValidatedField errorMsg={isbnMessage}>
+        <Form.Item
+          label="ISBN-10"
+          name="isbn"
+          rules={[
+            { required: true, message: "Please enter the ISBN-10!" },
+            {
+              pattern: /^\d{10}$/,
+              message: "Please enter a valid 10-digit ISBN.",
+            },
+          ]}
+        >
+          <FlexContainer gap={15}>
+            <Input
+              placeholder="Enter ISBN-10"
+              onChange={(e) => {
+                form.setFieldsValue({ isbn: e.target.value });
+              }}
+            />
+            <Button
+              type="dashed"
+              onClick={() => onFetchCoverUrl(form.getFieldValue("isbn"))}
+            >
+              Cover preview
+            </Button>
+          </FlexContainer>
+        </Form.Item>
+      </ValidatedField>
       {coverUrl.loading ? (
         <Spin
           indicator={<LoadingOutlined spin />}
@@ -95,49 +96,51 @@ export const BookDetails: React.FC<BookDetailsProps> = ({
           </Form.Item>
         )
       )}
-
-      <Form.Item
-        label="Genre"
-        name="genre"
-        rules={[{ required: true, message: "Please select a genre!" }]}
-      >
-        <Select placeholder="Select a genre">
-          {genres.map((genre) => (
-            <Option key={genre.id} value={genre.id}>
-              {genre.name}
-            </Option>
-          ))}
-        </Select>
-      </Form.Item>
-      {genreMessage && <FormAlert errorMsg={genreMessage} />}
-      <Form.Item
-        label="Number of Pages"
-        name="numberOfPages"
-        rules={[
-          {
-            required: true,
-            message: "Please enter the number of pages!",
-          },
-        ]}
-      >
-        <Input type="number" placeholder="Enter number of pages" />
-      </Form.Item>
-      {pagesMessage && <FormAlert errorMsg={pagesMessage} />}
-      <Form.Item
-        label="Description"
-        name="description"
-        rules={[{ required: true, message: "Please enter a description!" }]}
-      >
-        <Input.TextArea
-          placeholder="Enter book description"
-          rows={4}
-          showCount={{
-            formatter: ({ count }) => `${count}/${bookDescriptionLimit}`,
-          }}
-          maxLength={bookDescriptionLimit}
-        />
-      </Form.Item>
-      {descriptionMessage && <FormAlert errorMsg={descriptionMessage} />}
+      <ValidatedField errorMsg={genreMessage}>
+        <Form.Item
+          label="Genre"
+          name="genre"
+          rules={[{ required: true, message: "Please select a genre!" }]}
+        >
+          <Select placeholder="Select a genre">
+            {genres.map((genre) => (
+              <Option key={genre.id} value={genre.id}>
+                {genre.name}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
+      </ValidatedField>
+      <ValidatedField errorMsg={pagesMessage}>
+        <Form.Item
+          label="Number of Pages"
+          name="numberOfPages"
+          rules={[
+            {
+              required: true,
+              message: "Please enter the number of pages!",
+            },
+          ]}
+        >
+          <Input type="number" placeholder="Enter number of pages" />
+        </Form.Item>
+      </ValidatedField>
+      <ValidatedField errorMsg={descriptionMessage}>
+        <Form.Item
+          label="Description"
+          name="description"
+          rules={[{ required: true, message: "Please enter a description!" }]}
+        >
+          <Input.TextArea
+            placeholder="Enter book description"
+            rows={4}
+            showCount={{
+              formatter: ({ count }) => `${count}/${bookDescriptionLimit}`,
+            }}
+            maxLength={bookDescriptionLimit}
+          />
+        </Form.Item>
+      </ValidatedField>
     </>
   );
 };

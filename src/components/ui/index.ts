@@ -4,3 +4,4 @@ export * from "./Header";
 export * from "./NotFoundSwitch";
 export * from "./RotatingLogo";
 export * from "./TooltipNavButton";
+export * from "./ValidatedField";

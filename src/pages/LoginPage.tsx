@@ -7,15 +7,11 @@ import {
   useAuth,
   UserDto,
 } from "../components/Auth";
-import {
-  getValidationErrorMessage,
-  backendRequest,
-  setAuthToken,
-} from "../utils";
+import { backendRequest, setAuthToken } from "../utils";
 import { type FormFieldError } from "../types";
 import { useState } from "react";
-import { FormAlert } from "../components/ui/FormAlert/FormAlert";
 import { FormButton } from "../components/ui/FormButton";
+import { ValidatedField } from "../components";
 
 export const LoginPage = () => {
   const [form] = Form.useForm();
@@ -44,18 +40,10 @@ export const LoginPage = () => {
         });
       } else {
         setError({ message: "Something went wrong" });
-        setSubmitted(false);
       }
+      setSubmitted(false);
     }
   };
-
-  let emailMsg;
-  let passwordMsg;
-
-  if (error) {
-    emailMsg = getValidationErrorMessage(error, "email");
-    passwordMsg = getValidationErrorMessage(error, "password");
-  }
 
   return (
     <AuthForm
@@ -68,25 +56,33 @@ export const LoginPage = () => {
       error={error}
     >
       <Form form={form} onFinish={onFinish} layout="vertical">
-        <Form.Item
-          name="email"
-          label="Email"
-          rules={[
-            { required: true, message: "Please enter your email" },
-            { type: "email", message: "Invalid email address" },
-          ]}
+        <ValidatedField
+          errorMsg={error?.message.includes("email") ? "Wrong email" : null}
         >
-          <Input prefix={<MailOutlined />} placeholder="Email" />
-        </Form.Item>
-        {emailMsg && <FormAlert errorMsg="Wrong email" />}
-        <Form.Item
-          name="password"
-          label="Password"
-          rules={[{ required: true, message: "Please enter your password" }]}
+          <Form.Item
+            name="email"
+            label="Email"
+            rules={[
+              { required: true, message: "Please enter your email" },
+              { type: "email", message: "Invalid email address" },
+            ]}
+          >
+            <Input prefix={<MailOutlined />} placeholder="Email" />
+          </Form.Item>
+        </ValidatedField>
+        <ValidatedField
+          errorMsg={
+            error?.message.includes("password") ? "Wrong password" : null
+          }
         >
-          <Input.Password prefix={<LockOutlined />} placeholder="Password" />
-        </Form.Item>
-        {passwordMsg && <FormAlert errorMsg="Wrong password" />}
+          <Form.Item
+            name="password"
+            label="Password"
+            rules={[{ required: true, message: "Please enter your password" }]}
+          >
+            <Input.Password prefix={<LockOutlined />} placeholder="Password" />
+          </Form.Item>
+        </ValidatedField>
 
         <Form.Item>
           <FormButton submitted={submitted} block preSubmitText="Sign In" />

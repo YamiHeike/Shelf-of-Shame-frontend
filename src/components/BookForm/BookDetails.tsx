@@ -5,6 +5,7 @@ import { HttpState } from "../../types/HttpState";
 import { LoadingOutlined } from "@ant-design/icons";
 import defaultCover from "../../assets/default_cover.png";
 import { useFormValidationContext } from "./FormValidationContext";
+import { FormAlert } from "../ui/FormAlert/FormAlert";
 
 const { Option } = Select;
 
@@ -21,7 +22,22 @@ export const BookDetails: React.FC<BookDetailsProps> = ({
   onFetchCoverUrl,
   form,
 }) => {
-  const { bookDescriptionLimit } = useFormValidationContext();
+  const { bookDescriptionLimit, getFieldErrorMessage, errors } =
+    useFormValidationContext();
+
+  let titleMessage: string | null = null;
+  let isbnMessage: string | null = null;
+  let genreMessage: string | null = null;
+  let pagesMessage: string | null = null;
+  let descriptionMessage: string | null = null;
+
+  if (errors) {
+    titleMessage = getFieldErrorMessage("title");
+    isbnMessage = getFieldErrorMessage("isbn");
+    genreMessage = getFieldErrorMessage("genre");
+    pagesMessage = getFieldErrorMessage("numberOfPages");
+    descriptionMessage = getFieldErrorMessage("description");
+  }
 
   return (
     <>
@@ -32,7 +48,7 @@ export const BookDetails: React.FC<BookDetailsProps> = ({
       >
         <Input placeholder="Enter book title" />
       </Form.Item>
-
+      {titleMessage && <FormAlert errorMsg={titleMessage} />}
       <Form.Item
         label="ISBN-10"
         name="isbn"
@@ -59,7 +75,7 @@ export const BookDetails: React.FC<BookDetailsProps> = ({
           </Button>
         </FlexContainer>
       </Form.Item>
-
+      {isbnMessage && <FormAlert errorMsg={isbnMessage} />}
       {coverUrl.loading ? (
         <Spin
           indicator={<LoadingOutlined spin />}
@@ -93,7 +109,7 @@ export const BookDetails: React.FC<BookDetailsProps> = ({
           ))}
         </Select>
       </Form.Item>
-
+      {genreMessage && <FormAlert errorMsg={genreMessage} />}
       <Form.Item
         label="Number of Pages"
         name="numberOfPages"
@@ -106,6 +122,7 @@ export const BookDetails: React.FC<BookDetailsProps> = ({
       >
         <Input type="number" placeholder="Enter number of pages" />
       </Form.Item>
+      {pagesMessage && <FormAlert errorMsg={pagesMessage} />}
       <Form.Item
         label="Description"
         name="description"
@@ -120,6 +137,7 @@ export const BookDetails: React.FC<BookDetailsProps> = ({
           maxLength={bookDescriptionLimit}
         />
       </Form.Item>
+      {descriptionMessage && <FormAlert errorMsg={descriptionMessage} />}
     </>
   );
 };

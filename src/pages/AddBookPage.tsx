@@ -76,7 +76,7 @@ export const AddBookPage = () => {
               }}
             >
               <Header level={3} text="Add Book to Your Shelf" />
-              {isBookNotFound ? (
+              {isBookNotFound || bookList.length === 0 ? (
                 <AddBookForm
                   authors={authorList}
                   genres={genresList}

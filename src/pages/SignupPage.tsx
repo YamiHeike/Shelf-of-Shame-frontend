@@ -9,8 +9,8 @@ import {
 } from "../utils";
 import { type FormFieldError } from "../types";
 import { useState } from "react";
-import { FormAlert } from "../components/ui/FormAlert/FormAlert";
 import { FormButton } from "../components/ui/FormButton";
+import { ValidatedField } from "../components";
 
 export const SignupPage = () => {
   const [form] = Form.useForm();
@@ -69,33 +69,36 @@ export const SignupPage = () => {
       error={error}
     >
       <Form form={form} onFinish={onFinish} layout="vertical">
-        <Form.Item
-          name="username"
-          label="Username"
-          rules={[{ required: true, message: "Please enter your username" }]}
-        >
-          <Input prefix={<UserOutlined />} placeholder="Username" />
-        </Form.Item>
-        {usernameMsg && <FormAlert errorMsg={usernameMsg} />}
-        <Form.Item
-          name="email"
-          label="Email"
-          rules={[
-            { required: true, message: "Please enter your email" },
-            { type: "email", message: "Invalid email address" },
-          ]}
-        >
-          <Input prefix={<MailOutlined />} placeholder="Email" />
-        </Form.Item>
-        {emailMsg && <FormAlert errorMsg={emailMsg} />}
-        <Form.Item
-          name="password"
-          label="Password"
-          rules={[{ required: true, message: "Please enter your password" }]}
-        >
-          <Input.Password prefix={<LockOutlined />} placeholder="Password" />
-        </Form.Item>
-        {passwordMsg && <FormAlert errorMsg={passwordMsg} />}
+        <ValidatedField errorMsg={usernameMsg}>
+          <Form.Item
+            name="username"
+            label="Username"
+            rules={[{ required: true, message: "Please enter your username" }]}
+          >
+            <Input prefix={<UserOutlined />} placeholder="Username" />
+          </Form.Item>
+        </ValidatedField>
+        <ValidatedField errorMsg={emailMsg}>
+          <Form.Item
+            name="email"
+            label="Email"
+            rules={[
+              { required: true, message: "Please enter your email" },
+              { type: "email", message: "Invalid email address" },
+            ]}
+          >
+            <Input prefix={<MailOutlined />} placeholder="Email" />
+          </Form.Item>
+        </ValidatedField>
+        <ValidatedField errorMsg={passwordMsg}>
+          <Form.Item
+            name="password"
+            label="Password"
+            rules={[{ required: true, message: "Please enter your password" }]}
+          >
+            <Input.Password prefix={<LockOutlined />} placeholder="Password" />
+          </Form.Item>
+        </ValidatedField>
         <Form.Item
           name="confirmPassword"
           label="Confirm Password"

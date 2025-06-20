@@ -1,7 +1,13 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState } from "react";
+import { FormFieldError } from "../../types";
+import { getValidationErrorMessage } from "../../utils";
 
 type FormValidationContextType = {
   bookDescriptionLimit: number;
+  errors: FormFieldError | null;
+  sendErrors: (errorObj: FormFieldError) => void;
+  clearErrors: () => void;
+  getFieldErrorMessage: (fieldName: string) => string | null;
 };
 
 const FormValidationContext = createContext<
@@ -15,8 +21,27 @@ type FormValidationContextProviderProps = {
 export const FormValidationContextProvider = ({
   children,
 }: FormValidationContextProviderProps) => {
+  const [errors, setErrors] = useState<FormFieldError | null>(null);
+
+  const sendErrors = (errorObj: FormFieldError): void => {
+    setErrors(errorObj);
+  };
+
+  const clearErrors = (): void => {
+    setErrors(null);
+  };
+
+  const getFieldError = (fieldName: string) => {
+    if (!errors) return null;
+    return getValidationErrorMessage(errors, fieldName);
+  };
+
   const defaultValues: FormValidationContextType = {
     bookDescriptionLimit: 1500,
+    errors,
+    sendErrors,
+    clearErrors,
+    getFieldErrorMessage: getFieldError,
   };
 
   return (

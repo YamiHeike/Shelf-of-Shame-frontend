@@ -4,7 +4,6 @@ import {
   Author,
   Book,
   CreateAuthorDto,
-  FormFieldError,
   Genre,
   UserShelfItemDto,
 } from "../../types";
@@ -15,6 +14,7 @@ import { BookDetails } from "./BookDetails";
 import { backendRequest, fetchCoverUrl } from "../../utils";
 import { HttpState } from "../../types/HttpState";
 import { FormButton } from "../ui/FormButton";
+import { useFormValidationContext } from "./FormValidationContext";
 
 interface AddBookFormProps {
   authors: Author[];
@@ -32,8 +32,13 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
   const [form] = Form.useForm<UserShelfItemDto>();
   const [submitted, setSubmitted] = useState(false);
   const [isAuthorNotFound, setIsAuthorNotFound] = useState(false);
-  const [error, setError] = useState<FormFieldError | null>(null);
   const [messageApi, contextHolder] = message.useMessage();
+  const {
+    // errors,
+    // getFieldErrorMessage,
+    clearErrors,
+    sendErrors,
+  } = useFormValidationContext();
 
   const [coverUrl, setCoverUrl] = useState<HttpState<string>>({
     loading: false,
@@ -43,6 +48,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
 
   const handleFinish = async (values: any) => {
     setSubmitted(true);
+    clearErrors();
     let addAuthorResponse;
 
     if (isAuthorNotFound) {
@@ -103,11 +109,19 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
       });
       setSubmitted(false);
       messageApi.success("Book added successfully!");
-    } catch (error) {
+    } catch (e: any) {
+      if (e.response) {
+        sendErrors({
+          message: e.response.data?.message || "Something went wrong",
+          errors: e.response.data?.errors || undefined,
+        });
+      }
       messageApi.error("An error occurred. Please try again.");
       setSubmitted(false);
     }
   };
+
+  // TODO: consider moving down
 
   const handlePreview = async (isbn: string) => {
     if (!isbn || isbn.length !== 10) {
@@ -135,6 +149,8 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
     }
   };
 
+  // TODO: validation errors and Form Item naming
+
   return (
     <>
       {contextHolder}
@@ -161,7 +177,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
             </FlexContainer>
             <AuthorSelection
               authors={authors}
-              isAuthorNotFound={isAuthorNotFound}
+              isAuthorNotFound={isAuthorNotFound || authors.length === 0}
               onToggleAuthorNotFound={setIsAuthorNotFound}
             />
           </Col>

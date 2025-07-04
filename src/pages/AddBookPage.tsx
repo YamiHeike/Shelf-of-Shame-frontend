@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   FooterText,
   Header,
@@ -12,7 +12,6 @@ import { useLibraryData } from "../hooks";
 
 export const AddBookPage = () => {
   const [isBookNotFound, setIsBookNotFound] = useState(false);
-  const [isInitial, setIsInitial] = useState(true);
   const { authors, books, genres } = useLibraryData();
 
   const {
@@ -27,24 +26,21 @@ export const AddBookPage = () => {
     error: genresError,
   } = genres;
 
-  useEffect(() => {
-    setIsInitial(false);
-  }, []);
-
   const handleToggle = () => {
     setIsBookNotFound((prev) => !prev);
   };
 
-  // TODO: handle no genres after fetch, you can return NoData component
+  const isLoading = authorLoading || bookLoading || genresLoading;
+  const isError = authorError || bookError || genresError;
 
   // TODO: Loader component
-  if (authorLoading || bookLoading || genresLoading) {
+  if (isLoading) {
     return <p>Loading...</p>;
   }
 
   // TODO: Error component
 
-  if (authorError || bookError || genresError) {
+  if (isError) {
     return (
       <>
         {authorError && <p>{authorError}</p>}
@@ -54,7 +50,7 @@ export const AddBookPage = () => {
     );
   }
 
-  if (!isInitial && genresList.length === 0) {
+  if (!genresLoading && genresList.length === 0) {
     return (
       <>
         <Header level={3} text="Adding Books Unavailable" />

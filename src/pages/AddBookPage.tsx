@@ -11,9 +11,11 @@ import { fetchAuthors } from "../store/authorThunks";
 import { FormValidationContextProvider } from "../components/BookForm/FormValidationContext";
 import { fetchBooks } from "../store/bookThunks";
 import { fetchGenres } from "../store/genreThunk";
+import { Typography } from "antd";
 
 export const AddBookPage = () => {
   const [isBookNotFound, setIsBookNotFound] = useState(false);
+  const [isInitial, setIsInitial] = useState(true);
   const dispatch = useAppDispatch();
   const {
     list: authorList,
@@ -36,12 +38,14 @@ export const AddBookPage = () => {
     setIsBookNotFound((prev) => !prev);
   };
 
+  // TODO: handle no genres after fetch, you can return NoData component
   useEffect(() => {
     dispatch(fetchAuthors());
     dispatch(fetchBooks());
 
     if (!genresList || genresList.length === 0) {
       dispatch(fetchGenres());
+      setIsInitial(false);
     }
   }, [dispatch]);
 
@@ -58,6 +62,17 @@ export const AddBookPage = () => {
         {authorError && <p>{authorError}</p>}
         {bookError && <p>{bookError}</p>}
         {genresError && <p>{genresError}</p>}
+      </>
+    );
+  }
+
+  if (!isInitial && genresList.length === 0) {
+    return (
+      <>
+        <Header level={3} text="Adding Books Unavailable" />
+        <Typography.Paragraph>
+          Functionality currently unavailable, try again later
+        </Typography.Paragraph>
       </>
     );
   }

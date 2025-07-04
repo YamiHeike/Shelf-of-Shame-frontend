@@ -6,48 +6,36 @@ import {
   AddExistingBookForm,
 } from "../components";
 import { AuthPage } from "./AuthPage";
-import { useAppDispatch, useAppSelector } from "../hooks/redux_utils";
-import { fetchAuthors } from "../store/authorThunks";
 import { FormValidationContextProvider } from "../components/BookForm/FormValidationContext";
-import { fetchBooks } from "../store/bookThunks";
-import { fetchGenres } from "../store/genreThunk";
 import { Typography } from "antd";
+import { useLibraryData } from "../hooks";
 
 export const AddBookPage = () => {
   const [isBookNotFound, setIsBookNotFound] = useState(false);
   const [isInitial, setIsInitial] = useState(true);
-  const dispatch = useAppDispatch();
+  const { authors, books, genres } = useLibraryData();
+
   const {
     list: authorList,
     loading: authorLoading,
     error: authorError,
-  } = useAppSelector((state) => state.authors);
-  const {
-    list: bookList,
-    loading: bookLoading,
-    error: bookError,
-  } = useAppSelector((state) => state.books);
-
+  } = authors;
+  const { list: bookList, loading: bookLoading, error: bookError } = books;
   const {
     list: genresList,
     loading: genresLoading,
     error: genresError,
-  } = useAppSelector((state) => state.genres);
+  } = genres;
+
+  useEffect(() => {
+    setIsInitial(false);
+  }, []);
 
   const handleToggle = () => {
     setIsBookNotFound((prev) => !prev);
   };
 
   // TODO: handle no genres after fetch, you can return NoData component
-  useEffect(() => {
-    dispatch(fetchAuthors());
-    dispatch(fetchBooks());
-
-    if (!genresList || genresList.length === 0) {
-      dispatch(fetchGenres());
-      setIsInitial(false);
-    }
-  }, [dispatch]);
 
   // TODO: Loader component
   if (authorLoading || bookLoading || genresLoading) {

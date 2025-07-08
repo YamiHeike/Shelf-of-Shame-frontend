@@ -1,3 +1,4 @@
+export * from "./FeatureUnavailable";
 export * from "./FlexContainer";
 export * from "./FooterText";
 export * from "./Header";

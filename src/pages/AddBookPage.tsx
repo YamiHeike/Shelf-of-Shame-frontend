@@ -1,4 +1,4 @@
-import { Header, BookFormPanel } from "../components";
+import { Header, BookFormPanel, FeatureUnavailableNotice } from "../components";
 import { AuthPage } from "./AuthPage";
 import { FormValidationContextProvider } from "../components/BookForm/FormValidationContext";
 import { Typography } from "antd";
@@ -35,6 +35,13 @@ export const AddBookPage = () => {
         {genresError && <p>{genresError}</p>}
       </>
     );
+  } else if (!genresLoading && genresList.length === 0) {
+    content = (
+      <FeatureUnavailableNotice
+        title="Adding Books Unavailable"
+        message="Functionality currently unavailable, try again later"
+      />
+    );
   } else {
     content = (
       <BookFormPanel
@@ -42,18 +49,6 @@ export const AddBookPage = () => {
         bookList={bookList}
         genresList={genresList}
       />
-    );
-  }
-
-  // TODO: move into separate component
-  if (!genresLoading && genresList.length === 0) {
-    content = (
-      <>
-        <Header level={3} text="Adding Books Unavailable" />
-        <Typography.Paragraph>
-          Functionality currently unavailable, try again later
-        </Typography.Paragraph>
-      </>
     );
   }
 

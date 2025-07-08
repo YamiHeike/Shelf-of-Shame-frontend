@@ -1,6 +1,6 @@
 import { Form, Input, Select, Button, FormInstance, Spin } from "antd";
 import { Genre } from "../../types";
-import { FlexContainer, ValidatedField } from "../ui";
+import { FlexContainer, ValidatedField } from "../../ui";
 import { HttpState } from "../../types/HttpState";
 import { LoadingOutlined } from "@ant-design/icons";
 import defaultCover from "../../assets/default_cover.png";

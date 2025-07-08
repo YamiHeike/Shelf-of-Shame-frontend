@@ -1,5 +1,5 @@
 import { Typography, Col, Grid } from "antd";
-import { Header } from "../ui";
+import { Header } from "../../ui";
 
 type GreeterProps = {
   username: string;

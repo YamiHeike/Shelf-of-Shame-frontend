@@ -10,7 +10,7 @@ import {
 import { backendRequest, setAuthToken } from "../utils";
 import { type FormFieldError } from "../types";
 import { useState } from "react";
-import { FormButton } from "../components/ui/FormButton";
+import { FormButton } from "../ui/FormButton";
 import { ValidatedField } from "../components";
 
 export const LoginPage = () => {

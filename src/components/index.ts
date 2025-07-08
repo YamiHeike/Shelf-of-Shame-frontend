@@ -3,4 +3,4 @@ export * from "./BookForm";
 export * from "./FeatureCard";
 export * from "./Homepage";
 export * from "./Layout";
-export * from "./ui";
+export * from "../ui";

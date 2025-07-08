@@ -7,15 +7,15 @@ import {
   Genre,
   UserShelfItemDto,
 } from "../../types";
-import { FlexContainer, NotFoundSwitch } from "../ui";
+import { FlexContainer, NotFoundSwitch } from "../../ui";
 import { BookMetadata } from "./BookMetadata";
 import { AuthorSelection } from "./AuthorSelection";
 import { BookDetails } from "./BookDetails";
 import { backendRequest, fetchCoverUrl } from "../../utils";
 import { HttpState } from "../../types/HttpState";
-import { FormButton } from "../ui/FormButton";
+import { FormButton } from "../../ui/FormButton";
 import { useFormValidationContext } from "./FormValidationContext";
-import { NoData } from "../ui/NoData";
+import { NoData } from "../../ui/NoData";
 
 interface AddBookFormProps {
   authors: Author[];

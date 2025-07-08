@@ -7,7 +7,7 @@ import { Greeter } from "./Greeter";
 import { ButtonGroup } from "./ButtonGroup";
 import { CurrentlyReading } from "./CurrentlyReading";
 import { StatisticsOverview } from "./StatisticsOverwiev";
-import { FooterText } from "../ui";
+import { FooterText } from "../../ui";
 import { BookOutline } from "../../types";
 
 const { Content } = Layout;

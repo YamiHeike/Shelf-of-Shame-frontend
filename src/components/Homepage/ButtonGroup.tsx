@@ -6,7 +6,7 @@ import {
   BulbOutlined,
 } from "@ant-design/icons";
 import { routes } from "../../routes";
-import { TooltipNavButton } from "../ui";
+import { TooltipNavButton } from "../../ui";
 
 export const ButtonGroup = () => {
   return (

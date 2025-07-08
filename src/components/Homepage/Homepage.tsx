@@ -1,7 +1,7 @@
 import { appFeatures } from "./appFeatures";
 import { Row } from "antd";
 import Title from "antd/es/typography/Title";
-import { PageTitle } from "../ui/Header";
+import { PageTitle } from "../../ui/Header";
 import { FeatureCard } from "../FeatureCard";
 
 export const Homepage = () => {

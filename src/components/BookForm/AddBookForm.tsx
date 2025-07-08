@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, message, Row, Col, Typography, Flex } from "antd";
+import { Form, message, Row, Col } from "antd";
 import {
   Author,
   Book,
@@ -15,7 +15,6 @@ import { backendRequest, fetchCoverUrl } from "../../utils";
 import { HttpState } from "../../types/HttpState";
 import { FormButton } from "../../ui/FormButton";
 import { useFormValidationContext } from "./FormValidationContext";
-import { NoData } from "../../ui/NoData";
 
 interface AddBookFormProps {
   authors: Author[];
@@ -34,12 +33,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
   const [submitted, setSubmitted] = useState(false);
   const [isAuthorNotFound, setIsAuthorNotFound] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
-  const {
-    // errors,
-    // getFieldErrorMessage,
-    clearErrors,
-    sendErrors,
-  } = useFormValidationContext();
+  const { clearErrors, sendErrors } = useFormValidationContext();
 
   const [coverUrl, setCoverUrl] = useState<HttpState<string>>({
     loading: false,

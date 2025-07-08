@@ -1,7 +1,6 @@
-import { Header, BookFormPanel, FeatureUnavailableNotice } from "../components";
+import { BookFormPanel, FeatureUnavailableNotice } from "../components";
 import { AuthPage } from "./AuthPage";
 import { FormValidationContextProvider } from "../components/BookForm/FormValidationContext";
-import { Typography } from "antd";
 import { useLibraryData } from "../hooks";
 
 export const AddBookPage = () => {

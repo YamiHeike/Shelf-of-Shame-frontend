@@ -1,0 +1,21 @@
+@use "../../mixins.module.scss" as *;
+
+.loadingContainer {
+  @include center-content(column);
+  gap: 1rem;
+  padding: 2rem;
+  text-align: center;
+  min-height: 200px;
+}
+
+.fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.message {
+  font-size: 1rem;
+  color: #555;
+}

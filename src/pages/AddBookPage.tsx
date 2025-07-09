@@ -2,6 +2,7 @@ import { BookFormPanel, FeatureUnavailableNotice } from "../components";
 import { AuthPage } from "./AuthPage";
 import { FormValidationContextProvider } from "../components/BookForm/FormValidationContext";
 import { useLibraryData } from "../hooks";
+import { Loading } from "../ui/Loading";
 
 export const AddBookPage = () => {
   const { authors, books, genres } = useLibraryData();
@@ -25,7 +26,7 @@ export const AddBookPage = () => {
 
   // TODO: Loader & Error component
   if (isLoading) {
-    content = <p>Loading...</p>;
+    content = <Loading fullscreen />;
   } else if (isError) {
     content = (
       <>

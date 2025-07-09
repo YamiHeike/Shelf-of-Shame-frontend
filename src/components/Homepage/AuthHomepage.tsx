@@ -25,7 +25,7 @@ export const AuthHomepage = () => {
   const currentlyReading: BookOutline[] = [
     {
       title: "The Name of the Wind",
-      author: [
+      authors: [
         {
           id: 1,
           firstName: "Patrick",
@@ -36,7 +36,7 @@ export const AuthHomepage = () => {
     },
     {
       title: "Dune",
-      author: [
+      authors: [
         {
           id: 2,
           firstName: "Frank",

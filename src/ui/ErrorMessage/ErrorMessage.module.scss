@@ -1,5 +1,4 @@
 @use "../../mixins.module.scss" as mixins;
-@use "../../variables.module.scss" as vars;
 
 .container {
   @include mixins.center-content();
@@ -7,5 +6,5 @@
 }
 
 .fullscreen {
-  height: calc(100dvh - 65px);
+  @include mixins.outlet();
 }

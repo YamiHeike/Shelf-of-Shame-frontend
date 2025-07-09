@@ -2,8 +2,8 @@
 
 .hero {
   @include mixins.center-content();
+  @include mixins.outlet();
   width: 100%;
   background: linear-gradient(135deg, #383677, #a61b40);
   background-size: cover;
-  min-height: calc(100dvh - 65px);
 }

@@ -28,7 +28,6 @@ export const AddBookPage = () => {
 
   let content: React.ReactNode;
 
-  // TODO: Loader & Error component
   if (isLoading) {
     content = <Loading fullscreen />;
   } else if (isError) {
@@ -53,11 +52,7 @@ export const AddBookPage = () => {
   return (
     <FormValidationContextProvider>
       <AuthPage
-        Page={
-          <div style={{ padding: isLoading || isError ? 0 : "24px" }}>
-            {content}
-          </div>
-        }
+        Page={<div style={{ padding: isError ? 0 : "24px" }}>{content}</div>}
       />
     </FormValidationContextProvider>
   );

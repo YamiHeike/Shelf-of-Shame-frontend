@@ -1,4 +1,8 @@
-import { BookFormPanel, FeatureUnavailableNotice } from "../components";
+import {
+  BookFormPanel,
+  ErrorMessage,
+  FeatureUnavailableNotice,
+} from "../components";
 import { AuthPage } from "./AuthPage";
 import { FormValidationContextProvider } from "../components/BookForm/FormValidationContext";
 import { useLibraryData } from "../hooks";
@@ -28,13 +32,7 @@ export const AddBookPage = () => {
   if (isLoading) {
     content = <Loading fullscreen />;
   } else if (isError) {
-    content = (
-      <>
-        {authorError && <p>{authorError}</p>}
-        {bookError && <p>{bookError}</p>}
-        {genresError && <p>{genresError}</p>}
-      </>
-    );
+    content = <ErrorMessage fullscreen />;
   } else if (!genresLoading && genresList.length === 0) {
     content = (
       <FeatureUnavailableNotice
@@ -54,7 +52,13 @@ export const AddBookPage = () => {
 
   return (
     <FormValidationContextProvider>
-      <AuthPage Page={<div style={{ padding: "24px" }}>{content}</div>} />
+      <AuthPage
+        Page={
+          <div style={{ padding: isLoading || isError ? 0 : "24px" }}>
+            {content}
+          </div>
+        }
+      />
     </FormValidationContextProvider>
   );
 };

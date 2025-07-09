@@ -1,3 +1,4 @@
+export * from "./ErrorMessage";
 export * from "./FeatureUnavailable";
 export * from "./FlexContainer";
 export * from "./FooterText";

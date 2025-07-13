@@ -11,10 +11,10 @@ import { FlexContainer, NotFoundSwitch } from "../../ui";
 import { BookMetadata } from "./BookMetadata";
 import { AuthorSelection } from "./AuthorSelection";
 import { BookDetails } from "./BookDetails";
-import { backendRequest, fetchCoverUrl } from "../../utils";
-import { HttpState } from "../../types/HttpState";
+import { backendRequest } from "../../utils";
 import { FormButton } from "../../ui/FormButton";
 import { useFormValidationContext } from "./FormValidationContext";
+import { useCoverPreviewContext } from "./CoverPreviewContext";
 
 interface AddBookFormProps {
   authors: Author[];
@@ -35,11 +35,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
   const [messageApi, contextHolder] = message.useMessage();
   const { clearErrors, sendErrors } = useFormValidationContext();
 
-  const [coverUrl, setCoverUrl] = useState<HttpState<string>>({
-    loading: false,
-    data: null,
-    error: false,
-  });
+  const { resetPreview } = useCoverPreviewContext();
 
   const handleFinish = async (values: any) => {
     setSubmitted(true);
@@ -97,11 +93,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
       );
 
       form.resetFields();
-      setCoverUrl({
-        loading: false,
-        data: null,
-        error: false,
-      });
+      resetPreview();
       setSubmitted(false);
       messageApi.success("Book added successfully!");
     } catch (e: any) {
@@ -116,46 +108,13 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
     }
   };
 
-  // TODO: consider moving down - submitted = true might be used to control the reset of cover url
-
-  const handlePreview = async (isbn: string) => {
-    if (!isbn || isbn.length !== 10) {
-      messageApi.warning("Enter a ISBN-10 first");
-      return;
-    }
-    setCoverUrl({
-      loading: true,
-      data: null,
-      error: false,
-    });
-    const url = await fetchCoverUrl(isbn);
-    if (url) {
-      setCoverUrl({
-        loading: false,
-        data: url,
-        error: false,
-      });
-    } else {
-      setCoverUrl({
-        loading: false,
-        data: null,
-        error: true,
-      });
-    }
-  };
-
   return (
     <>
       {contextHolder}
       <Form form={form} onFinish={handleFinish} layout="vertical">
         <Row gutter={[24, 16]}>
           <Col xs={24} md={12}>
-            <BookDetails
-              genres={genres}
-              coverUrl={coverUrl}
-              form={form}
-              onFetchCoverUrl={(isbn) => handlePreview(isbn)}
-            />
+            <BookDetails genres={genres} form={form} />
             <FlexContainer>
               <NotFoundSwitch
                 label="Didn't find your book?"

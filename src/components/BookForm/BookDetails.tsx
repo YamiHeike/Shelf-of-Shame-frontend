@@ -1,28 +1,21 @@
 import { Form, Input, Select, Button, FormInstance, Spin } from "antd";
 import { Genre } from "../../types";
 import { FlexContainer, ValidatedField } from "../../ui";
-import { HttpState } from "../../types/HttpState";
-import { LoadingOutlined } from "@ant-design/icons";
 import { useFormValidationContext } from "./FormValidationContext";
-import { CoverDisplay } from "./CoverDisplay";
+import { CoverDisplayManager } from "./CoverDisplayManager";
+import { useCoverPreviewContext } from "./CoverPreviewContext";
 
 const { Option } = Select;
 
 interface BookDetailsProps {
   genres: Genre[];
-  coverUrl: HttpState<string>;
-  onFetchCoverUrl: (isbn: string) => void;
   form: FormInstance<any>;
 }
 
-export const BookDetails: React.FC<BookDetailsProps> = ({
-  genres,
-  coverUrl,
-  onFetchCoverUrl,
-  form,
-}) => {
+export const BookDetails: React.FC<BookDetailsProps> = ({ genres, form }) => {
   const { bookDescriptionLimit, getFieldErrorMessage, errors } =
     useFormValidationContext();
+  const { getPreview } = useCoverPreviewContext();
 
   let titleMessage: string | null = null;
   let isbnMessage: string | null = null;
@@ -70,23 +63,14 @@ export const BookDetails: React.FC<BookDetailsProps> = ({
             />
             <Button
               type="dashed"
-              onClick={() => onFetchCoverUrl(form.getFieldValue("isbn"))}
+              onClick={() => getPreview(form.getFieldValue("isbn"))}
             >
               Cover preview
             </Button>
           </FlexContainer>
         </Form.Item>
       </ValidatedField>
-      {coverUrl.loading ? (
-        <Spin
-          indicator={<LoadingOutlined spin />}
-          style={{
-            marginBottom: "10px",
-          }}
-        />
-      ) : (
-        coverUrl.data && <CoverDisplay coverUrl={coverUrl.data} />
-      )}
+      <CoverDisplayManager />
       <ValidatedField errorMsg={genreMessage}>
         <Form.Item
           label="Genre"

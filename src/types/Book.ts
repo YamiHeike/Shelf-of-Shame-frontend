@@ -2,17 +2,18 @@ import { Author } from "./Author";
 
 export type BookOutline = {
   title: string;
-  author: Author[];
+  authors: Author[];
   numberOfPages: number;
 };
 
 export interface Book extends BookOutline {
   isbn: string;
   description: string;
+  genres: number[];
 }
 
 export type Genre = {
-  id: string;
+  id: number;
   name: string;
 };
 

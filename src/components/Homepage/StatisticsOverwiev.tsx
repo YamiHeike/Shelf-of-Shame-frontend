@@ -1,6 +1,7 @@
 import { Typography, Layout, Button, Statistic } from "antd";
 import { routes } from "../../routes";
 import { Link } from "react-router-dom";
+import { SpringButton } from "../../ui";
 
 type StatisticsOverviewProps = {
   booksFinished: number;
@@ -33,9 +34,11 @@ export const StatisticsOverview = ({
           marginTop: "1em",
         }}
       >
-        <Link to={routes.STATS.path}>
-          <Button type="primary">More</Button>
-        </Link>
+        <SpringButton>
+          <Link to={routes.STATS.path}>
+            <Button type="primary">More</Button>
+          </Link>
+        </SpringButton>
       </div>
     </Sider>
   );

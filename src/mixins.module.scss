@@ -1,5 +1,12 @@
-@mixin center-content {
+@use "./variables.module.scss" as vars;
+
+@mixin center-content($direction: row) {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: $direction;
+}
+
+@mixin outlet {
+  min-height: calc(100dvh - #{vars.$navHeight});
 }

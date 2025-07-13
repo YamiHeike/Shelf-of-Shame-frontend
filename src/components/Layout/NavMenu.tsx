@@ -3,7 +3,7 @@ import { routes } from "../../routes";
 import { NavLink } from "react-router-dom";
 import { RadarChartOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { RotatingLogo } from "../ui/RotatingLogo";
+import { RotatingLogo } from "../../ui/RotatingLogo";
 import { useAuth } from "../Auth";
 
 export const NavMenu = () => {

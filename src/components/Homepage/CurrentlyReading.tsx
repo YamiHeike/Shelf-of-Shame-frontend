@@ -19,11 +19,11 @@ export const CurrentlyReading = ({
           <List.Item>
             <BookOutlined style={{ marginRight: 8, color: "#1890ff" }} />
             {book.title} by{" "}
-            {book.author.length < 2
-              ? `${book.author[0].firstName} ${book.author[0].lastName}`
-              : book.author.map((author) => {
+            {book.authors.length < 2
+              ? `${book.authors[0].firstName} ${book.authors[0].lastName}`
+              : book.authors.map((author) => {
                   const authorName = `${author.firstName} ${author.lastName}`;
-                  return author === book.author[book.author.length - 1]
+                  return author === book.authors[book.authors.length - 1]
                     ? authorName
                     : `${authorName} ,`;
                 })}

@@ -7,13 +7,14 @@ import {
   Genre,
   UserShelfItemDto,
 } from "../../types";
-import { FlexContainer, NotFoundSwitch } from "../ui";
+import { FlexContainer, NotFoundSwitch } from "../../ui";
 import { BookMetadata } from "./BookMetadata";
 import { AuthorSelection } from "./AuthorSelection";
 import { BookDetails } from "./BookDetails";
-import { backendRequest, fetchCoverUrl } from "../../utils";
-import { HttpState } from "../../types/HttpState";
-import { FormButton } from "../ui/FormButton";
+import { backendRequest } from "../../utils";
+import { FormButton } from "../../ui/FormButton";
+import { useFormValidationContext } from "./FormValidationContext";
+import { useCoverPreviewContext } from "./CoverPreviewContext";
 
 interface AddBookFormProps {
   authors: Author[];
@@ -32,14 +33,13 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
   const [submitted, setSubmitted] = useState(false);
   const [isAuthorNotFound, setIsAuthorNotFound] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
-  const [coverUrl, setCoverUrl] = useState<HttpState<string>>({
-    loading: false,
-    data: null,
-    error: false,
-  });
+  const { clearErrors, sendErrors } = useFormValidationContext();
+
+  const { resetPreview } = useCoverPreviewContext();
 
   const handleFinish = async (values: any) => {
     setSubmitted(true);
+    clearErrors();
     let addAuthorResponse;
 
     if (isAuthorNotFound) {
@@ -56,7 +56,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
     try {
       const book: Book = {
         title: values.title,
-        author: isAuthorNotFound
+        authors: isAuthorNotFound
           ? [
               addAuthorResponse?.data ?? {
                 id: -1,
@@ -68,7 +68,14 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
         numberOfPages: values.numberOfPages,
         isbn: values.isbn,
         description: values.description,
+        genres: [parseInt(values.genre)],
       };
+
+      await backendRequest<Book, Book>(
+        "POST",
+        "http://localhost:8080/books/new",
+        book
+      );
 
       const bookDto: UserShelfItemDto = {
         book,
@@ -86,42 +93,18 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
       );
 
       form.resetFields();
-      setCoverUrl({
-        loading: false,
-        data: null,
-        error: false,
-      });
+      resetPreview();
       setSubmitted(false);
       messageApi.success("Book added successfully!");
-    } catch (error) {
+    } catch (e: any) {
+      if (e.response) {
+        sendErrors({
+          message: e.response.data?.message || "Something went wrong",
+          errors: e.response.data?.errors || undefined,
+        });
+      }
       messageApi.error("An error occurred. Please try again.");
       setSubmitted(false);
-    }
-  };
-
-  const handlePreview = async (isbn: string) => {
-    if (!isbn || isbn.length !== 10) {
-      messageApi.warning("Enter a ISBN-10 first");
-      return;
-    }
-    setCoverUrl({
-      loading: true,
-      data: null,
-      error: false,
-    });
-    const url = await fetchCoverUrl(isbn);
-    if (url) {
-      setCoverUrl({
-        loading: false,
-        data: url,
-        error: false,
-      });
-    } else {
-      setCoverUrl({
-        loading: false,
-        data: null,
-        error: true,
-      });
     }
   };
 
@@ -131,17 +114,15 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
       <Form form={form} onFinish={handleFinish} layout="vertical">
         <Row gutter={[24, 16]}>
           <Col xs={24} md={12}>
-            <BookDetails
-              genres={genres}
-              coverUrl={coverUrl}
-              form={form}
-              onFetchCoverUrl={(isbn) => handlePreview(isbn)}
-            />
+            <BookDetails genres={genres} form={form} />
             <FlexContainer>
               <NotFoundSwitch
                 label="Didn't find your book?"
                 value={isBookNotFound}
-                onToggle={onToggle}
+                onToggle={() => {
+                  onToggle();
+                  clearErrors();
+                }}
               />
               <NotFoundSwitch
                 label="Author not found?"
@@ -151,7 +132,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
             </FlexContainer>
             <AuthorSelection
               authors={authors}
-              isAuthorNotFound={isAuthorNotFound}
+              isAuthorNotFound={isAuthorNotFound || authors.length === 0}
               onToggleAuthorNotFound={setIsAuthorNotFound}
             />
           </Col>

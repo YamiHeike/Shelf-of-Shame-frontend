@@ -1,127 +1,59 @@
-import { useEffect, useState } from "react";
 import {
-  FooterText,
-  Header,
-  AddBookForm,
-  AddExistingBookForm,
+  BookFormPanel,
+  ErrorMessage,
+  FeatureUnavailableNotice,
 } from "../components";
-import { Author, Book, Genre } from "../types";
 import { AuthPage } from "./AuthPage";
-import { getAuthors } from "../utils";
-import { HttpState } from "../types/HttpState";
-
-const genres: Genre[] = [
-  { id: "1", name: "Fiction" },
-  { id: "2", name: "Non-Fiction" },
-  { id: "3", name: "Science Fiction" },
-];
-
-const books: Book[] = [
-  {
-    title: "War and Peace",
-    author: [{ id: 1, firstName: "Leo", lastName: "Tolstoy" }],
-    numberOfPages: 1225,
-    isbn: "0199232765",
-    description:
-      "A historical novel that intertwines the lives of five aristocratic families during the Napoleonic Wars.",
-  },
-  {
-    title: "1984",
-    author: [{ id: 2, firstName: "George", lastName: "Orwell" }],
-    numberOfPages: 328,
-    isbn: "0451524935",
-    description:
-      "A dystopian social science fiction novel and cautionary tale about the dangers of totalitarianism.",
-  },
-  {
-    title: "Pride and Prejudice",
-    author: [{ id: 3, firstName: "Jane", lastName: "Austen" }],
-    numberOfPages: 279,
-    isbn: "1503290563",
-    description:
-      "A romantic novel that critiques the British landed gentry at the end of the 18th century.",
-  },
-  {
-    title: "Moby-Dick",
-    author: [{ id: 4, firstName: "Herman", lastName: "Melville" }],
-    numberOfPages: 635,
-    isbn: "0142437247",
-    description:
-      "A narrative of Captain Ahab's obsessive quest to avenge the giant white whale that bit off his leg.",
-  },
-];
+import { FormValidationContextProvider } from "../components/BookForm/FormValidationContext";
+import { useLibraryData } from "../hooks";
+import { Loading } from "../ui/Loading";
 
 export const AddBookPage = () => {
-  const [isBookNotFound, setIsBookNotFound] = useState(false);
-  const [authorList, setAuthorList] = useState<HttpState<Author[]>>({
-    loading: false,
-    error: false,
-    data: [],
-  });
+  const { authors, books, genres } = useLibraryData();
 
-  const handleToggle = () => {
-    setIsBookNotFound((prev) => !prev);
-  };
+  const {
+    list: authorList,
+    loading: authorLoading,
+    error: authorError,
+  } = authors;
+  const { list: bookList, loading: bookLoading, error: bookError } = books;
+  const {
+    list: genresList,
+    loading: genresLoading,
+    error: genresError,
+  } = genres;
 
-  // TODO: move to context
-  useEffect(() => {
-    const getAuthorList = async () => {
-      try {
-        const authList = await getAuthors();
-        setAuthorList({
-          loading: false,
-          error: false,
-          data: authList,
-        });
-      } catch (e) {
-        setAuthorList({
-          loading: false,
-          error: true,
-          data: null,
-        });
-      }
-    };
+  const isLoading = authorLoading || bookLoading || genresLoading;
+  const isError = authorError || bookError || genresError;
 
-    getAuthorList();
-  }, []);
+  let content: React.ReactNode;
 
-  // TODO: Loader component
-  if (!authorList.data || authorList.data.length < 1) {
-    return <p>Loading...</p>;
+  if (isLoading) {
+    content = <Loading fullscreen />;
+  } else if (isError) {
+    content = <ErrorMessage fullscreen />;
+  } else if (!genresLoading && genresList.length === 0) {
+    content = (
+      <FeatureUnavailableNotice
+        title="Adding Books Unavailable"
+        message="Functionality currently unavailable, try again later"
+      />
+    );
+  } else {
+    content = (
+      <BookFormPanel
+        authorList={authorList}
+        bookList={bookList}
+        genresList={genresList}
+      />
+    );
   }
 
   return (
-    <AuthPage
-      Page={
-        <div style={{ padding: "24px" }}>
-          <div
-            style={{
-              padding: "1.5rem",
-              width: "90%",
-              maxWidth: !isBookNotFound ? "50rem" : "70rem",
-              margin: "0 auto",
-            }}
-          >
-            <Header level={3} text="Add Book to Your Shelf" />
-            {isBookNotFound ? (
-              <AddBookForm
-                authors={authorList.data}
-                genres={genres}
-                onToggle={handleToggle}
-                isBookNotFound={isBookNotFound}
-              />
-            ) : (
-              <AddExistingBookForm
-                isBookNotFound={isBookNotFound}
-                onToggle={handleToggle}
-                books={books}
-              />
-            )}
-
-            <FooterText text="Tracking all of your unread books makes creating a reading plan way easier! ✨" />
-          </div>
-        </div>
-      }
-    />
+    <FormValidationContextProvider>
+      <AuthPage
+        Page={<div style={{ padding: isError ? 0 : "24px" }}>{content}</div>}
+      />
+    </FormValidationContextProvider>
   );
 };

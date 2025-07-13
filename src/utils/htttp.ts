@@ -1,5 +1,5 @@
 import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
-import { Author } from "../types";
+import { Author, Book, Genre } from "../types";
 
 axios.defaults.baseURL = "https://localhost:8080";
 axios.defaults.headers.post["Content-type"] = "application/json";
@@ -43,4 +43,20 @@ export const getAuthors = async () => {
     "http://localhost:8080/authors"
   );
   return authors?.data ?? [];
+};
+
+export const getBooks = async () => {
+  const books = await backendRequest<Book[]>(
+    "GET",
+    "http://localhost:8080/books"
+  );
+  return books?.data ?? [];
+};
+
+export const getGenres = async () => {
+  const genres = await backendRequest<Genre[]>(
+    "GET",
+    "http://localhost:8080/genres"
+  );
+  return genres?.data ?? [];
 };

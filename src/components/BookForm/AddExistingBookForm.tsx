@@ -1,7 +1,7 @@
-import { Col, Form, message, Row, Select } from "antd";
+import { Form, message, Select } from "antd";
 import { AddExistingBookDto, Book } from "../../types";
-import { NotFoundSwitch } from "../ui";
-import { FormButton } from "../ui/FormButton";
+import { NotFoundSwitch } from "../../ui";
+import { FormButton } from "../../ui/FormButton";
 import { useState } from "react";
 import { BookMetadata } from "./BookMetadata";
 
@@ -77,7 +77,7 @@ export const AddExistingBookForm = ({
           filterOption={filterBooks}
         >
           {books.map((book) => {
-            const authorNames = book.author.map(
+            const authorNames = book.authors.map(
               (author) => `${author.firstName} ${author.lastName}`
             );
             const authors = authorNames.join(", ");

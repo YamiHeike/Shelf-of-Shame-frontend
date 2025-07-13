@@ -116,7 +116,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
     }
   };
 
-  // TODO: consider moving down
+  // TODO: consider moving down - submitted = true might be used to control the reset of cover url
 
   const handlePreview = async (isbn: string) => {
     if (!isbn || isbn.length !== 10) {

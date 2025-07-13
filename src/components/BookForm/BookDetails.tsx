@@ -3,8 +3,8 @@ import { Genre } from "../../types";
 import { FlexContainer, ValidatedField } from "../../ui";
 import { HttpState } from "../../types/HttpState";
 import { LoadingOutlined } from "@ant-design/icons";
-import defaultCover from "../../assets/default_cover.png";
 import { useFormValidationContext } from "./FormValidationContext";
+import { CoverDisplay } from "./CoverDisplay";
 
 const { Option } = Select;
 
@@ -85,16 +85,7 @@ export const BookDetails: React.FC<BookDetailsProps> = ({
           }}
         />
       ) : (
-        coverUrl.data && (
-          <Form.Item>
-            <img
-              src={coverUrl.data}
-              alt="Book Cover"
-              style={{ maxWidth: "100px" }}
-            />
-            {coverUrl.data === defaultCover && <p>Cover not found</p>}
-          </Form.Item>
-        )
+        coverUrl.data && <CoverDisplay coverUrl={coverUrl.data} />
       )}
       <ValidatedField errorMsg={genreMessage}>
         <Form.Item

@@ -12,6 +12,7 @@ import { type FormFieldError } from "../types";
 import { useState } from "react";
 import { FormButton } from "../ui/FormButton";
 import { ValidatedField } from "../components";
+import { PublicRoutePage } from "./PublicRoutePage";
 
 export const LoginPage = () => {
   const [form] = Form.useForm();
@@ -46,48 +47,55 @@ export const LoginPage = () => {
   };
 
   return (
-    <AuthForm
-      title="Login to Your Account"
-      footerText={
-        <>
-          Don't have an account? <NavLink to="/signup">Sign Up</NavLink>
-        </>
-      }
-      error={error}
-    >
-      <Form form={form} onFinish={onFinish} layout="vertical">
-        <ValidatedField
-          errorMsg={error?.message.includes("email") ? "Wrong email" : null}
-        >
-          <Form.Item
-            name="email"
-            label="Email"
-            rules={[
-              { required: true, message: "Please enter your email" },
-              { type: "email", message: "Invalid email address" },
-            ]}
+    <PublicRoutePage>
+      <AuthForm
+        title="Login to Your Account"
+        footerText={
+          <>
+            Don't have an account? <NavLink to="/signup">Sign Up</NavLink>
+          </>
+        }
+        error={error}
+      >
+        <Form form={form} onFinish={onFinish} layout="vertical">
+          <ValidatedField
+            errorMsg={error?.message.includes("email") ? "Wrong email" : null}
           >
-            <Input prefix={<MailOutlined />} placeholder="Email" />
-          </Form.Item>
-        </ValidatedField>
-        <ValidatedField
-          errorMsg={
-            error?.message.includes("password") ? "Wrong password" : null
-          }
-        >
-          <Form.Item
-            name="password"
-            label="Password"
-            rules={[{ required: true, message: "Please enter your password" }]}
+            <Form.Item
+              name="email"
+              label="Email"
+              rules={[
+                { required: true, message: "Please enter your email" },
+                { type: "email", message: "Invalid email address" },
+              ]}
+            >
+              <Input prefix={<MailOutlined />} placeholder="Email" />
+            </Form.Item>
+          </ValidatedField>
+          <ValidatedField
+            errorMsg={
+              error?.message.includes("password") ? "Wrong password" : null
+            }
           >
-            <Input.Password prefix={<LockOutlined />} placeholder="Password" />
-          </Form.Item>
-        </ValidatedField>
+            <Form.Item
+              name="password"
+              label="Password"
+              rules={[
+                { required: true, message: "Please enter your password" },
+              ]}
+            >
+              <Input.Password
+                prefix={<LockOutlined />}
+                placeholder="Password"
+              />
+            </Form.Item>
+          </ValidatedField>
 
-        <Form.Item>
-          <FormButton submitted={submitted} block preSubmitText="Sign In" />
-        </Form.Item>
-      </Form>
-    </AuthForm>
+          <Form.Item>
+            <FormButton submitted={submitted} block preSubmitText="Sign In" />
+          </Form.Item>
+        </Form>
+      </AuthForm>
+    </PublicRoutePage>
   );
 };

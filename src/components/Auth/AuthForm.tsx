@@ -2,6 +2,9 @@ import { Card, Typography, message } from "antd";
 import styles from "./AuthForm.module.scss";
 import { ReactNode, useEffect } from "react";
 import { FormFieldError } from "../../types";
+import { motion } from "motion/react";
+
+const MotionCard = motion(Card);
 
 type AuthFormProps = {
   title: string;
@@ -28,7 +31,12 @@ export const AuthForm = ({
   return (
     <div className={styles.container}>
       {contextHolder}
-      <Card className={styles.card}>
+
+      <MotionCard
+        className={styles.card}
+        initial={{ y: 100 }}
+        animate={{ y: 0 }}
+      >
         <Typography.Title level={2} className={styles.title}>
           {title}
         </Typography.Title>
@@ -36,7 +44,7 @@ export const AuthForm = ({
         <Typography.Text className={styles.footerText}>
           {footerText}
         </Typography.Text>
-      </Card>
+      </MotionCard>
     </div>
   );
 };

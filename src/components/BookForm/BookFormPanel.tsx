@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion } from "motion/react";
 import { FooterText, Header } from "../../ui";
 import { AddBookForm } from "./AddBookForm";
 import { AddExistingBookForm } from "./AddExistingBookForm";
@@ -23,7 +24,10 @@ export const BookFormPanel = ({
 
   return (
     <CoverPreviewContextProvider>
-      <div
+      <motion.div
+        initial={{ y: 100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5, type: "spring" }}
         style={{
           padding: "1.5rem",
           width: "90%",
@@ -48,7 +52,7 @@ export const BookFormPanel = ({
         )}
 
         <FooterText text="Tracking all of your unread books makes creating a reading plan way easier! ✨" />
-      </div>
+      </motion.div>
     </CoverPreviewContextProvider>
   );
 };

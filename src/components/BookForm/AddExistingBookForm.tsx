@@ -1,9 +1,10 @@
 import { Form, message, Select } from "antd";
-import { AddExistingBookDto, Book } from "../../types";
+import { Book, UserShelfItemDto } from "../../types";
 import { NotFoundSwitch } from "../../ui";
 import { FormButton } from "../../ui/FormButton";
 import { useState } from "react";
 import { BookMetadata } from "./BookMetadata";
+import { backendRequest } from "../../utils";
 
 type AddExistingBookProps = {
   isBookNotFound: boolean;
@@ -23,12 +24,12 @@ export const AddExistingBookForm = ({
   };
 
   const [submitted, setSubmitted] = useState(false);
-  const [form] = Form.useForm<AddExistingBookDto>();
+  const [form] = Form.useForm<UserShelfItemDto>();
   const [messageApi, contextHolder] = message.useMessage();
-  const handleFinish = async (values: AddExistingBookDto) => {
+  const handleFinish = async (values: UserShelfItemDto) => {
     setSubmitted(true);
     try {
-      const bookDto: AddExistingBookDto = {
+      const bookDto: UserShelfItemDto = {
         isbn: values.isbn,
         notes: values.notes,
         difficulty: values.difficulty,
@@ -41,6 +42,13 @@ export const AddExistingBookForm = ({
         bookDto.difficulty,
         bookDto.status
       );
+
+      await backendRequest<UserShelfItemDto, UserShelfItemDto>(
+        "POST",
+        "http://localhost:8080/shelf/add",
+        bookDto
+      );
+
       form.resetFields();
       messageApi.success("Book added! Make sure you read it one day!");
       setSubmitted(false);

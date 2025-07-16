@@ -1,9 +1,7 @@
-import { Book } from "./Book";
-
 export enum Status {
-  SHAME = "Shame",
-  GLORY = "Glory",
-  READING = "Reading",
+  SHAME = "SHAME",
+  GLORY = "GLORY",
+  READING = "READING",
 }
 
 export interface UserShelfItem extends UserShelfItemDto {
@@ -11,13 +9,6 @@ export interface UserShelfItem extends UserShelfItemDto {
 }
 
 export type UserShelfItemDto = {
-  book: Book;
-  notes: string;
-  difficulty: number;
-  status: Status;
-};
-
-export type AddExistingBookDto = {
   isbn: string;
   notes: string;
   difficulty: number;

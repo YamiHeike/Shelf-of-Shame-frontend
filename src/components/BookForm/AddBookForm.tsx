@@ -78,7 +78,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
       );
 
       const bookDto: UserShelfItemDto = {
-        book,
+        isbn: book.isbn,
         notes: values.notes,
         difficulty: values.difficulty,
         status: values.status,
@@ -86,10 +86,16 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
 
       console.log(
         "Adding book:",
-        bookDto.book,
+        values.isbn,
         bookDto.notes,
         bookDto.difficulty,
         bookDto.status
+      );
+
+      await backendRequest<UserShelfItemDto, UserShelfItemDto>(
+        "POST",
+        "http://localhost:8080/shelf/add",
+        bookDto
       );
 
       form.resetFields();
@@ -97,13 +103,16 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
       setSubmitted(false);
       messageApi.success("Book added successfully!");
     } catch (e: any) {
+      let errorMessage = "Something went wrong";
+
       if (e.response) {
+        errorMessage = e.response?.data.message || errorMessage;
         sendErrors({
-          message: e.response.data?.message || "Something went wrong",
+          message: e.response.data?.message || errorMessage,
           errors: e.response.data?.errors || undefined,
         });
       }
-      messageApi.error("An error occurred. Please try again.");
+      messageApi.error(errorMessage || "An error occurred. Please try again.");
       setSubmitted(false);
     }
   };

@@ -1,5 +1,6 @@
 import { Form, Input, Select } from "antd";
 import { Status } from "../../types";
+import { toProperCase } from "../../utils";
 
 const { Option } = Select;
 
@@ -36,7 +37,7 @@ export const BookMetadata = () => {
         <Select placeholder="Select a status">
           {Object.values(Status).map((status) => (
             <Option key={status} value={status}>
-              {status}
+              {toProperCase(status)}
             </Option>
           ))}
         </Select>

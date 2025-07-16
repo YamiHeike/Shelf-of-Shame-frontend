@@ -14,3 +14,12 @@ export type UserShelfItemDto = {
   difficulty: number;
   status: Status;
 };
+
+export interface UserShelfItemValues extends UserShelfItemDto {
+  title: string;
+  id: number;
+  firstName: string;
+  lastName: string;
+  numberOfPages: number;
+  genres: string;
+}

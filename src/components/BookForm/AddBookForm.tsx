@@ -5,7 +5,7 @@ import {
   Book,
   CreateAuthorDto,
   Genre,
-  UserShelfItemDto,
+  UserShelfItemValues,
 } from "../../types";
 import { FlexContainer, NotFoundSwitch } from "../../ui";
 import { BookMetadata } from "./BookMetadata";
@@ -30,7 +30,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
   isBookNotFound,
   onToggle,
 }) => {
-  const [form] = Form.useForm<UserShelfItemDto>();
+  const [form] = Form.useForm<UserShelfItemValues>();
   const [submitted, setSubmitted] = useState(false);
   const [isAuthorNotFound, setIsAuthorNotFound] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
@@ -38,7 +38,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
 
   const { resetPreview } = useCoverPreviewContext();
 
-  const handleFinish = async (values: any) => {
+  const handleFinish = async (values: UserShelfItemValues) => {
     setSubmitted(true);
     clearErrors();
     let addAuthorResponse;

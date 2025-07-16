@@ -4,7 +4,7 @@ import { NotFoundSwitch } from "../../ui";
 import { FormButton } from "../../ui/FormButton";
 import { useState } from "react";
 import { BookMetadata } from "./BookMetadata";
-import { backendRequest } from "../../utils";
+import { addBookToShelf } from "./add_book";
 
 type AddExistingBookProps = {
   isBookNotFound: boolean;
@@ -26,96 +26,84 @@ export const AddExistingBookForm = ({
   const [submitted, setSubmitted] = useState(false);
   const [form] = Form.useForm<UserShelfItemDto>();
   const [messageApi, contextHolder] = message.useMessage();
+
   const handleFinish = async (values: UserShelfItemDto) => {
     setSubmitted(true);
     try {
-      const bookDto: UserShelfItemDto = {
-        isbn: values.isbn,
-        notes: values.notes,
-        difficulty: values.difficulty,
-        status: values.status,
-      };
-      console.log("Adding book isbn:", bookDto.isbn);
-      console.log(
-        "Book metadata:",
-        bookDto.notes,
-        bookDto.difficulty,
-        bookDto.status
-      );
-
-      await backendRequest<UserShelfItemDto, UserShelfItemDto>(
-        "POST",
-        "http://localhost:8080/shelf/add",
-        bookDto
-      );
-
+      await addBookToShelf(values);
       form.resetFields();
       messageApi.success("Book added! Make sure you read it one day!");
       setSubmitted(false);
-    } catch (error) {
-      console.log(error);
-      message.error("An error has occurred. Please, try again");
+    } catch (e: any) {
+      console.error(e);
+      let errorMessage = "An error has occurred. Please, try again";
+      if (e.response) {
+        errorMessage = e.response?.data.message || errorMessage;
+      }
+      messageApi.error(errorMessage);
       setSubmitted(false);
     }
   };
 
   return (
-    <Form
-      onFinish={handleFinish}
-      form={form}
-      style={{
-        maxWidth: "50rem",
-      }}
-    >
+    <>
       {contextHolder}
-      <Form.Item
-        name="isbn"
-        label="Select a book"
-        rules={[
-          {
-            required: !isBookNotFound,
-            message: "Select the book to add",
-          },
-        ]}
+      <Form
+        onFinish={handleFinish}
+        form={form}
+        style={{
+          maxWidth: "50rem",
+        }}
       >
-        <Select
-          placeholder="Search for books"
-          showSearch
-          optionFilterProp="children"
-          filterOption={filterBooks}
+        <Form.Item
+          name="isbn"
+          label="Select a book"
+          rules={[
+            {
+              required: !isBookNotFound,
+              message: "Select the book to add",
+            },
+          ]}
         >
-          {books.map((book) => {
-            const authorNames = book.authors.map(
-              (author) => `${author.firstName} ${author.lastName}`
-            );
-            const authors = authorNames.join(", ");
+          <Select
+            placeholder="Search for books"
+            showSearch
+            optionFilterProp="children"
+            filterOption={filterBooks}
+          >
+            {books.map((book) => {
+              const authorNames = book.authors.map(
+                (author) => `${author.firstName} ${author.lastName}`
+              );
+              const authors = authorNames.join(", ");
 
-            return (
-              <Option key={book.isbn} value={book.isbn}>
-                {`${book.title} (${authors})`}
-              </Option>
-            );
-          })}
-        </Select>
-      </Form.Item>
-      <NotFoundSwitch
-        label="Didn't find your book?"
-        value={isBookNotFound}
-        onToggle={onToggle}
-      />
-
-      <BookMetadata />
-      <Form.Item>
-        <FormButton
-          submitted={submitted}
-          preSubmitText="Add to Shelf"
-          postSubmitText="Adding..."
-          style={{
-            maxWidth: 200,
-            width: "100%",
-          }}
+              return (
+                <Option key={book.isbn} value={book.isbn}>
+                  {`${book.title} (${authors})`}
+                </Option>
+              );
+            })}
+          </Select>
+        </Form.Item>
+        <NotFoundSwitch
+          label="Didn't find your book?"
+          value={isBookNotFound}
+          onToggle={onToggle}
         />
-      </Form.Item>
-    </Form>
+
+        <BookMetadata />
+        <Form.Item>
+          <FormButton
+            submitted={submitted}
+            preSubmitText="Add to Shelf"
+            postSubmitText="Adding..."
+            style={{
+              maxWidth: 200,
+              width: "100%",
+            }}
+          />
+        </Form.Item>
+      </Form>
+    </>
   );
 };

@@ -15,6 +15,7 @@ import { backendRequest } from "../../utils";
 import { FormButton } from "../../ui/FormButton";
 import { useFormValidationContext } from "./FormValidationContext";
 import { useCoverPreviewContext } from "./CoverPreviewContext";
+import { addBookToShelf } from "./add_book";
 
 interface AddBookFormProps {
   authors: Author[];
@@ -57,13 +58,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
       const book: Book = {
         title: values.title,
         authors: isAuthorNotFound
-          ? [
-              addAuthorResponse?.data ?? {
-                id: -1,
-                firstName: "",
-                lastName: "",
-              },
-            ]
+          ? [addAuthorResponse?.data!]
           : authors.filter((author) => author.id === values.authorId),
         numberOfPages: values.numberOfPages,
         isbn: values.isbn,
@@ -77,26 +72,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
         book
       );
 
-      const bookDto: UserShelfItemDto = {
-        isbn: book.isbn,
-        notes: values.notes,
-        difficulty: values.difficulty,
-        status: values.status,
-      };
-
-      console.log(
-        "Adding book:",
-        values.isbn,
-        bookDto.notes,
-        bookDto.difficulty,
-        bookDto.status
-      );
-
-      await backendRequest<UserShelfItemDto, UserShelfItemDto>(
-        "POST",
-        "http://localhost:8080/shelf/add",
-        bookDto
-      );
+      await addBookToShelf(values);
 
       form.resetFields();
       resetPreview();

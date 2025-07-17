@@ -35,7 +35,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
     setSubmitted(true);
     clearErrors();
     try {
-      await addNewBookToShelf(isAuthorNotFound, values, authors);
+      await addNewBookToShelf(values);
       form.resetFields();
       resetPreview();
       setSubmitted(false);

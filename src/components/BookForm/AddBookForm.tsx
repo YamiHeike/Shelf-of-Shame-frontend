@@ -1,21 +1,14 @@
 import React, { useState } from "react";
 import { Form, message, Row, Col } from "antd";
-import {
-  Author,
-  Book,
-  CreateAuthorDto,
-  Genre,
-  UserShelfItemValues,
-} from "../../types";
+import { Author, Genre, UserShelfItemValues } from "../../types";
 import { FlexContainer, NotFoundSwitch } from "../../ui";
 import { BookMetadata } from "./BookMetadata";
 import { AuthorSelection } from "./AuthorSelection";
 import { BookDetails } from "./BookDetails";
-import { backendRequest } from "../../utils";
 import { FormButton } from "../../ui/FormButton";
 import { useFormValidationContext } from "./FormValidationContext";
 import { useCoverPreviewContext } from "./CoverPreviewContext";
-import { addBookToShelf } from "./add_book";
+import { addNewBookToShelf } from "./add_book";
 
 interface AddBookFormProps {
   authors: Author[];
@@ -41,39 +34,8 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
   const handleFinish = async (values: UserShelfItemValues) => {
     setSubmitted(true);
     clearErrors();
-    let addAuthorResponse;
-
-    if (isAuthorNotFound) {
-      addAuthorResponse = await backendRequest<Author, CreateAuthorDto>(
-        "POST",
-        "http://localhost:8080/authors/new",
-        {
-          firstName: values.firstName,
-          lastName: values.lastName,
-        }
-      );
-    }
-
     try {
-      const book: Book = {
-        title: values.title,
-        authors: isAuthorNotFound
-          ? [addAuthorResponse?.data!]
-          : authors.filter((author) => author.id === values.authorId),
-        numberOfPages: values.numberOfPages,
-        isbn: values.isbn,
-        description: values.description,
-        genres: [parseInt(values.genre)],
-      };
-
-      await backendRequest<Book, Book>(
-        "POST",
-        "http://localhost:8080/books/new",
-        book
-      );
-
-      await addBookToShelf(values);
-
+      await addNewBookToShelf(isAuthorNotFound, values, authors);
       form.resetFields();
       resetPreview();
       setSubmitted(false);

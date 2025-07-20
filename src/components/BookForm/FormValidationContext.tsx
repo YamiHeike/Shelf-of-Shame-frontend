@@ -5,6 +5,7 @@ import { getValidationErrorMessage } from "../../utils";
 type FormValidationContextType = {
   bookDescriptionLimit: number;
   errors: FormFieldError | null;
+  notesLimit: number;
   sendErrors: (errorObj: FormFieldError) => void;
   clearErrors: () => void;
   getFieldErrorMessage: (fieldName: string) => string | null;
@@ -38,6 +39,7 @@ export const FormValidationContextProvider = ({
 
   const defaultValues: FormValidationContextType = {
     bookDescriptionLimit: 1500,
+    notesLimit: 250,
     errors,
     sendErrors,
     clearErrors,

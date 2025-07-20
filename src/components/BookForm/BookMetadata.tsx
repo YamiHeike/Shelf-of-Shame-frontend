@@ -1,10 +1,12 @@
 import { Form, Input, Select } from "antd";
 import { Status } from "../../types";
 import { toProperCase } from "../../utils";
+import { useFormValidationContext } from "./FormValidationContext";
 
 const { Option } = Select;
 
 export const BookMetadata = () => {
+  const { notesLimit } = useFormValidationContext();
   return (
     <>
       <Form.Item
@@ -44,7 +46,12 @@ export const BookMetadata = () => {
       </Form.Item>
 
       <Form.Item label="Notes" name="notes">
-        <Input.TextArea placeholder="Enter any notes about the book" rows={4} />
+        <Input.TextArea
+          placeholder="Enter any notes about the book"
+          rows={4}
+          showCount={{ formatter: ({ count }) => `${count}/${notesLimit}` }}
+          maxLength={notesLimit}
+        />
       </Form.Item>
     </>
   );

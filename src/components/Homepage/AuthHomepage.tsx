@@ -7,8 +7,9 @@ import { Greeter } from "./Greeter";
 import { ButtonGroup } from "./ButtonGroup";
 import { CurrentlyReading } from "./CurrentlyReading";
 import { StatisticsOverview } from "./StatisticsOverwiev";
-import { FooterText } from "../../ui";
+import { ErrorMessage, FooterText, Loading } from "../../ui";
 import { BookOutline } from "../../types";
+import { useGetShelfQuery } from "../../store/shelfApi";
 
 const { Content } = Layout;
 const { useBreakpoint } = Grid;
@@ -16,6 +17,29 @@ const { useBreakpoint } = Grid;
 export const AuthHomepage = () => {
   const { user } = useAuth();
   const screens = useBreakpoint();
+
+  const { data, error, isLoading } = useGetShelfQuery();
+
+  let content: React.ReactNode;
+  let currentReads: BookOutline[] | null = null;
+
+  if (isLoading) {
+    content = <Loading />;
+  }
+
+  //TODO: case of empty shelf, you need a separate component for that
+  if (error) {
+    content = <ErrorMessage />;
+  }
+
+  if (data) {
+    currentReads = data.map((item) => ({
+      title: item.book.title,
+      authors: item.book.authors,
+      numberOfPages: item.book.numberOfPages,
+    }));
+    console.log(currentReads);
+  }
 
   // Mock Data
   const unreadBooks = 42;
@@ -46,6 +70,8 @@ export const AuthHomepage = () => {
       numberOfPages: 777,
     },
   ];
+
+  // TODO: move to another file
   const motivationalQuotes = [
     "A reader lives a thousand lives before he dies. — George R.R. Martin",
     "Not all those who wander are lost. — J.R.R. Tolkien",

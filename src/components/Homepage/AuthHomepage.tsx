@@ -7,9 +7,9 @@ import { ButtonGroup } from "./ButtonGroup";
 import { CurrentlyReading } from "./CurrentlyReading";
 import { StatisticsOverview } from "./StatisticsOverwiev";
 import { ErrorMessage, FooterText, Loading } from "../../ui";
-import { BookOutline, Status } from "../../types";
 import { useGetShelfQuery } from "../../store/shelfApi";
 import { useLibraryData } from "../../hooks";
+import { getCurrentReads, getStats } from "../../utils";
 
 const { Content } = Layout;
 const { useBreakpoint } = Grid;
@@ -22,11 +22,7 @@ export const AuthHomepage = () => {
   const { genres } = useLibraryData();
 
   let content: React.ReactNode;
-  let currentReads: BookOutline[] | null = null;
-  let unreadBooks = 0;
-  let booksFinished = 0;
-  let longestBook = "-";
-  let favoriteGenre = "-";
+  let stats: React.ReactNode;
 
   // TODO: move to another file
   const motivationalQuotes = [
@@ -45,44 +41,18 @@ export const AuthHomepage = () => {
     content = <ErrorMessage />;
   }
 
-  // TODO: consider creating a custom hook useStats() for shelf statistics calculation
   if (data) {
-    currentReads = data
-      .filter((item) => item.status === Status.READING)
-      .map((item) => ({
-        title: item.book.title,
-        authors: item.book.authors,
-        numberOfPages: item.book.numberOfPages,
-      }));
+    const { unreadBooks, booksFinished, longestBook, favoriteGenre } =
+      getStats(data);
+    const currentReads = getCurrentReads(data);
 
-    unreadBooks = data.filter((item) => item.status !== Status.GLORY).length;
-    booksFinished = data.length - unreadBooks;
-    const longestBookItemData = data.reduce((max, current) =>
-      current.book.numberOfPages > max.book.numberOfPages ? current : max
+    stats = (
+      <StatisticsOverview
+        booksFinished={booksFinished}
+        longestBook={longestBook}
+        favoriteGenre={favoriteGenre}
+      />
     );
-    longestBook = `${longestBookItemData.book.title} (${longestBookItemData.book.numberOfPages} pages)`;
-
-    const genreCounts: Record<number, number> = {};
-    let maxCount = 0;
-    let maxCountGenreName;
-
-    for (const item of data) {
-      for (const genre of item.book.genres) {
-        if (!genreCounts[genre.id]) {
-          genreCounts[genre.id] = 0;
-        }
-        genreCounts[genre.id]++;
-        if (genreCounts[genre.id] > maxCount) {
-          maxCount = genreCounts[genre.id];
-          maxCountGenreName = genre.name;
-        }
-      }
-    }
-
-    if (maxCountGenreName) {
-      favoriteGenre = maxCountGenreName;
-    }
-
     content = (
       <Content>
         <Card
@@ -144,13 +114,7 @@ export const AuthHomepage = () => {
       >
         {content}
       </Layout>
-      {screens.md && (
-        <StatisticsOverview
-          booksFinished={booksFinished}
-          longestBook={longestBook}
-          favoriteGenre={favoriteGenre}
-        />
-      )}
+      {screens.md && stats && stats}
     </Layout>
   ) : (
     <p>Something went wrong</p>

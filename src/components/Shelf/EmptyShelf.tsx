@@ -15,7 +15,7 @@ export const EmptyShelf = () => {
       angle: randomInRange(55, 125),
       particleCount: randomInRange(150, 250),
       spread: randomInRange(350, 400),
-      origin: { y: 0.6 },
+      origin: { y: 0.5, x: 0.6 },
     });
   };
 

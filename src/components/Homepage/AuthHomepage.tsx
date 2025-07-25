@@ -9,6 +9,7 @@ import { StatisticsOverview } from "./StatisticsOverwiev";
 import { ErrorMessage, FooterText, Loading } from "../../ui";
 import { BookOutline, Status } from "../../types";
 import { useGetShelfQuery } from "../../store/shelfApi";
+import { useLibraryData } from "../../hooks";
 
 const { Content } = Layout;
 const { useBreakpoint } = Grid;
@@ -18,6 +19,7 @@ export const AuthHomepage = () => {
   const screens = useBreakpoint();
 
   const { data, error, isLoading } = useGetShelfQuery();
+  const { genres } = useLibraryData();
 
   let content: React.ReactNode;
   let currentReads: BookOutline[] | null = null;
@@ -34,15 +36,16 @@ export const AuthHomepage = () => {
     "I have always imagined that Paradise will be a kind of library. — Jorge Luis Borges",
   ];
 
-  if (isLoading) {
+  if (isLoading || genres.loading) {
     content = <Loading />;
   }
 
-  //TODO: case of empty shelf, you need a separate component for that
-  if (error) {
+  //TODO: Empty shelf component
+  if (error || genres.error) {
     content = <ErrorMessage />;
   }
 
+  // TODO: consider creating a custom hook useStats() for shelf statistics calculation
   if (data) {
     currentReads = data
       .filter((item) => item.status === Status.READING)
@@ -59,7 +62,27 @@ export const AuthHomepage = () => {
     );
     longestBook = `${longestBookItemData.book.title} (${longestBookItemData.book.numberOfPages} pages)`;
 
-    // TODO: refactor
+    const genreCounts: Record<number, number> = {};
+    let maxCount = 0;
+    let maxCountGenreName;
+
+    for (const item of data) {
+      for (const genre of item.book.genres) {
+        if (!genreCounts[genre.id]) {
+          genreCounts[genre.id] = 0;
+        }
+        genreCounts[genre.id]++;
+        if (genreCounts[genre.id] > maxCount) {
+          maxCount = genreCounts[genre.id];
+          maxCountGenreName = genre.name;
+        }
+      }
+    }
+
+    if (maxCountGenreName) {
+      favoriteGenre = maxCountGenreName;
+    }
+
     content = (
       <Content>
         <Card

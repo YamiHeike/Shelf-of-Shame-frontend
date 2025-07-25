@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { UserShelfItem } from "../types";
+import { UserShelfItemRecord } from "../types";
 
 export const shelfApi = createApi({
   reducerPath: "shelfApi",
@@ -15,7 +15,7 @@ export const shelfApi = createApi({
   }),
   tagTypes: ["Shelf"],
   endpoints: (builder) => ({
-    getShelf: builder.query<UserShelfItem[], void>({
+    getShelf: builder.query<UserShelfItemRecord[], void>({
       query: () => "shelf",
       providesTags: ["Shelf"],
     }),

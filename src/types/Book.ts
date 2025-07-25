@@ -20,3 +20,9 @@ export type Genre = {
 export interface GenreBooks extends Genre {
   books: Book[];
 }
+
+export interface BookDto extends BookOutline {
+  isbn: string;
+  description: string;
+  genres: Genre[];
+}

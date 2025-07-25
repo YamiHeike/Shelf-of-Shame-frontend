@@ -1,9 +1,28 @@
 import { Empty, Typography, Button } from "antd";
 import { SmileOutlined } from "@ant-design/icons";
+import confetti from "canvas-confetti";
+import { useEffect } from "react";
 
 const { Title, Paragraph } = Typography;
 
 export const EmptyShelf = () => {
+  const randomInRange = (min: number, max: number) => {
+    return Math.random() * (max - min) + min;
+  };
+
+  const celebrate = () => {
+    confetti({
+      angle: randomInRange(55, 125),
+      particleCount: randomInRange(150, 250),
+      spread: randomInRange(350, 400),
+      origin: { y: 0.6 },
+    });
+  };
+
+  useEffect(() => {
+    celebrate();
+  }, []);
+
   return (
     <div
       style={{
@@ -22,15 +41,9 @@ export const EmptyShelf = () => {
       <Paragraph style={{ maxWidth: 500, margin: "1.5em auto" }}>
         Either you've conquered your entire Shelf of Shame 🏆
         <br />
-        or you're hiding those unread books somewhere 👀
+        or you're hiding those unread books somewhere! 👀
       </Paragraph>
-      <Button
-        type="primary"
-        icon={<SmileOutlined />}
-        onClick={() => {
-          // Optional: trigger refetch or open modal
-        }}
-      >
+      <Button type="primary" icon={<SmileOutlined />} onClick={celebrate}>
         Bask in your glory
       </Button>
     </div>

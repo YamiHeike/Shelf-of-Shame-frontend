@@ -1,12 +1,7 @@
 import { Layout, Typography, List } from "antd";
+import { MOTIVATIONAL_QUOTES } from "../../constants";
 
-type MotivationQuotesProps = {
-  motivationalQuotes: string[];
-};
-
-export const MotivationalQuotes = ({
-  motivationalQuotes,
-}: MotivationQuotesProps) => {
+export const MotivationalQuotes = () => {
   const { Title, Text } = Typography;
   const { Sider } = Layout;
   return (
@@ -23,7 +18,7 @@ export const MotivationalQuotes = ({
         ✨ Need inspiration?
       </Title>
       <List
-        dataSource={motivationalQuotes}
+        dataSource={MOTIVATIONAL_QUOTES}
         renderItem={(quote) => (
           <List.Item>
             <Text italic style={{ color: "#DCE0F2" }}>

@@ -24,14 +24,6 @@ export const AuthHomepage = () => {
   let content: React.ReactNode;
   let stats: React.ReactNode;
 
-  // TODO: move to another file
-  const motivationalQuotes = [
-    "A reader lives a thousand lives before he dies. — George R.R. Martin",
-    "Not all those who wander are lost. — J.R.R. Tolkien",
-    "Reading is essential for those who seek to rise above the ordinary. — Jim Rohn",
-    "I have always imagined that Paradise will be a kind of library. — Jorge Luis Borges",
-  ];
-
   if (isLoading || genres.loading) {
     content = <Loading />;
   }
@@ -101,9 +93,7 @@ export const AuthHomepage = () => {
         minHeight: "calc(100vh - 65px)",
       }}
     >
-      {screens.lg && (
-        <MotivationalQuotes motivationalQuotes={motivationalQuotes} />
-      )}
+      {screens.lg && <MotivationalQuotes />}
       <Layout
         style={{
           padding: screens.sm ? "10px" : "20px",

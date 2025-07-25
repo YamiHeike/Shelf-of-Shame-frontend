@@ -6,7 +6,7 @@ type GreeterProps = {
 };
 
 export const Greeter = ({ username }: GreeterProps) => {
-  const { Title, Text } = Typography;
+  const { Text } = Typography;
   const { useBreakpoint } = Grid;
   const screens = useBreakpoint();
 

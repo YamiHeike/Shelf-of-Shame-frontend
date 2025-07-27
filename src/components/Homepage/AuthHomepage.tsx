@@ -48,13 +48,16 @@ export const AuthHomepage = () => {
       />
     );
 
-    content = (
-      <ShelfCard
-        unreadBooks={unreadBooks}
-        currentReads={currentReads}
-        username={user.username}
-      />
-    );
+    content =
+      unreadBooks === 0 ? (
+        <EmptyShelf />
+      ) : (
+        <ShelfCard
+          unreadBooks={unreadBooks}
+          currentReads={currentReads}
+          username={user.username}
+        />
+      );
   }
 
   return (

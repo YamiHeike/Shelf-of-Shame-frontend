@@ -9,9 +9,10 @@ import styles from "./ShelfDashBoard.module.scss";
 // import { GenreBar } from "./charts/GenreBar";
 // import { DifficultyHistogram } from "./charts/DifficultyHistogram";
 // import { AvgDifficultyByStatus } from "./charts/AvgDifficultyByStatus";
-// import { GenreStatusStackedBar } from "./charts/GenreStatusStackedBar";
+import { GenreStatusBar } from "./charts/GenreStatusStackedBar";
 
 export const ShelfDashboard = () => {
+  // TODO: wrap the data in context, otherwise all of these components will have the same props
   const { data, error, isLoading } = useGetShelfQuery();
   const { genres } = useLibraryData();
 
@@ -41,10 +42,10 @@ export const ShelfDashboard = () => {
         </Col>
         <Col xs={24} md={12}>
           <AvgDifficultyByStatus />
-        </Col>
-        <Col xs={24}>
-          <GenreStatusStackedBar />
         </Col> */}
+        <Col xs={24}>
+          <GenreStatusBar data={data} />
+        </Col>
       </Row>
     </div>
   );

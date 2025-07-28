@@ -1,9 +1,8 @@
 import { Status, type UserShelfItemRecord } from "../../../types";
 import { Pie, type PieConfig } from "@ant-design/charts";
 import { toProperCase } from "../../../utils";
-import { Typography } from "antd";
-
-const { Title } = Typography;
+import { ChartTitle } from "./ChartTitle";
+import { ChartColors } from "./colors";
 
 type StatusPieProps = {
   data: UserShelfItemRecord[];
@@ -48,16 +47,14 @@ export const StatusPie = ({ data }: StatusPieProps) => {
     },
     scale: {
       color: {
-        range: ["#ff4d4f", "#52c41a", "#faad14"],
+        range: [ChartColors.SHAME, ChartColors.GLORY, ChartColors.READING],
       },
     },
   };
 
   return (
     <>
-      <Title level={3} style={{ fontWeight: 100 }}>
-        Book Count by Status
-      </Title>
+      <ChartTitle text="Book Count by Status" />
       <Pie {...config} />
     </>
   );

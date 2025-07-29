@@ -1,14 +1,18 @@
-import { Status, type UserShelfItemRecord } from "../../../types";
+import { Status } from "../../../types";
 import { Pie, type PieConfig } from "@ant-design/charts";
 import { toProperCase } from "../../../utils";
 import { ChartTitle } from "./ChartTitle";
 import { ChartColors } from "./colors";
+import { useShelfDataContext } from "../ShelfDataContext";
+import { ChartUnavailable } from "./ChartUnavailable";
 
-type StatusPieProps = {
-  data: UserShelfItemRecord[];
-};
+export const StatusPie = () => {
+  const { data } = useShelfDataContext();
 
-export const StatusPie = ({ data }: StatusPieProps) => {
+  if (!data) {
+    return <ChartUnavailable />;
+  }
+
   const statusCounts = data.reduce(
     (acc, item) => {
       acc[item.status]++;

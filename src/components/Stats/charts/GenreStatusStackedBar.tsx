@@ -1,14 +1,18 @@
 import { Column, ColumnConfig } from "@ant-design/charts";
-import { Status, UserShelfItemRecord } from "../../../types";
+import { Status } from "../../../types";
 import { toProperCase } from "../../../utils";
 import { ChartTitle } from "./ChartTitle";
 import { ChartColors } from "./colors";
+import { useShelfDataContext } from "../ShelfDataContext";
+import { ChartUnavailable } from "./ChartUnavailable";
 
-type GenreStatusBarProps = {
-  data: UserShelfItemRecord[];
-};
+export const GenreStatusBar = () => {
+  const { data } = useShelfDataContext();
 
-export const GenreStatusBar = ({ data }: GenreStatusBarProps) => {
+  if (!data) {
+    return <ChartUnavailable />;
+  }
+
   const genreStatusCounts: Record<string, Record<Status, number>> = {};
   data.forEach((item) => {
     item.book.genres.forEach((genre) => {

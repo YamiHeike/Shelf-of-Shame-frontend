@@ -1,23 +1,14 @@
 import { Row, Col } from "antd";
-import { useLibraryData } from "../../hooks";
-import { useGetShelfQuery } from "../../store/shelfApi";
 import { ErrorMessage, Header, Loading } from "../../ui";
 import { NoData } from "../../ui/NoData";
 import { StatusPie } from "./charts/StatusPie";
 import styles from "./ShelfDashBoard.module.scss";
 
-// import { GenreBar } from "./charts/GenreBar";
-// import { DifficultyHistogram } from "./charts/DifficultyHistogram";
-// import { AvgDifficultyByStatus } from "./charts/AvgDifficultyByStatus";
 import { GenreStatusBar } from "./charts/GenreStatusStackedBar";
+import { useShelfDataContext } from "./ShelfDataContext";
 
 export const ShelfDashboard = () => {
-  // TODO: wrap the data in context, otherwise all of these components will have the same props
-  const { data, error, isLoading } = useGetShelfQuery();
-  const { genres } = useLibraryData();
-
-  const loading = isLoading || genres.loading;
-  const errored = error || genres.error;
+  const { data, loading, errored } = useShelfDataContext();
 
   if (loading) {
     return <Loading />;
@@ -32,7 +23,7 @@ export const ShelfDashboard = () => {
       <Header level={2} text="Your Shelf Stats" />
       <Row gutter={[16, 16]}>
         <Col xs={24} md={12}>
-          <StatusPie data={data} />
+          <StatusPie />
         </Col>
         {/*<Col xs={24} md={12}>
           <GenreBar />
@@ -44,7 +35,7 @@ export const ShelfDashboard = () => {
           <AvgDifficultyByStatus />
         </Col> */}
         <Col xs={24}>
-          <GenreStatusBar data={data} />
+          <GenreStatusBar />
         </Col>
       </Row>
     </div>

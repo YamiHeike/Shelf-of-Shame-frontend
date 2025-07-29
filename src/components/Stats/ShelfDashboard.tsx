@@ -6,6 +6,7 @@ import styles from "./ShelfDashBoard.module.scss";
 
 import { GenreStatusBar } from "./charts/GenreStatusStackedBar";
 import { useShelfDataContext } from "./ShelfDataContext";
+import { GenreBar } from "./charts/GenreBar";
 
 export const ShelfDashboard = () => {
   const { data, loading, errored } = useShelfDataContext();
@@ -25,9 +26,10 @@ export const ShelfDashboard = () => {
         <Col xs={24} md={12}>
           <StatusPie />
         </Col>
-        {/*<Col xs={24} md={12}>
-          <GenreBar />
+        <Col xs={24} md={12}>
+          <GenreBar limit={5} />
         </Col>
+        {/*
         <Col xs={24} md={12}>
           <DifficultyHistogram />
         </Col>

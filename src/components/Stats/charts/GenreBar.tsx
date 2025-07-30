@@ -54,7 +54,7 @@ export const GenreBar = ({ limit }: GenreBarProps) => {
     legend: {
       color: {
         title: false,
-        position: "bottom",
+        position: "top",
       },
     },
     scale: {
@@ -66,7 +66,7 @@ export const GenreBar = ({ limit }: GenreBarProps) => {
 
   return (
     <>
-      <ChartTitle text="Your Favorite Genres" />
+      <ChartTitle text="Your Go-To Genres" />
       <Column {...config} />
     </>
   );

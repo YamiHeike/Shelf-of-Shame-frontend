@@ -2,7 +2,7 @@ import { Status } from "../../../types";
 import { Pie, type PieConfig } from "@ant-design/charts";
 import { toProperCase } from "../../../utils";
 import { ChartTitle } from "./ChartTitle";
-import { ChartColors } from "./colors";
+import { PALETTE } from "./colors";
 import { useShelfDataContext } from "../ShelfDataContext";
 import { ChartUnavailable } from "./ChartUnavailable";
 
@@ -34,7 +34,6 @@ export const StatusPie = () => {
     data: chartData,
     angleField: "value",
     colorField: "type",
-    color: ["#ff4d4f", "#52c41a", "#faad14"],
     label: {
       text: "type",
       labelHeight: 28,
@@ -45,20 +44,20 @@ export const StatusPie = () => {
     legend: {
       color: {
         title: false,
-        position: "bottom",
+        position: "top",
         rowPadding: 5,
       },
     },
     scale: {
       color: {
-        range: [ChartColors.SHAME, ChartColors.GLORY, ChartColors.READING],
+        range: PALETTE,
       },
     },
   };
 
   return (
     <>
-      <ChartTitle text="Book Count by Status" />
+      <ChartTitle text="How Shameful is Your Shelf?" />
       <Pie {...config} />
     </>
   );

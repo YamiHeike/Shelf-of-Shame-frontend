@@ -2,7 +2,7 @@ import { Column, ColumnConfig } from "@ant-design/charts";
 import { Status } from "../../../types";
 import { toProperCase } from "../../../utils";
 import { ChartTitle } from "./ChartTitle";
-import { ChartColors } from "./colors";
+import { PALETTE } from "./colors";
 import { useShelfDataContext } from "../ShelfDataContext";
 import { ChartUnavailable } from "./ChartUnavailable";
 
@@ -46,19 +46,19 @@ export const GenreStatusBar = () => {
     legend: {
       color: {
         title: false,
-        position: "right",
+        position: "top",
       },
     },
     scale: {
       color: {
-        range: [ChartColors.SHAME, ChartColors.GLORY, ChartColors.READING],
+        range: PALETTE,
       },
     },
   };
 
   return (
     <>
-      <ChartTitle text="Books by Genre and Status" />
+      <ChartTitle text="Genres by Progress" />
       <Column {...config} />
     </>
   );

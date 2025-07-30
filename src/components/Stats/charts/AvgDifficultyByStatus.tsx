@@ -3,7 +3,7 @@ import { toProperCase } from "../../../utils";
 import { useShelfDataContext } from "../ShelfDataContext";
 import { ChartUnavailable } from "./ChartUnavailable";
 import { Column, ColumnConfig } from "@ant-design/charts";
-import { ChartColors } from "./colors";
+import { PALETTE } from "./colors";
 import { ChartTitle } from "./ChartTitle";
 
 type DifficultyPerStatusData = {
@@ -54,12 +54,12 @@ export const AvgDifficultyByStatus = () => {
     legend: {
       color: {
         title: false,
-        position: "bottom",
+        position: "top",
       },
     },
     scale: {
       color: {
-        range: [ChartColors.SHAME, ChartColors.GLORY, ChartColors.READING],
+        range: PALETTE,
       },
     },
   };

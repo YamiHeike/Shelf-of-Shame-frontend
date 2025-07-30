@@ -5,6 +5,7 @@ import { ChartUnavailable } from "./ChartUnavailable";
 import { Column, ColumnConfig } from "@ant-design/charts";
 import { PALETTE } from "./colors";
 import { ChartTitle } from "./ChartTitle";
+import { Chart } from "./Chart";
 
 type DifficultyPerStatusData = {
   [status in Status]: {
@@ -65,9 +66,9 @@ export const AvgDifficultyByStatus = () => {
   };
 
   return (
-    <>
+    <Chart>
       <ChartTitle text="Avg. Difficulty per Status" />
       <Column {...config} />
-    </>
+    </Chart>
   );
 };

@@ -4,6 +4,7 @@ import { useShelfDataContext } from "../ShelfDataContext";
 import { ChartUnavailable } from "./ChartUnavailable";
 import { ChartTitle } from "./ChartTitle";
 import { PALETTE } from "./colors";
+import { Chart } from "./Chart";
 
 type GenreBarProps = {
   limit: number;
@@ -65,9 +66,9 @@ export const GenreBar = ({ limit }: GenreBarProps) => {
   };
 
   return (
-    <>
+    <Chart>
       <ChartTitle text="Your Go-To Genres" />
       <Column {...config} />
-    </>
+    </Chart>
   );
 };

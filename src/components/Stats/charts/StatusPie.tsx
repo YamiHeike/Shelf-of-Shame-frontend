@@ -5,6 +5,7 @@ import { ChartTitle } from "./ChartTitle";
 import { PALETTE } from "./colors";
 import { useShelfDataContext } from "../ShelfDataContext";
 import { ChartUnavailable } from "./ChartUnavailable";
+import { Chart } from "./Chart";
 
 export const StatusPie = () => {
   const { data } = useShelfDataContext();
@@ -56,9 +57,9 @@ export const StatusPie = () => {
   };
 
   return (
-    <>
+    <Chart>
       <ChartTitle text="How Shameful is Your Shelf?" />
       <Pie {...config} />
-    </>
+    </Chart>
   );
 };

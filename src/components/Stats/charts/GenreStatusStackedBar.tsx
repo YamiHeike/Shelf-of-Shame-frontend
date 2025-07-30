@@ -5,6 +5,7 @@ import { ChartTitle } from "./ChartTitle";
 import { PALETTE } from "./colors";
 import { useShelfDataContext } from "../ShelfDataContext";
 import { ChartUnavailable } from "./ChartUnavailable";
+import { Chart } from "./Chart";
 
 export const GenreStatusBar = () => {
   const { data } = useShelfDataContext();
@@ -57,9 +58,9 @@ export const GenreStatusBar = () => {
   };
 
   return (
-    <>
+    <Chart>
       <ChartTitle text="Genres by Progress" />
       <Column {...config} />
-    </>
+    </Chart>
   );
 };

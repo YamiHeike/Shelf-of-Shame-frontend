@@ -23,8 +23,11 @@ export const ShelfDashboard = () => {
 
   return (
     <div className={styles.dashboardContainer}>
-      <Header level={2} text="Your Shelf Stats" />
-
+      <Header
+        level={2}
+        text="Your Shelf Stats"
+        style={{ color: "#fff", textAlign: "center", marginBottom: "2rem" }}
+      />
       <Row gutter={[16, 16]}>
         <Col xs={24} md={12}>
           <AvgDifficultyByStatus />

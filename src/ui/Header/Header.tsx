@@ -3,10 +3,9 @@ import { TitleProps } from "antd/es/typography/Title";
 
 type HeaderProps = {
   text: string;
+  style?: React.CSSProperties;
 } & TitleProps;
 
-export const Header = ({ text }: HeaderProps) => {
-  return (
-    <Typography.Title style={{ color: "#1890ff" }}>{text}</Typography.Title>
-  );
+export const Header = ({ text, style }: HeaderProps) => {
+  return <Typography.Title style={{ ...style }}>{text}</Typography.Title>;
 };

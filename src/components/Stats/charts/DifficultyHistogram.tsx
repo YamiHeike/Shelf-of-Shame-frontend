@@ -4,6 +4,7 @@ import { ChartUnavailable } from "./ChartUnavailable";
 import { ChartTitle } from "./ChartTitle";
 import { toProperCase } from "../../../utils";
 import { PALETTE } from "./colors";
+import { Chart } from "./Chart";
 
 export const DifficultyHistogram = () => {
   const { data } = useShelfDataContext();
@@ -39,9 +40,9 @@ export const DifficultyHistogram = () => {
   };
 
   return (
-    <>
+    <Chart>
       <ChartTitle text="How Difficult Are Your Reads?" />
       <Histogram {...config} />
-    </>
+    </Chart>
   );
 };

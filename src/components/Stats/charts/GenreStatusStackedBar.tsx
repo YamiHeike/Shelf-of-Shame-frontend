@@ -41,8 +41,8 @@ export const GenreStatusBar = () => {
     data: chartData,
     xField: "genre",
     yField: "count",
-    seriesField: "status",
     colorField: "status",
+    stack: true,
     legend: {
       color: {
         title: false,

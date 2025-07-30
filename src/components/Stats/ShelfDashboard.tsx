@@ -26,7 +26,7 @@ export const ShelfDashboard = () => {
       <Header
         level={2}
         text="Your Shelf Stats"
-        style={{ color: "#fff", textAlign: "center", marginBottom: "2rem" }}
+        style={{ color: "#BF2633", textAlign: "center", marginBottom: "2rem" }}
       />
       <Row gutter={[16, 16]}>
         <Col xs={24} md={12}>

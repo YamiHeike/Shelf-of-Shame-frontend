@@ -7,5 +7,9 @@ type HeaderProps = {
 } & TitleProps;
 
 export const Header = ({ text, style }: HeaderProps) => {
-  return <Typography.Title style={{ ...style }}>{text}</Typography.Title>;
+  return (
+    <Typography.Title style={{ color: "#1890ff", ...style }}>
+      {text}
+    </Typography.Title>
+  );
 };

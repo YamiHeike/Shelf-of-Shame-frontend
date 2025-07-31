@@ -1,5 +1,5 @@
 import { Row, Col } from "antd";
-import { ErrorMessage, Header, Loading } from "../../ui";
+import { ErrorMessage, Loading } from "../../ui";
 import { NoData } from "../../ui/NoData";
 import { StatusPie } from "./charts/StatusPie";
 import styles from "./ShelfDashBoard.module.scss";
@@ -9,6 +9,7 @@ import { useShelfDataContext } from "./ShelfDataContext";
 import { GenreBar } from "./charts/GenreBar";
 import { AvgDifficultyByStatus } from "./charts/AvgDifficultyByStatus";
 import { DifficultyHistogram } from "./charts/DifficultyHistogram";
+import { SummaryPanel } from "./SummaryPanel";
 
 export const ShelfDashboard = () => {
   const { data, loading, errored } = useShelfDataContext();
@@ -22,29 +23,27 @@ export const ShelfDashboard = () => {
   }
 
   return (
-    <div className={styles.dashboardContainer}>
-      <Header
-        level={2}
-        text="Your Shelf Stats"
-        style={{ color: "#BF2633", textAlign: "center", marginBottom: "2rem" }}
-      />
-      <Row gutter={[16, 16]}>
-        <Col xs={24} md={12}>
-          <AvgDifficultyByStatus />
-        </Col>
-        <Col xs={24} md={12}>
-          <StatusPie />
-        </Col>
-        <Col xs={24} md={12}>
-          <GenreBar limit={5} />
-        </Col>
-        <Col xs={24} md={12}>
-          <DifficultyHistogram />
-        </Col>
-        <Col xs={24}>
-          <GenreStatusBar />
-        </Col>
-      </Row>
-    </div>
+    <>
+      <SummaryPanel />
+      <div className={styles.dashboardContainer}>
+        <Row gutter={[16, 16]}>
+          <Col xs={24} md={12}>
+            <AvgDifficultyByStatus />
+          </Col>
+          <Col xs={24} md={12}>
+            <StatusPie />
+          </Col>
+          <Col xs={24} md={12}>
+            <GenreBar limit={5} />
+          </Col>
+          <Col xs={24} md={12}>
+            <DifficultyHistogram />
+          </Col>
+          <Col xs={24}>
+            <GenreStatusBar />
+          </Col>
+        </Row>
+      </div>
+    </>
   );
 };

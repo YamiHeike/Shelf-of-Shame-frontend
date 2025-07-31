@@ -8,7 +8,7 @@ type ChartTitleProps = {
 
 export const ChartTitle = ({ text }: ChartTitleProps) => {
   return (
-    <Title level={3} style={{ fontWeight: 100 }}>
+    <Title level={3} style={{ fontWeight: 600 }}>
       {text}
     </Title>
   );

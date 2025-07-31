@@ -1,0 +1,32 @@
+.summaryPanel {
+  background: #1f1f2e;
+  padding: 1.5rem;
+  border: 1px solid #2c2c3b;
+  color: #f0f0f5;
+
+  .ant-card {
+    background: #2a2a3c;
+    border: none;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+    transition: box-shadow 0.3s, transform 0.2s;
+    color: #fafafa;
+
+    .ant-statistic-title {
+      color: #c9c9d6;
+    }
+
+    .ant-statistic-content {
+      color: #ffffff;
+    }
+
+    &:hover {
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+      transform: translateY(-2px);
+    }
+  }
+
+  h4,
+  .ant-typography {
+    color: #ffffff;
+  }
+}

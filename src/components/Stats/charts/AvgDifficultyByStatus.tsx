@@ -1,0 +1,74 @@
+import { Status } from "../../../types";
+import { toProperCase } from "../../../utils";
+import { useShelfDataContext } from "../ShelfDataContext";
+import { ChartUnavailable } from "./ChartUnavailable";
+import { Column, ColumnConfig } from "@ant-design/charts";
+import { PALETTE } from "./colors";
+import { ChartTitle } from "./ChartTitle";
+import { Chart } from "./Chart";
+
+type DifficultyPerStatusData = {
+  [status in Status]: {
+    sum: number;
+    count: number;
+  };
+};
+
+export const AvgDifficultyByStatus = () => {
+  const { data } = useShelfDataContext();
+
+  if (!data) {
+    return <ChartUnavailable />;
+  }
+
+  const aggregation: DifficultyPerStatusData = data.reduce((acc, item) => {
+    const status = item.status;
+    const difficulty = item.difficulty;
+    if (!acc[status]) {
+      acc[status] = {
+        sum: 0,
+        count: 0,
+      };
+    }
+
+    acc[status].sum += difficulty;
+    acc[status].count++;
+    return acc;
+  }, {} as DifficultyPerStatusData);
+
+  const chartData = Object.entries(aggregation).flatMap(
+    ([status, { sum, count }]) => ({
+      type: toProperCase(status),
+      value: parseFloat((sum / count).toFixed(2)),
+    })
+  );
+
+  if (!data) {
+    return <ChartUnavailable />;
+  }
+
+  const config: ColumnConfig = {
+    data: chartData,
+    xField: "type",
+    yField: "value",
+    colorField: "type",
+    legend: {
+      color: {
+        title: false,
+        position: "top",
+      },
+    },
+    scale: {
+      color: {
+        range: PALETTE,
+      },
+    },
+  };
+
+  return (
+    <Chart>
+      <ChartTitle text="Avg. Difficulty per Status" />
+      <Column {...config} />
+    </Chart>
+  );
+};

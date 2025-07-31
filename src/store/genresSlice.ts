@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { Genre } from "../types";
 import { fetchGenres } from "./genreThunk";
 
-type GenresState = {
+export type GenresState = {
   list: Genre[];
   loading: boolean;
   error: string | null;

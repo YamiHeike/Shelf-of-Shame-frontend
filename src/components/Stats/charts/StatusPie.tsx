@@ -1,15 +1,19 @@
-import { Status, type UserShelfItemRecord } from "../../../types";
+import { Status } from "../../../types";
 import { Pie, type PieConfig } from "@ant-design/charts";
 import { toProperCase } from "../../../utils";
-import { Typography } from "antd";
+import { ChartTitle } from "./ChartTitle";
+import { PALETTE } from "./colors";
+import { useShelfDataContext } from "../ShelfDataContext";
+import { ChartUnavailable } from "./ChartUnavailable";
+import { Chart } from "./Chart";
 
-const { Title } = Typography;
+export const StatusPie = () => {
+  const { data } = useShelfDataContext();
 
-type StatusPieProps = {
-  data: UserShelfItemRecord[];
-};
+  if (!data) {
+    return <ChartUnavailable />;
+  }
 
-export const StatusPie = ({ data }: StatusPieProps) => {
   const statusCounts = data.reduce(
     (acc, item) => {
       acc[item.status]++;
@@ -31,7 +35,6 @@ export const StatusPie = ({ data }: StatusPieProps) => {
     data: chartData,
     angleField: "value",
     colorField: "type",
-    color: ["#ff4d4f", "#52c41a", "#faad14"],
     label: {
       text: "type",
       labelHeight: 28,
@@ -42,23 +45,21 @@ export const StatusPie = ({ data }: StatusPieProps) => {
     legend: {
       color: {
         title: false,
-        position: "bottom",
+        position: "top",
         rowPadding: 5,
       },
     },
     scale: {
       color: {
-        range: ["#ff4d4f", "#52c41a", "#faad14"],
+        range: PALETTE,
       },
     },
   };
 
   return (
-    <>
-      <Title level={3} style={{ fontWeight: 100 }}>
-        Book Count by Status
-      </Title>
+    <Chart>
+      <ChartTitle text="How Shameful is Your Shelf?" />
       <Pie {...config} />
-    </>
+    </Chart>
   );
 };

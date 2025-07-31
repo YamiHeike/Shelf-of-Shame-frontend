@@ -1,0 +1,23 @@
+.button {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 48px;
+  height: 48px;
+  background-color: #2a2a3c;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 24px;
+  z-index: 1000;
+  transition: background 0.3s ease-in-out;
+
+  &:hover {
+    background: linear-gradient(135deg, #4a4a8c, #bf2b51);
+  }
+}

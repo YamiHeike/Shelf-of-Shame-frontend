@@ -6,6 +6,7 @@ export * from "./Header";
 export * from "./Loading";
 export * from "./NotFoundSwitch";
 export * from "./RotatingLogo";
+export * from "./ScrollToggleButton";
 export * from "./SpringButton";
 export * from "./TooltipNavButton";
 export * from "./ValidatedField";

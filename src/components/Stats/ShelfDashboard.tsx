@@ -1,5 +1,5 @@
 import { Row, Col } from "antd";
-import { ErrorMessage, Loading } from "../../ui";
+import { ErrorMessage, Loading, ScrollToggleBottom } from "../../ui";
 import { NoData } from "../../ui/NoData";
 import { StatusPie } from "./charts/StatusPie";
 import styles from "./ShelfDashBoard.module.scss";
@@ -43,6 +43,7 @@ export const ShelfDashboard = () => {
             <GenreStatusBar />
           </Col>
         </Row>
+        <ScrollToggleBottom />
       </div>
     </>
   );

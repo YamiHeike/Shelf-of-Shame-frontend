@@ -64,6 +64,8 @@ export const ShelfPanelItem: React.FC<ShelfOfShameItemProps> = ({ item }) => {
         <h4 className={styles.authors} title={authors}>
           {authors}
         </h4>
+        <p className={styles.description}>Difficulty:</p>
+        <StarRating baseScore={item.difficulty} />
         <p className={styles.description} title={item.book.description}>
           {descriptionSnippet}
         </p>
@@ -81,7 +83,7 @@ export const ShelfPanelItem: React.FC<ShelfOfShameItemProps> = ({ item }) => {
           ))}
           {hasNotes && <NotesIndicator notes={item.notes} />}
         </div>
-        <StarRating baseScore={item.difficulty} />
+
         <Button type="primary" style={{ marginTop: "auto" }}>
           More
         </Button>

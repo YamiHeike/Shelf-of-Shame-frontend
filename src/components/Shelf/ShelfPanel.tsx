@@ -52,8 +52,16 @@ export const ShelfPanel = () => {
           ))}
         </ul>
         <div>
-          {!data.first && <Button onClick={handlePrev}>Previous</Button>}
-          {!data.last && <Button onClick={handleNext}>Next</Button>}
+          {!data.first && (
+            <Button type="primary" onClick={handlePrev}>
+              Previous
+            </Button>
+          )}
+          {!data.last && (
+            <Button type="primary" onClick={handleNext}>
+              Next
+            </Button>
+          )}
         </div>
       </div>
     );

@@ -3,10 +3,11 @@
 .container {
   @include mixins.outlet();
   padding: 1rem;
-  background: linear-gradient(135deg, #383677, #a61b40);
+  background-color: whitesmoke;
 }
 
 .gridContainer {
+  margin-block: 1.5em;
   display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;

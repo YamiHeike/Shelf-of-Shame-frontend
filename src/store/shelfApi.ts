@@ -15,14 +15,14 @@ export const shelfApi = createApi({
   }),
   tagTypes: ["Shelf"],
   endpoints: (builder) => ({
-    getShelf: builder.query<UserShelfItemRecord, void>({
+    getShelf: builder.query<UserShelfItemRecord[], void>({
       query: () => "shelf",
       providesTags: ["Shelf"],
     }),
     getShelfPage: builder.query<PaginatedData<UserShelfItemRecord>, PageParams>(
       {
         query: ({ page = 0, size = 20 }: PageParams) => ({
-          url: "shelf/paged",
+          url: "shelf/pages",
           params: { page, size },
         }),
         providesTags: ["Shelf"],

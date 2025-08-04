@@ -8,5 +8,6 @@ export * from "./NotFoundSwitch";
 export * from "./RotatingLogo";
 export * from "./ScrollToggleButton";
 export * from "./SpringButton";
+export * from "./StarRating";
 export * from "./TooltipNavButton";
 export * from "./ValidatedField";

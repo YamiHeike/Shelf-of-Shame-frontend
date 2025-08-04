@@ -11,3 +11,6 @@ export const toProperCase = (str: string) => {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 };
+
+export const truncate = (text: string, maxLength: number) =>
+  text.length > maxLength ? text.slice(0, maxLength).trimEnd() + "…" : text;

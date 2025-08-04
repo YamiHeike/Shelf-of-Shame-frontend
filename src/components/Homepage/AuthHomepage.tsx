@@ -7,7 +7,7 @@ import { useGetShelfQuery } from "../../store/shelfApi";
 import { useLibraryData } from "../../hooks";
 import { getCurrentReads, getStats } from "../../utils";
 import { EmptyShelf } from "../Shelf";
-import { ShelfCard } from "../Shelf/ShelfCard";
+import { ShelfCard } from "./ShelfCard";
 
 const { Content } = Layout;
 const { useBreakpoint } = Grid;

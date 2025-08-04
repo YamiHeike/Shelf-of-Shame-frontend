@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Card, Tooltip, Tag, Dropdown, Button } from "antd";
-import { MoreOutlined, FileTextOutlined } from "@ant-design/icons";
+import { Card, Tag, Dropdown, Button } from "antd";
+import { MoreOutlined } from "@ant-design/icons";
 import { UserShelfItemRecord, Status } from "../../types";
 import { fetchCoverUrl, toProperCase, truncate } from "../../utils";
 import styles from "./ShelfPanelItem.module.scss";
 import { ShelfItemMenu } from "./ShelfItemMenu";
 import { StarRating } from "../../ui";
+import { NotesIndicator } from "./NotesIndicator";
 
 const STATUS_COLORS: Record<Status, string> = {
   [Status.SHAME]: "volcano",
@@ -22,7 +23,7 @@ export const ShelfPanelItem: React.FC<ShelfOfShameItemProps> = ({ item }) => {
 
   useEffect(() => {
     let active = true;
-    fetchCoverUrl(item.book.isbn).then((url) => {
+    fetchCoverUrl(item.book.isbn, true).then((url) => {
       if (active) setCoverUrl(url);
     });
     return () => {
@@ -73,21 +74,12 @@ export const ShelfPanelItem: React.FC<ShelfOfShameItemProps> = ({ item }) => {
           >
             {toProperCase(item.status)}
           </Tag>
-
           {item.book.genres.map((genre) => (
             <Tag key={genre.id} color="default" style={{ fontWeight: "bold" }}>
               {genre.name}
             </Tag>
           ))}
-
-          {hasNotes && (
-            <Tooltip title={item.notes}>
-              <FileTextOutlined
-                style={{ color: "#888", cursor: "pointer", marginLeft: "auto" }}
-                aria-label="Has notes"
-              />
-            </Tooltip>
-          )}
+          {hasNotes && <NotesIndicator notes={item.notes} />}
         </div>
         <StarRating baseScore={item.difficulty} />
         <Button type="primary" style={{ marginTop: "auto" }}>

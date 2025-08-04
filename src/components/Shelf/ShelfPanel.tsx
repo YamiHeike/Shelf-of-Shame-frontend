@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { ErrorMessage, Header, Loading, SpringButton } from "../../ui";
+import {
+  ErrorMessage,
+  Header,
+  Loading,
+  ScrollToggleBottom,
+  SpringButton,
+} from "../../ui";
 import { useAuth } from "../Auth";
 import { useGetShelfPageQuery } from "../../store/shelfApi";
 import { NoData } from "../../ui/NoData";
@@ -62,6 +68,7 @@ export const ShelfPanel = () => {
         }}
       />
       <div>{content}</div>
+      <ScrollToggleBottom />
     </section>
   );
 };

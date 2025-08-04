@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { UserShelfItemRecord } from "../types";
+import { PageParams, PaginatedData, UserShelfItemRecord } from "../types";
 
 export const shelfApi = createApi({
   reducerPath: "shelfApi",
@@ -15,11 +15,20 @@ export const shelfApi = createApi({
   }),
   tagTypes: ["Shelf"],
   endpoints: (builder) => ({
-    getShelf: builder.query<UserShelfItemRecord[], void>({
+    getShelf: builder.query<UserShelfItemRecord, void>({
       query: () => "shelf",
       providesTags: ["Shelf"],
     }),
+    getShelfPage: builder.query<PaginatedData<UserShelfItemRecord>, PageParams>(
+      {
+        query: ({ page = 0, size = 20 }: PageParams) => ({
+          url: "shelf/paged",
+          params: { page, size },
+        }),
+        providesTags: ["Shelf"],
+      }
+    ),
   }),
 });
 
-export const { useGetShelfQuery } = shelfApi;
+export const { useGetShelfQuery, useGetShelfPageQuery } = shelfApi;

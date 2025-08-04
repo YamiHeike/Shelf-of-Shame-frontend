@@ -68,7 +68,7 @@ export const ShelfPanel = () => {
         }}
       />
       <div>{content}</div>
-      {data && <ScrollToggleBottom />}
+      {data && data.content.length !== 0 && <ScrollToggleBottom />}
     </section>
   );
 };

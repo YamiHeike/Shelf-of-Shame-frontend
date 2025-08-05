@@ -38,7 +38,7 @@ export const routes: AppRoutes = {
     label: "Your Shelf",
   },
   SHELF_ITEM_DETAILS: {
-    path: "/shelf/:isbn",
+    path: "/shelf/:id",
   },
   ADD: {
     path: "/new",

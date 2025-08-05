@@ -85,7 +85,7 @@ export const ShelfPanelItem: React.FC<ShelfOfShameItemProps> = ({ item }) => {
           {hasNotes && <NotesIndicator notes={item.notes} />}
         </div>
 
-        <Link to={`${item.book.isbn}`}>
+        <Link to={`${item.id}`}>
           <Button type="primary" style={{ marginTop: "auto" }}>
             More
           </Button>

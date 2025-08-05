@@ -7,6 +7,7 @@ import styles from "./ShelfPanelItem.module.scss";
 import { ShelfItemMenu } from "./ShelfItemMenu";
 import { StarRating } from "../../ui";
 import { NotesIndicator } from "./NotesIndicator";
+import { Link } from "react-router-dom";
 
 const STATUS_COLORS: Record<Status, string> = {
   [Status.SHAME]: "volcano",
@@ -84,9 +85,11 @@ export const ShelfPanelItem: React.FC<ShelfOfShameItemProps> = ({ item }) => {
           {hasNotes && <NotesIndicator notes={item.notes} />}
         </div>
 
-        <Button type="primary" style={{ marginTop: "auto" }}>
-          More
-        </Button>
+        <Link to={`${item.book.isbn}`}>
+          <Button type="primary" style={{ marginTop: "auto" }}>
+            More
+          </Button>
+        </Link>
       </div>
     </Card>
   );

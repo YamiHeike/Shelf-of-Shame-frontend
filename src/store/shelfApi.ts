@@ -28,7 +28,13 @@ export const shelfApi = createApi({
         providesTags: ["Shelf"],
       }
     ),
+    getShelfItem: builder.query<UserShelfItemRecord, number>({
+      query: (id: number) => ({
+        url: `/shelf/${id}`,
+      }),
+    }),
   }),
 });
 
-export const { useGetShelfQuery, useGetShelfPageQuery } = shelfApi;
+export const { useGetShelfQuery, useGetShelfPageQuery, useGetShelfItemQuery } =
+  shelfApi;

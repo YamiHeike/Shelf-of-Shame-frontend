@@ -85,6 +85,7 @@ export const NavMenu = () => {
             style={({ isActive }) => ({
               color: isActive ? "#BF2633" : "inherit",
             })}
+            end
           >
             {item.label}
           </NavLink>

@@ -18,6 +18,10 @@ export const NavMenu = () => {
         key: routes.SHELF.path,
         label: routes.SHELF.label,
       },
+      {
+        key: routes.STATS.path,
+        label: routes.STATS.label,
+      },
     ];
   } else {
     items = [

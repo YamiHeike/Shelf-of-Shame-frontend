@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
 import { Card, Tag, Dropdown, Button } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 import { UserShelfItemRecord, Status } from "../../types";
-import { fetchCoverUrl, toProperCase, truncate } from "../../utils";
+import { retrieveAuthors, toProperCase, truncate } from "../../utils";
 import styles from "./ShelfPanelItem.module.scss";
 import { ShelfItemMenu } from "./ShelfItemMenu";
 import { StarRating } from "../../ui";
 import { NotesIndicator } from "./NotesIndicator";
 import { Link } from "react-router-dom";
+import { useCoverUrl } from "../../hooks";
 
 const STATUS_COLORS: Record<Status, string> = {
   [Status.SHAME]: "volcano",
@@ -20,21 +20,8 @@ type ShelfOfShameItemProps = {
 };
 
 export const ShelfPanelItem: React.FC<ShelfOfShameItemProps> = ({ item }) => {
-  const [coverUrl, setCoverUrl] = useState<string | null>(null);
-
-  useEffect(() => {
-    let active = true;
-    fetchCoverUrl(item.book.isbn, true).then((url) => {
-      if (active) setCoverUrl(url);
-    });
-    return () => {
-      active = false;
-    };
-  }, [item.book.isbn]);
-
-  const authors = item.book.authors
-    .map((a) => `${a.firstName} ${a.lastName}`)
-    .join(", ");
+  const coverUrl = useCoverUrl(item.book.isbn);
+  const authors = retrieveAuthors(item.book.authors);
 
   const descriptionSnippet = truncate(item.book.description || "", 120);
   const hasNotes = item.notes?.trim() ?? "" !== "";

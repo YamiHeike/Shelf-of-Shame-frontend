@@ -16,6 +16,7 @@ export const ShelfItemDetails = ({ item }: ShelfItemDetailsHeaderProps) => {
   const { title, genres, numberOfPages, description } = item.book;
 
   const authors = retrieveAuthors(item.book.authors);
+  const hasNotes = item.notes?.trim() ?? "" !== "";
 
   return (
     <div className={styles.header}>
@@ -40,9 +41,11 @@ export const ShelfItemDetails = ({ item }: ShelfItemDetailsHeaderProps) => {
         <Card title="Description" className={styles.section}>
           <p>{description}</p>
         </Card>
-        <Card title="My Notes" className={styles.section}>
-          <p>{item.notes}</p>
-        </Card>
+        {hasNotes && (
+          <Card title="My Notes" className={styles.section}>
+            <p>{item.notes}</p>
+          </Card>
+        )}
       </div>
     </div>
   );

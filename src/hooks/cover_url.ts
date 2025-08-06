@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchCoverUrl } from "../utils";
 
-export const useCoverUrl = (isbn: string, large: boolean) => {
+export const useCoverUrl = (isbn: string, large = false) => {
   const [coverUrl, setCoverUrl] = useState<string | null>(null);
   useEffect(() => {
     let active = true;

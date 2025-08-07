@@ -1,5 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { PageParams, PaginatedData, UserShelfItemRecord } from "../types";
+import {
+  EditShelfItemDto,
+  PageParams,
+  PaginatedData,
+  UserShelfItemRecord,
+} from "../types";
 
 export const shelfApi = createApi({
   reducerPath: "shelfApi",
@@ -41,6 +46,20 @@ export const shelfApi = createApi({
       }),
       invalidatesTags: ["Shelf"],
     }),
+    editShelfItemDetails: builder.mutation<
+      UserShelfItemRecord,
+      {
+        id: number;
+        body: EditShelfItemDto;
+      }
+    >({
+      query: ({ id, body }) => ({
+        url: `shelf/${id}/edit-details`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["Shelf"],
+    }),
     deleteShelfItem: builder.mutation<void, number>({
       query: (id: number) => ({
         url: `shelf/${id}`,
@@ -56,5 +75,6 @@ export const {
   useGetShelfPageQuery,
   useGetShelfItemQuery,
   useMarkAsReadMutation,
+  useEditShelfItemDetailsMutation,
   useDeleteShelfItemMutation,
 } = shelfApi;

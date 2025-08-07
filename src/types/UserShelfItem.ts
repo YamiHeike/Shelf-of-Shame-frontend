@@ -35,3 +35,9 @@ export type UserShelfItemRecord = {
   difficulty: number;
   status: Status;
 };
+
+export type EditShelfItemDto = {
+  status: Status;
+  notes: string;
+  difficulty: number;
+};

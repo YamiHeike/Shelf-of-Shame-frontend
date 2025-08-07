@@ -1,17 +1,14 @@
 import { Card, Tag, Typography } from "antd";
 import styles from "./ShelfItemDetails.module.scss";
-import { UserShelfItemRecord } from "../../types";
 import { Header, StarRating } from "../../ui";
 import { useCoverUrl } from "../../hooks";
 import { retrieveAuthors } from "../../utils";
-
-type ShelfItemDetailsHeaderProps = {
-  item: UserShelfItemRecord;
-};
+import { useUserShelfItemContext } from "../../store";
 
 const { Text, Paragraph } = Typography;
 
-export const ShelfItemDetails = ({ item }: ShelfItemDetailsHeaderProps) => {
+export const ShelfItemDetails = () => {
+  const item = useUserShelfItemContext();
   const coverUrl = useCoverUrl(item.book.isbn, true);
   const { title, genres, numberOfPages, description } = item.book;
 
@@ -23,6 +20,7 @@ export const ShelfItemDetails = ({ item }: ShelfItemDetailsHeaderProps) => {
       <img src={coverUrl ?? ""} alt={title} className={styles.cover} />
       <div className={styles.headerInfo}>
         <div className={styles.tags}>
+          {/* TODO: fix tag */}
           <Tag color="green">Glory</Tag>
           {genres.map((genre) => (
             <Tag key={genre.id}>{genre.name}</Tag>

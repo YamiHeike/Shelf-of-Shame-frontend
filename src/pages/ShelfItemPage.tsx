@@ -4,6 +4,7 @@ import { ShelfItemDetails } from "../components/ShelfItemDetails";
 import styles from "./ShelfItemDetailsPage.module.scss";
 import { useGetShelfItemQuery } from "../store/shelfApi";
 import { ErrorMessage, Loading } from "../ui";
+import { UserShelfItemContextProvider } from "../store";
 
 export const ShelfItemPage = () => {
   const { id } = useParams();
@@ -25,10 +26,12 @@ export const ShelfItemPage = () => {
   return (
     <AuthPage
       Page={
-        <div className={styles.detailsPage}>
-          <ShelfItemDetails item={data} />
-          {/*<ShelfItemDetailsContent />*/}
-        </div>
+        <UserShelfItemContextProvider item={data}>
+          <div className={styles.detailsPage}>
+            <ShelfItemDetails />
+            {/*<ShelfItemDetailsContent />*/}
+          </div>
+        </UserShelfItemContextProvider>
       }
     />
   );

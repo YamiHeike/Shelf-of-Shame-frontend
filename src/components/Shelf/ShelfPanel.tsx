@@ -12,6 +12,7 @@ import { NoData } from "../../ui/NoData";
 import { ShelfPanelItem } from "./ShelfPanelItem";
 import { Button } from "antd";
 import styles from "./ShelfPanel.module.scss";
+import { UserShelfItemContextProvider } from "../../store";
 
 export const ShelfPanel = () => {
   const { user } = useAuth();
@@ -47,7 +48,9 @@ export const ShelfPanel = () => {
         <ul className={styles.gridContainer}>
           {data.content.map((item) => (
             <li key={item.id}>
-              <ShelfPanelItem item={item} />
+              <UserShelfItemContextProvider item={item}>
+                <ShelfPanelItem />
+              </UserShelfItemContextProvider>
             </li>
           ))}
         </ul>

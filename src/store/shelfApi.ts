@@ -33,8 +33,20 @@ export const shelfApi = createApi({
         url: `/shelf/${id}`,
       }),
     }),
+
+    markAsRead: builder.mutation<UserShelfItemRecord, number>({
+      query: (id: number) => ({
+        url: `/shelf/${id}/mark-read`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["Shelf"],
+    }),
   }),
 });
 
-export const { useGetShelfQuery, useGetShelfPageQuery, useGetShelfItemQuery } =
-  shelfApi;
+export const {
+  useGetShelfQuery,
+  useGetShelfPageQuery,
+  useGetShelfItemQuery,
+  useMarkAsReadMutation,
+} = shelfApi;

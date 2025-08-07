@@ -1,6 +1,6 @@
 import { Card, Tag, Dropdown, Button } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
-import { UserShelfItemRecord, Status } from "../../types";
+import { Status } from "../../types";
 import { retrieveAuthors, toProperCase, truncate } from "../../utils";
 import styles from "./ShelfPanelItem.module.scss";
 import { ShelfItemMenu } from "./ShelfItemMenu";
@@ -8,6 +8,7 @@ import { StarRating } from "../../ui";
 import { NotesIndicator } from "./NotesIndicator";
 import { Link } from "react-router-dom";
 import { useCoverUrl } from "../../hooks";
+import { useUserShelfItemContext } from "../../store";
 
 const STATUS_COLORS: Record<Status, string> = {
   [Status.SHAME]: "volcano",
@@ -15,11 +16,8 @@ const STATUS_COLORS: Record<Status, string> = {
   [Status.READING]: "blue",
 };
 
-type ShelfOfShameItemProps = {
-  item: UserShelfItemRecord;
-};
-
-export const ShelfPanelItem: React.FC<ShelfOfShameItemProps> = ({ item }) => {
+export const ShelfPanelItem = () => {
+  const item = useUserShelfItemContext();
   const coverUrl = useCoverUrl(item.book.isbn);
   const authors = retrieveAuthors(item.book.authors);
 

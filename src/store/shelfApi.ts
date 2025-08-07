@@ -38,6 +38,7 @@ export const shelfApi = createApi({
       query: (id: number) => ({
         url: `/shelf/${id}/mark-read`,
         method: "PATCH",
+        headers: { "Content-Type": "application/json" },
       }),
       invalidatesTags: ["Shelf"],
     }),

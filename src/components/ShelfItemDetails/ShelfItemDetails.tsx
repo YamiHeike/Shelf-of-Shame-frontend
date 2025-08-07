@@ -1,10 +1,11 @@
-import { Tag, Typography } from "antd";
+import { Button, Tag, Typography } from "antd";
 import styles from "./ShelfItemDetails.module.scss";
-import { Header, StarRating } from "../../ui";
+import { Header, SpringButton, StarRating } from "../../ui";
 import { useCoverUrl } from "../../hooks";
 import { retrieveAuthors, STATUS_COLORS, toProperCase } from "../../utils";
 import { useUserShelfItemContext } from "../../store";
 import { ShelfItemDetailsBody } from "./ShelfItemDetailsBody";
+import { Link } from "react-router-dom";
 
 const { Text, Paragraph } = Typography;
 
@@ -22,15 +23,28 @@ export const ShelfItemDetails = () => {
         <div className={styles.tags}>
           <Tag
             color={STATUS_COLORS[item.status]}
-            style={{ fontWeight: "bold" }}
+            style={{ fontWeight: "bold", height: "fit-content" }}
           >
             {toProperCase(item.status)}
           </Tag>
           {genres.map((genre) => (
-            <Tag key={genre.id} style={{ fontWeight: "bold" }}>
+            <Tag
+              key={genre.id}
+              style={{ fontWeight: "bold", height: "fit-content" }}
+            >
               {genre.name}
             </Tag>
           ))}
+          <Link
+            to="edit"
+            style={{
+              marginLeft: "auto",
+            }}
+          >
+            <SpringButton>
+              <Button type="primary">Edit</Button>
+            </SpringButton>
+          </Link>
         </div>
         <Header text={title} className={styles.title} />
 

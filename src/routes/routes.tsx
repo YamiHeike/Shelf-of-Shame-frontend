@@ -10,6 +10,7 @@ import {
   RecommendationsPage,
 } from "../pages";
 import { ShelfItemPage } from "../pages/ShelfItemPage";
+import { EditShelfItemPage } from "../pages/EditShelfItemPage";
 
 export type AppRoute = {
   path: string;
@@ -39,6 +40,9 @@ export const routes: AppRoutes = {
   },
   SHELF_ITEM_DETAILS: {
     path: "/shelf/:id",
+  },
+  EDIT_SHELF_ITEM: {
+    path: "/shelf/:id/edit",
   },
   ADD: {
     path: "/new",
@@ -77,6 +81,10 @@ export const router = createBrowserRouter([
       {
         path: routes.SHELF_ITEM_DETAILS.path,
         element: <ShelfItemPage />,
+      },
+      {
+        path: routes.EDIT_SHELF_ITEM.path,
+        element: <EditShelfItemPage />,
       },
       {
         path: routes.ADD.path,

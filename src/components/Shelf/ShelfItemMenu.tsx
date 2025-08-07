@@ -5,6 +5,7 @@ import {
   useMarkAsReadMutation,
 } from "../../store/shelfApi";
 import { Status } from "../../types";
+import { useNavigate } from "react-router-dom";
 
 enum MenuKey {
   EDIT = "edit",
@@ -16,6 +17,8 @@ export const ShelfItemMenu = () => {
   const [markAsRead] = useMarkAsReadMutation();
   const [deleteShelfItem] = useDeleteShelfItemMutation();
   const { id, status } = useUserShelfItemContext();
+  const navigate = useNavigate();
+
   const handleClick: MenuProps["onClick"] = ({ key }) => {
     switch (key) {
       case MenuKey.COMPLETE:
@@ -24,6 +27,8 @@ export const ShelfItemMenu = () => {
       case MenuKey.DELETE:
         deleteShelfItem(id);
         break;
+      case MenuKey.EDIT:
+        navigate(`${id}/edit`);
     }
   };
 

@@ -1,7 +1,11 @@
 import { Card, Tag, Dropdown, Button } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
-import { Status } from "../../types";
-import { retrieveAuthors, toProperCase, truncate } from "../../utils";
+import {
+  retrieveAuthors,
+  STATUS_COLORS,
+  toProperCase,
+  truncate,
+} from "../../utils";
 import styles from "./ShelfPanelItem.module.scss";
 import { ShelfItemMenu } from "./ShelfItemMenu";
 import { StarRating } from "../../ui";
@@ -9,12 +13,6 @@ import { NotesIndicator } from "./NotesIndicator";
 import { Link } from "react-router-dom";
 import { useCoverUrl } from "../../hooks";
 import { useUserShelfItemContext } from "../../store";
-
-const STATUS_COLORS: Record<Status, string> = {
-  [Status.SHAME]: "volcano",
-  [Status.GLORY]: "green",
-  [Status.READING]: "blue",
-};
 
 export const ShelfPanelItem = () => {
   const item = useUserShelfItemContext();

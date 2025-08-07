@@ -36,9 +36,15 @@ export const shelfApi = createApi({
 
     markAsRead: builder.mutation<UserShelfItemRecord, number>({
       query: (id: number) => ({
-        url: `/shelf/${id}/mark-read`,
+        url: `/shelf/${id}`,
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+      }),
+      invalidatesTags: ["Shelf"],
+    }),
+    deleteShelfItem: builder.mutation<void, number>({
+      query: (id: number) => ({
+        url: `shelf/${id}`,
+        method: "DELETE",
       }),
       invalidatesTags: ["Shelf"],
     }),
@@ -50,4 +56,5 @@ export const {
   useGetShelfPageQuery,
   useGetShelfItemQuery,
   useMarkAsReadMutation,
+  useDeleteShelfItemMutation,
 } = shelfApi;

@@ -1,6 +1,9 @@
 import { Menu, MenuProps } from "antd";
 import { useUserShelfItemContext } from "../../store";
-import { useMarkAsReadMutation } from "../../store/shelfApi";
+import {
+  useDeleteShelfItemMutation,
+  useMarkAsReadMutation,
+} from "../../store/shelfApi";
 import { Status } from "../../types";
 
 enum MenuKey {
@@ -10,13 +13,17 @@ enum MenuKey {
 }
 
 export const ShelfItemMenu = () => {
-  const [markAsRead, result] = useMarkAsReadMutation();
+  const [markAsRead] = useMarkAsReadMutation();
+  const [deleteShelfItem] = useDeleteShelfItemMutation();
   const { id, status } = useUserShelfItemContext();
   const handleClick: MenuProps["onClick"] = ({ key }) => {
     switch (key) {
-      case MenuKey.COMPLETE: {
+      case MenuKey.COMPLETE:
         markAsRead(id);
-      }
+        break;
+      case MenuKey.DELETE:
+        deleteShelfItem(id);
+        break;
     }
   };
 

@@ -29,7 +29,6 @@ export const ShelfItemPage = () => {
         <UserShelfItemContextProvider item={data}>
           <div className={styles.detailsPage}>
             <ShelfItemDetails />
-            {/*<ShelfItemDetailsContent />*/}
           </div>
         </UserShelfItemContextProvider>
       }

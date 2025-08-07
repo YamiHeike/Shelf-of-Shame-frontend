@@ -37,6 +37,7 @@ export const shelfApi = createApi({
       query: (id: number) => ({
         url: `/shelf/${id}`,
       }),
+      providesTags: ["Shelf"],
     }),
 
     markAsRead: builder.mutation<UserShelfItemRecord, number>({

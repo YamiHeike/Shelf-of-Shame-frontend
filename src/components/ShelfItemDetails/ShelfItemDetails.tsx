@@ -1,6 +1,6 @@
 import { Button, Tag, Typography } from "antd";
 import styles from "./ShelfItemDetails.module.scss";
-import { Header, SpringButton, StarRating } from "../../ui";
+import { Header, ScrollToggleBottom, SpringButton, StarRating } from "../../ui";
 import { useCoverUrl } from "../../hooks";
 import { retrieveAuthors, STATUS_COLORS, toProperCase } from "../../utils";
 import { useUserShelfItemContext } from "../../store";
@@ -55,6 +55,7 @@ export const ShelfItemDetails = () => {
           <StarRating baseScore={item.difficulty} />
         </div>
       </div>
+      <ScrollToggleBottom />
       <ShelfItemDetailsBody />
     </div>
   );

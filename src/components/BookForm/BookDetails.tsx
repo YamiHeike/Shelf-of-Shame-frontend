@@ -1,7 +1,7 @@
 import { Form, Input, Select, Button, FormInstance } from "antd";
 import { Genre } from "../../types";
 import { FlexContainer, ValidatedField } from "../../ui";
-import { useFormValidationContext } from "./FormValidationContext";
+import { useFormValidationContext } from "../../store";
 import { CoverDisplayManager } from "./CoverDisplayManager";
 import { useCoverPreviewContext } from "./CoverPreviewContext";
 

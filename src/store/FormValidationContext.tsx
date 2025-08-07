@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
-import { FormFieldError } from "../../types";
-import { getValidationErrorMessage } from "../../utils";
+import { FormFieldError } from "../types";
+import { getValidationErrorMessage } from "../utils";
 
 type FormValidationContextType = {
   bookDescriptionLimit: number;

@@ -2,9 +2,13 @@ import { useParams } from "react-router-dom";
 import { AuthPage } from "./AuthPage";
 import styles from "./EditShelfItemPage.module.scss";
 import { useGetShelfItemQuery } from "../store/shelfApi";
-import { ErrorMessage, Loading } from "../ui";
-import { UserShelfItemContextProvider } from "../store";
-import { EditItem } from "../components/ShelfItemDetails/EditItem";
+import { ErrorMessage, Loading, ScrollToggleBottom } from "../ui";
+import {
+  FormValidationContextProvider,
+  UserShelfItemContextProvider,
+} from "../store";
+import { EditItem } from "../components/ShelfItemDetails";
+import { EditItemForm } from "../components/ShelfItemDetails";
 
 export const EditShelfItemPage = () => {
   const { id } = useParams();
@@ -29,8 +33,11 @@ export const EditShelfItemPage = () => {
         <UserShelfItemContextProvider item={data}>
           <div className={styles.container}>
             <EditItem />
-            {/*<EditItemForm />*/}
+            <FormValidationContextProvider>
+              <EditItemForm />
+            </FormValidationContextProvider>
           </div>
+          <ScrollToggleBottom />
         </UserShelfItemContextProvider>
       }
     />

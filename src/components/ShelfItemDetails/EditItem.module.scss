@@ -1,0 +1,38 @@
+.header {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.cover {
+  width: 120px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.statusGroup {
+  display: flex;
+  gap: 1rem;
+}
+
+.slider {
+  width: 100%;
+  max-width: 400px;
+}
+
+.notes {
+  resize: vertical;
+}
+
+.buttonRow {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-start;
+}

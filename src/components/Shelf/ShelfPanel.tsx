@@ -13,6 +13,7 @@ import { ShelfPanelItem } from "./ShelfPanelItem";
 import { Button } from "antd";
 import styles from "./ShelfPanel.module.scss";
 import { UserShelfItemContextProvider } from "../../store";
+import { ShelfFilterBar } from "./ShelfFilterBar";
 
 export const ShelfPanel = () => {
   const { user } = useAuth();
@@ -78,6 +79,7 @@ export const ShelfPanel = () => {
           textAlign: "center",
         }}
       />
+      <ShelfFilterBar />
       <div>{content}</div>
       {data && data.content.length !== 0 && <ScrollToggleBottom />}
     </section>

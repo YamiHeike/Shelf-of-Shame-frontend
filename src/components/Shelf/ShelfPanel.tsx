@@ -46,6 +46,7 @@ export const ShelfPanel = () => {
       difficultyMax: newFilters.difficultyMax,
       genres: newFilters.genres,
     }));
+    setCurrentPage(0);
   };
 
   let content: React.ReactNode;

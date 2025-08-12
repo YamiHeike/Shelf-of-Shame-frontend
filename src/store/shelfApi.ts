@@ -3,6 +3,7 @@ import {
   EditShelfItemDto,
   PageParams,
   PaginatedData,
+  ShelfItemFilter,
   UserShelfItemRecord,
 } from "../types";
 
@@ -26,11 +27,28 @@ export const shelfApi = createApi({
     }),
     getShelfPage: builder.query<PaginatedData<UserShelfItemRecord>, PageParams>(
       {
-        query: ({ page = 0, size = 20 }: PageParams) => ({
+        query: ({
+          page = 0,
+          size = 20,
+          status,
+          difficultyMin,
+          difficultyMax,
+          genres,
+        }: PageParams & ShelfItemFilter) => {
+          const params: PageParams & ShelfItemFilter = { page, size };
+          if (status) params.status = status;
+          if (difficultyMin) params.difficultyMin = difficultyMin;
+          if (difficultyMax) params.difficultyMax = difficultyMax;
+          if (genres && genres.length > 0) params.genres = genres;
+          return {
+            url: "shelf/pages",
+            params,
+          };
+        },
+        /*({
           url: "shelf/pages",
           params: { page, size },
-        }),
-        providesTags: ["Shelf"],
+        })*/ providesTags: ["Shelf"],
       }
     ),
     getShelfItem: builder.query<UserShelfItemRecord, number>({

@@ -6,13 +6,6 @@ import { toProperCase } from "../../utils";
 
 const { Title } = Typography;
 
-/*
-const statusOptions = [
-  { value: Status.SHAME, label: "Shame" },
-  { value: Status.GLORY, label: "Glory" },
-  { value: Status.READING, label: "Reading" },
-]; */
-
 export const ShelfFilterBar = () => {
   const { genres } = useLibraryData();
   const genreOptions = genres.list.map((genre) => ({

@@ -1,11 +1,5 @@
 import { useState } from "react";
-import {
-  ErrorMessage,
-  Header,
-  Loading,
-  ScrollToggleBottom,
-  SpringButton,
-} from "../../ui";
+import { ErrorMessage, Header, Loading, ScrollToggleBottom } from "../../ui";
 import { useAuth } from "../Auth";
 import { useGetShelfPageQuery } from "../../store/shelfApi";
 import { NoData } from "../../ui/NoData";
@@ -14,9 +8,12 @@ import { Button } from "antd";
 import styles from "./ShelfPanel.module.scss";
 import { UserShelfItemContextProvider } from "../../store";
 import { ShelfFilterBar } from "./ShelfFilterBar";
+// import { ShelfItemFilter } from "../../types";
 
 export const ShelfPanel = () => {
   const { user } = useAuth();
+  // const [filters, setFilters] = useState<ShelfItemFilter>({});
+
   if (!user) {
     throw new Error("ShelfPanel component requires authentication");
   }

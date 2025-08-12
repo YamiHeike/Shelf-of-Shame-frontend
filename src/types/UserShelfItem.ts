@@ -41,3 +41,10 @@ export type EditShelfItemDto = {
   notes: string;
   difficulty: number;
 };
+
+export type ShelfItemFilter = {
+  status?: Status;
+  difficultyMin?: number;
+  difficultyMax?: number;
+  genres?: string[];
+};

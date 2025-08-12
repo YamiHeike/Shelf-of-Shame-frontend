@@ -1,15 +1,20 @@
 import { Select, Slider, Typography } from "antd";
-import { Status } from "../../types";
+import { ShelfItemFilter, Status } from "../../types";
 import styles from "./ShelfFilterBar.module.scss";
 import { useLibraryData } from "../../hooks";
 import { toProperCase } from "../../utils";
 
 const { Title } = Typography;
 
-export const ShelfFilterBar = () => {
+type ShelfFilterBarProps = {
+  onFilter: (filters: ShelfItemFilter) => void;
+  filters: ShelfItemFilter;
+};
+
+export const ShelfFilterBar = ({ onFilter, filters }: ShelfFilterBarProps) => {
   const { genres } = useLibraryData();
   const genreOptions = genres.list.map((genre) => ({
-    value: genre.id,
+    value: genre.name,
     label: genre.name,
   }));
 
@@ -18,13 +23,43 @@ export const ShelfFilterBar = () => {
     label: toProperCase(status),
   }));
 
+  statusOptions.push({
+    value: "",
+    label: "All",
+  });
+
+  const changeStatus = (value: any) => {
+    onFilter({
+      ...filters,
+      status: value.toUpperCase() ?? undefined,
+    });
+  };
+
+  const changeDifficultyRange = ([min, max]: number[]) => {
+    onFilter({
+      ...filters,
+      difficultyMin: min,
+      difficultyMax: max,
+    });
+  };
+
+  const changeGenres = (values: any) => {
+    onFilter({
+      ...filters,
+      genres: values,
+    });
+  };
+
   return (
     <div className={styles.filterBar}>
       <Title level={5}>Filter your shelf</Title>
       <div className={styles.filterGroup}>
         <Select
           placeholder="Status"
+          defaultValue={""}
           options={statusOptions}
+          value={filters.status ?? ""}
+          onChange={changeStatus}
           allowClear
           className={styles.filterItem}
         />
@@ -33,6 +68,8 @@ export const ShelfFilterBar = () => {
           min={1}
           max={10}
           defaultValue={[1, 10]}
+          value={[filters.difficultyMin ?? 1, filters.difficultyMax ?? 10]}
+          onChange={changeDifficultyRange}
           marks={{ 1: "1", 5: "5", 10: "10" }}
           className={styles.slider}
         />
@@ -41,6 +78,8 @@ export const ShelfFilterBar = () => {
           placeholder="Genres"
           options={genreOptions}
           allowClear
+          value={filters.genres}
+          onChange={changeGenres}
           className={styles.filterItem}
         />
       </div>

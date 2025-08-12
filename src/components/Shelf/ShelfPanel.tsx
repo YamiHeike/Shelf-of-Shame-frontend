@@ -8,21 +8,27 @@ import { Button } from "antd";
 import styles from "./ShelfPanel.module.scss";
 import { UserShelfItemContextProvider } from "../../store";
 import { ShelfFilterBar } from "./ShelfFilterBar";
-// import { ShelfItemFilter } from "../../types";
+import { PageParams, ShelfItemFilter } from "../../types";
 
 export const ShelfPanel = () => {
   const { user } = useAuth();
-  // const [filters, setFilters] = useState<ShelfItemFilter>({});
+  const [filters, setFilters] = useState<ShelfItemFilter>({});
 
   if (!user) {
     throw new Error("ShelfPanel component requires authentication");
   }
 
   const [currentPage, setCurrentPage] = useState(0);
-  const { data, isLoading, isError } = useGetShelfPageQuery({
-    page: currentPage,
-    size: 8,
-  });
+
+  const params: PageParams & ShelfItemFilter = { page: currentPage, size: 8 };
+
+  if (filters.status) params.status = filters.status;
+  if (filters.difficultyMax) params.difficultyMax = filters.difficultyMax;
+  if (filters.difficultyMin) params.difficultyMin = filters.difficultyMin;
+  if (filters.genres && filters.genres.length > 0)
+    params.genres = filters.genres;
+
+  const { data, isLoading, isError } = useGetShelfPageQuery(params);
 
   const handlePrev = () => {
     if (currentPage > 0) setCurrentPage(currentPage - 1);
@@ -30,6 +36,16 @@ export const ShelfPanel = () => {
 
   const handleNext = () => {
     if (data && !data.last) setCurrentPage(currentPage + 1);
+  };
+
+  const handleFilter = (newFilters: ShelfItemFilter) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      status: newFilters.status,
+      difficultyMin: newFilters.difficultyMin,
+      difficultyMax: newFilters.difficultyMax,
+      genres: newFilters.genres,
+    }));
   };
 
   let content: React.ReactNode;
@@ -76,7 +92,7 @@ export const ShelfPanel = () => {
           textAlign: "center",
         }}
       />
-      <ShelfFilterBar />
+      <ShelfFilterBar onFilter={handleFilter} filters={filters} />
       <div>{content}</div>
       {data && data.content.length !== 0 && <ScrollToggleBottom />}
     </section>

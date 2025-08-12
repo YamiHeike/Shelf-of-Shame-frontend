@@ -19,8 +19,6 @@ export const AuthHomepage = () => {
   const { data, error, isLoading } = useGetShelfQuery();
   const { genres } = useLibraryData();
 
-  if (!user) return <p>Something went wrong</p>;
-
   const isShelfEmpty = !data || data.length === 0;
   const hasShelfData = !!data && data.length > 0;
   const loading = isLoading || genres.loading;
@@ -55,7 +53,7 @@ export const AuthHomepage = () => {
         <ShelfCard
           unreadBooks={unreadBooks}
           currentReads={currentReads}
-          username={user.username}
+          username={user!.username}
         />
       );
   }

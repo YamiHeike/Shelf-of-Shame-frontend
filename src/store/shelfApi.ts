@@ -45,10 +45,7 @@ export const shelfApi = createApi({
             params,
           };
         },
-        /*({
-          url: "shelf/pages",
-          params: { page, size },
-        })*/ providesTags: ["Shelf"],
+        providesTags: ["Shelf"],
       }
     ),
     getShelfItem: builder.query<UserShelfItemRecord, number>({
@@ -63,7 +60,12 @@ export const shelfApi = createApi({
         url: `/shelf/${id}`,
         method: "PATCH",
       }),
-      invalidatesTags: ["Shelf"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(shelfApi.util.invalidateTags(["Shelf"]));
+        } catch {}
+      },
     }),
     editShelfItemDetails: builder.mutation<
       UserShelfItemRecord,
@@ -77,14 +79,24 @@ export const shelfApi = createApi({
         method: "PATCH",
         body,
       }),
-      invalidatesTags: ["Shelf"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(shelfApi.util.invalidateTags(["Shelf"]));
+        } catch {}
+      },
     }),
     deleteShelfItem: builder.mutation<void, number>({
       query: (id: number) => ({
         url: `shelf/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Shelf"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(shelfApi.util.invalidateTags(["Shelf"]));
+        } catch {}
+      },
     }),
   }),
 });

@@ -1,0 +1,47 @@
+.header {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.cover {
+  width: 200px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.headerInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.title {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.authors {
+  color: #666;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.section {
+  background: #fff;
+}

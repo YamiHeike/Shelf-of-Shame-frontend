@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { LoginPage } from "../pages";
 import { useAuth } from "../components/Auth";
 import { Route, Routes, MemoryRouter } from "react-router-dom";
-import { request, setAuthToken } from "../utils";
+import { backendRequest, setAuthToken } from "../utils";
 import { vi } from "vitest";
 import { AxiosRequestHeaders, AxiosResponse } from "axios";
 
@@ -11,6 +11,8 @@ beforeAll(() => {
   global.matchMedia = vi.fn().mockImplementation((query) => ({
     matches: false,
     media: query,
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
     addListener: vi.fn(),
     removeListener: vi.fn(),
   }));
@@ -27,7 +29,7 @@ vi.mock("../components/Auth", async () => {
 });
 
 vi.mock("../utils", () => ({
-  request: vi.fn(),
+  backendRequest: vi.fn(),
   setAuthToken: vi.fn(),
 }));
 
@@ -52,7 +54,7 @@ describe("LoginPage component", () => {
       },
     };
 
-    vi.mocked(request).mockResolvedValueOnce(mockedResponse);
+    vi.mocked(backendRequest).mockResolvedValueOnce(mockedResponse);
 
     const mockLogin = vi.fn();
     vi.mocked(useAuth).mockImplementation(() => ({
@@ -73,10 +75,10 @@ describe("LoginPage component", () => {
 
     await userEvent.type(screen.getByPlaceholderText("Email"), email);
     await userEvent.type(screen.getByPlaceholderText("Password"), password);
-    await userEvent.click(screen.getByRole("button", { name: /login/i }));
+    await userEvent.click(screen.getByRole("button", { name: /sign in/i }));
 
     await waitFor(() => {
-      expect(request).toHaveBeenCalledWith(
+      expect(backendRequest).toHaveBeenCalledWith(
         "POST",
         "http://localhost:8080/login",
         { email, password }

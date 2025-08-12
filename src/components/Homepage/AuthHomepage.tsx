@@ -7,7 +7,7 @@ import { useGetShelfQuery } from "../../store/shelfApi";
 import { useLibraryData } from "../../hooks";
 import { getCurrentReads, getStats } from "../../utils";
 import { EmptyShelf } from "../Shelf";
-import { ShelfCard } from "../Shelf/ShelfCard";
+import { ShelfCard } from "./ShelfCard";
 
 const { Content } = Layout;
 const { useBreakpoint } = Grid;
@@ -18,8 +18,6 @@ export const AuthHomepage = () => {
 
   const { data, error, isLoading } = useGetShelfQuery();
   const { genres } = useLibraryData();
-
-  if (!user) return <p>Something went wrong</p>;
 
   const isShelfEmpty = !data || data.length === 0;
   const hasShelfData = !!data && data.length > 0;
@@ -55,7 +53,7 @@ export const AuthHomepage = () => {
         <ShelfCard
           unreadBooks={unreadBooks}
           currentReads={currentReads}
-          username={user.username}
+          username={user!.username}
         />
       );
   }

@@ -1,10 +1,12 @@
 import axios from "axios";
 import defaultCover from "../assets/default_cover.png";
 
-export const fetchCoverUrl = async (isbn: string) => {
+export const fetchCoverUrl = async (isbn: string, fullSize = false) => {
+  const size = fullSize ? "L" : "M";
+
   try {
     const response = await axios.get(
-      `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg`,
+      `https://covers.openlibrary.org/b/isbn/${isbn}-${size}.jpg`,
       {
         responseType: "blob",
       }

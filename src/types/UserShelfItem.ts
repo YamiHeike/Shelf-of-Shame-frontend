@@ -35,3 +35,16 @@ export type UserShelfItemRecord = {
   difficulty: number;
   status: Status;
 };
+
+export type EditShelfItemDto = {
+  status: Status;
+  notes: string;
+  difficulty: number;
+};
+
+export type ShelfItemFilter = {
+  status?: Status;
+  difficultyMin?: number;
+  difficultyMax?: number;
+  genres?: string[];
+};

@@ -6,7 +6,7 @@ import { BookMetadata } from "./BookMetadata";
 import { AuthorSelection } from "./AuthorSelection";
 import { BookDetails } from "./BookDetails";
 import { FormButton } from "../../ui/FormButton";
-import { useFormValidationContext } from "./FormValidationContext";
+import { useFormValidationContext } from "../../store";
 import { useCoverPreviewContext } from "./CoverPreviewContext";
 import { addNewBookToShelf } from "./add_book";
 

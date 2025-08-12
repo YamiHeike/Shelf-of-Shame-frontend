@@ -1,5 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { UserShelfItemRecord } from "../types";
+import {
+  EditShelfItemDto,
+  PageParams,
+  PaginatedData,
+  ShelfItemFilter,
+  UserShelfItemRecord,
+} from "../types";
 
 export const shelfApi = createApi({
   reducerPath: "shelfApi",
@@ -19,7 +25,87 @@ export const shelfApi = createApi({
       query: () => "shelf",
       providesTags: ["Shelf"],
     }),
+    getShelfPage: builder.query<PaginatedData<UserShelfItemRecord>, PageParams>(
+      {
+        query: ({
+          page = 0,
+          size = 20,
+          status,
+          difficultyMin,
+          difficultyMax,
+          genres,
+        }: PageParams & ShelfItemFilter) => {
+          const params: PageParams & ShelfItemFilter = { page, size };
+          if (status) params.status = status;
+          if (difficultyMin) params.difficultyMin = difficultyMin;
+          if (difficultyMax) params.difficultyMax = difficultyMax;
+          if (genres && genres.length > 0) params.genres = genres;
+          return {
+            url: "shelf/pages",
+            params,
+          };
+        },
+        providesTags: ["Shelf"],
+      }
+    ),
+    getShelfItem: builder.query<UserShelfItemRecord, number>({
+      query: (id: number) => ({
+        url: `/shelf/${id}`,
+      }),
+      providesTags: ["Shelf"],
+    }),
+
+    markAsRead: builder.mutation<UserShelfItemRecord, number>({
+      query: (id: number) => ({
+        url: `/shelf/${id}`,
+        method: "PATCH",
+      }),
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(shelfApi.util.invalidateTags(["Shelf"]));
+        } catch {}
+      },
+    }),
+    editShelfItemDetails: builder.mutation<
+      UserShelfItemRecord,
+      {
+        id: number;
+        body: EditShelfItemDto;
+      }
+    >({
+      query: ({ id, body }) => ({
+        url: `shelf/${id}/edit-details`,
+        method: "PATCH",
+        body,
+      }),
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(shelfApi.util.invalidateTags(["Shelf"]));
+        } catch {}
+      },
+    }),
+    deleteShelfItem: builder.mutation<void, number>({
+      query: (id: number) => ({
+        url: `shelf/${id}`,
+        method: "DELETE",
+      }),
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(shelfApi.util.invalidateTags(["Shelf"]));
+        } catch {}
+      },
+    }),
   }),
 });
 
-export const { useGetShelfQuery } = shelfApi;
+export const {
+  useGetShelfQuery,
+  useGetShelfPageQuery,
+  useGetShelfItemQuery,
+  useMarkAsReadMutation,
+  useEditShelfItemDetailsMutation,
+  useDeleteShelfItemMutation,
+} = shelfApi;

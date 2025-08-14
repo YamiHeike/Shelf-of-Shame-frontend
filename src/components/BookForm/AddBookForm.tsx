@@ -57,49 +57,47 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
   };
 
   return (
-    <>
-      <Form form={form} onFinish={handleFinish} layout="vertical">
-        <Row gutter={[24, 16]}>
-          <Col xs={24} md={12}>
-            <BookDetails genres={genres} form={form} />
-            <FlexContainer>
-              <NotFoundSwitch
-                label="Didn't find your book?"
-                value={isBookNotFound}
-                onToggle={() => {
-                  onToggle();
-                  clearErrors();
-                }}
-              />
-              <NotFoundSwitch
-                label="Author not found?"
-                value={isAuthorNotFound}
-                onToggle={setIsAuthorNotFound}
-              />
-            </FlexContainer>
-            <AuthorSelection
-              authors={authors}
-              isAuthorNotFound={isAuthorNotFound || authors.length === 0}
-              onToggleAuthorNotFound={setIsAuthorNotFound}
+    <Form form={form} onFinish={handleFinish} layout="vertical">
+      <Row gutter={[24, 16]}>
+        <Col xs={24} md={12}>
+          <BookDetails genres={genres} form={form} />
+          <FlexContainer>
+            <NotFoundSwitch
+              label="Didn't find your book?"
+              value={isBookNotFound}
+              onToggle={() => {
+                onToggle();
+                clearErrors();
+              }}
             />
-          </Col>
-
-          <Col xs={24} md={12}>
-            <BookMetadata />
-          </Col>
-        </Row>
-        <Form.Item>
-          <FormButton
-            submitted={submitted}
-            preSubmitText="Add to Shelf"
-            postSubmitText="Adding..."
-            style={{
-              maxWidth: 200,
-              width: "100%",
-            }}
+            <NotFoundSwitch
+              label="Author not found?"
+              value={isAuthorNotFound}
+              onToggle={setIsAuthorNotFound}
+            />
+          </FlexContainer>
+          <AuthorSelection
+            authors={authors}
+            isAuthorNotFound={isAuthorNotFound || authors.length === 0}
+            onToggleAuthorNotFound={setIsAuthorNotFound}
           />
-        </Form.Item>
-      </Form>
-    </>
+        </Col>
+
+        <Col xs={24} md={12}>
+          <BookMetadata />
+        </Col>
+      </Row>
+      <Form.Item>
+        <FormButton
+          submitted={submitted}
+          preSubmitText="Add to Shelf"
+          postSubmitText="Adding..."
+          style={{
+            maxWidth: 200,
+            width: "100%",
+          }}
+        />
+      </Form.Item>
+    </Form>
   );
 };

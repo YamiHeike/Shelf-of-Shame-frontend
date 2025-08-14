@@ -40,16 +40,14 @@ export const ShelfItemPage = () => {
     );
 
   return (
-    <>
-      <AuthPage
-        Page={
-          <UserShelfItemContextProvider item={data}>
-            <div className={styles.detailsPage}>
-              <ShelfItemDetails />
-            </div>
-          </UserShelfItemContextProvider>
-        }
-      />
-    </>
+    <AuthPage
+      Page={
+        <UserShelfItemContextProvider item={data}>
+          <div className={styles.detailsPage}>
+            <ShelfItemDetails />
+          </div>
+        </UserShelfItemContextProvider>
+      }
+    />
   );
 };

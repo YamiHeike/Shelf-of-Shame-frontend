@@ -54,18 +54,16 @@ export const EditItemForm = () => {
   }
 
   return (
-    <>
-      <div className={styles.form}>
-        <StatusSelector statusRef={statusRef} />
-        <DifficultySlider difficultyRef={difficultyRef} />
-        <NotesTextArea notesRef={notesRef} />
-        <div className={styles.buttonRow}>
-          <Button type="primary" onClick={handleSave}>
-            Save
-          </Button>
-          <Button onClick={handleCancel}>Cancel</Button>
-        </div>
+    <div className={styles.form}>
+      <StatusSelector statusRef={statusRef} />
+      <DifficultySlider difficultyRef={difficultyRef} />
+      <NotesTextArea notesRef={notesRef} />
+      <div className={styles.buttonRow}>
+        <Button type="primary" onClick={handleSave}>
+          Save
+        </Button>
+        <Button onClick={handleCancel}>Cancel</Button>
       </div>
-    </>
+    </div>
   );
 };

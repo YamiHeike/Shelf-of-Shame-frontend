@@ -47,14 +47,12 @@ export const ShelfItemMenu = () => {
   };
 
   return (
-    <>
-      <Menu onClick={handleClick}>
-        <Menu.Item key={MenuKey.EDIT}>Edit</Menu.Item>
-        <Menu.Item key={MenuKey.DELETE}>Delete</Menu.Item>
-        {!(status === Status.GLORY) && (
-          <Menu.Item key={MenuKey.COMPLETE}>Mark as Completed</Menu.Item>
-        )}
-      </Menu>
-    </>
+    <Menu onClick={handleClick}>
+      <Menu.Item key={MenuKey.EDIT}>Edit</Menu.Item>
+      <Menu.Item key={MenuKey.DELETE}>Delete</Menu.Item>
+      {!(status === Status.GLORY) && (
+        <Menu.Item key={MenuKey.COMPLETE}>Mark as Completed</Menu.Item>
+      )}
+    </Menu>
   );
 };

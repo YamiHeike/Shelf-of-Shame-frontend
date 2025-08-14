@@ -1,4 +1,4 @@
-import { Card, Typography, message } from "antd";
+import { Card, Typography } from "antd";
 import styles from "./AuthForm.module.scss";
 import { ReactNode, useEffect } from "react";
 import { FormFieldError } from "../../types";

@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { StatusSelector } from "./StatusSelector";
 import { NotesTextArea } from "./NotesTextarea";
 import { DifficultySlider } from "./DifficultySlider";
-import useMessage from "antd/es/message/useMessage";
+import { useMessageContext } from "../../store/MessageContext";
 
 export const EditItemForm = () => {
   const { id, status, difficulty } = useUserShelfItemContext();
@@ -18,8 +18,8 @@ export const EditItemForm = () => {
   const difficultyRef = useRef(difficulty);
   const notesRef = useRef<TextAreaRef>(null);
   const navigate = useNavigate();
-  const [messageApi, contextHolder] = useMessage();
   const [editShelfDetails, result] = useEditShelfItemDetailsMutation();
+  const messageApi = useMessageContext();
 
   const handleSave = async () => {
     try {
@@ -54,19 +54,16 @@ export const EditItemForm = () => {
   }
 
   return (
-    <>
-      {contextHolder}
-      <div className={styles.form}>
-        <StatusSelector statusRef={statusRef} />
-        <DifficultySlider difficultyRef={difficultyRef} />
-        <NotesTextArea notesRef={notesRef} />
-        <div className={styles.buttonRow}>
-          <Button type="primary" onClick={handleSave}>
-            Save
-          </Button>
-          <Button onClick={handleCancel}>Cancel</Button>
-        </div>
+    <div className={styles.form}>
+      <StatusSelector statusRef={statusRef} />
+      <DifficultySlider difficultyRef={difficultyRef} />
+      <NotesTextArea notesRef={notesRef} />
+      <div className={styles.buttonRow}>
+        <Button type="primary" onClick={handleSave}>
+          Save
+        </Button>
+        <Button onClick={handleCancel}>Cancel</Button>
       </div>
-    </>
+    </div>
   );
 };

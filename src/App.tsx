@@ -4,16 +4,19 @@ import { router } from "./routes";
 import { AuthProvider } from "./components/Auth/AuthContext";
 import { Provider } from "react-redux";
 import { store } from "./store";
+import { MessageContextProvider } from "./store/MessageContext";
 
 function App() {
   return (
-    <Provider store={store}>
-      <ConfigProvider>
-        <AuthProvider>
-          <RouterProvider router={router} />
-        </AuthProvider>
-      </ConfigProvider>
-    </Provider>
+    <MessageContextProvider>
+      <Provider store={store}>
+        <ConfigProvider>
+          <AuthProvider>
+            <RouterProvider router={router} />
+          </AuthProvider>
+        </ConfigProvider>
+      </Provider>
+    </MessageContextProvider>
   );
 }
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, message, Row, Col } from "antd";
+import { Form, Row, Col } from "antd";
 import { Author, Genre, UserShelfItemValues } from "../../types";
 import { FlexContainer, NotFoundSwitch } from "../../ui";
 import { BookMetadata } from "./BookMetadata";
@@ -9,6 +9,7 @@ import { FormButton } from "../../ui/FormButton";
 import { useFormValidationContext } from "../../store";
 import { useCoverPreviewContext } from "./CoverPreviewContext";
 import { addNewBookToShelf } from "./add_book";
+import { useMessageContext } from "../../store/MessageContext";
 
 interface AddBookFormProps {
   authors: Author[];
@@ -26,8 +27,8 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
   const [form] = Form.useForm<UserShelfItemValues>();
   const [submitted, setSubmitted] = useState(false);
   const [isAuthorNotFound, setIsAuthorNotFound] = useState(false);
-  const [messageApi, contextHolder] = message.useMessage();
   const { clearErrors, sendErrors } = useFormValidationContext();
+  const messageApi = useMessageContext();
 
   const { resetPreview } = useCoverPreviewContext();
 
@@ -56,50 +57,47 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
   };
 
   return (
-    <>
-      {contextHolder}
-      <Form form={form} onFinish={handleFinish} layout="vertical">
-        <Row gutter={[24, 16]}>
-          <Col xs={24} md={12}>
-            <BookDetails genres={genres} form={form} />
-            <FlexContainer>
-              <NotFoundSwitch
-                label="Didn't find your book?"
-                value={isBookNotFound}
-                onToggle={() => {
-                  onToggle();
-                  clearErrors();
-                }}
-              />
-              <NotFoundSwitch
-                label="Author not found?"
-                value={isAuthorNotFound}
-                onToggle={setIsAuthorNotFound}
-              />
-            </FlexContainer>
-            <AuthorSelection
-              authors={authors}
-              isAuthorNotFound={isAuthorNotFound || authors.length === 0}
-              onToggleAuthorNotFound={setIsAuthorNotFound}
+    <Form form={form} onFinish={handleFinish} layout="vertical">
+      <Row gutter={[24, 16]}>
+        <Col xs={24} md={12}>
+          <BookDetails genres={genres} form={form} />
+          <FlexContainer>
+            <NotFoundSwitch
+              label="Didn't find your book?"
+              value={isBookNotFound}
+              onToggle={() => {
+                onToggle();
+                clearErrors();
+              }}
             />
-          </Col>
-
-          <Col xs={24} md={12}>
-            <BookMetadata />
-          </Col>
-        </Row>
-        <Form.Item>
-          <FormButton
-            submitted={submitted}
-            preSubmitText="Add to Shelf"
-            postSubmitText="Adding..."
-            style={{
-              maxWidth: 200,
-              width: "100%",
-            }}
+            <NotFoundSwitch
+              label="Author not found?"
+              value={isAuthorNotFound}
+              onToggle={setIsAuthorNotFound}
+            />
+          </FlexContainer>
+          <AuthorSelection
+            authors={authors}
+            isAuthorNotFound={isAuthorNotFound || authors.length === 0}
+            onToggleAuthorNotFound={setIsAuthorNotFound}
           />
-        </Form.Item>
-      </Form>
-    </>
+        </Col>
+
+        <Col xs={24} md={12}>
+          <BookMetadata />
+        </Col>
+      </Row>
+      <Form.Item>
+        <FormButton
+          submitted={submitted}
+          preSubmitText="Add to Shelf"
+          postSubmitText="Adding..."
+          style={{
+            maxWidth: 200,
+            width: "100%",
+          }}
+        />
+      </Form.Item>
+    </Form>
   );
 };

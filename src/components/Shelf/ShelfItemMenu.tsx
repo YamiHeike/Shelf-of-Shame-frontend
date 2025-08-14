@@ -6,7 +6,7 @@ import {
 } from "../../store/shelfApi";
 import { Status } from "../../types";
 import { useNavigate } from "react-router-dom";
-import useMessage from "antd/es/message/useMessage";
+import { useMessageContext } from "../../store/MessageContext";
 
 enum MenuKey {
   EDIT = "edit",
@@ -19,7 +19,7 @@ export const ShelfItemMenu = () => {
   const [deleteShelfItem] = useDeleteShelfItemMutation();
   const { id, status } = useUserShelfItemContext();
   const navigate = useNavigate();
-  const [messageApi, contextHolder] = useMessage();
+  const messageApi = useMessageContext();
 
   const handleClick: MenuProps["onClick"] = async ({ key }) => {
     try {
@@ -30,6 +30,7 @@ export const ShelfItemMenu = () => {
           break;
         case MenuKey.DELETE:
           await deleteShelfItem(id).unwrap();
+          messageApi.success("Book successfully deleted!");
           break;
         case MenuKey.EDIT:
           navigate(`${id}/edit`);
@@ -46,15 +47,12 @@ export const ShelfItemMenu = () => {
   };
 
   return (
-    <>
-      {contextHolder}
-      <Menu onClick={handleClick}>
-        <Menu.Item key={MenuKey.EDIT}>Edit</Menu.Item>
-        <Menu.Item key={MenuKey.DELETE}>Delete</Menu.Item>
-        {!(status === Status.GLORY) && (
-          <Menu.Item key={MenuKey.COMPLETE}>Mark as Completed</Menu.Item>
-        )}
-      </Menu>
-    </>
+    <Menu onClick={handleClick}>
+      <Menu.Item key={MenuKey.EDIT}>Edit</Menu.Item>
+      <Menu.Item key={MenuKey.DELETE}>Delete</Menu.Item>
+      {!(status === Status.GLORY) && (
+        <Menu.Item key={MenuKey.COMPLETE}>Mark as Completed</Menu.Item>
+      )}
+    </Menu>
   );
 };

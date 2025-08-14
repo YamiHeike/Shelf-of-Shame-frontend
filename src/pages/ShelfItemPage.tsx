@@ -5,8 +5,8 @@ import styles from "./ShelfItemDetailsPage.module.scss";
 import { useGetShelfItemQuery } from "../store/shelfApi";
 import { ErrorMessage, Loading } from "../ui";
 import { UserShelfItemContextProvider } from "../store";
-import useMessage from "antd/es/message/useMessage";
 import { useEffect, useRef } from "react";
+import { useMessageContext } from "../store/MessageContext";
 
 export const ShelfItemPage = () => {
   const { id } = useParams();
@@ -14,7 +14,7 @@ export const ShelfItemPage = () => {
     parseInt(id ?? "-1")
   );
   const [searchParams, setSearchParams] = useSearchParams();
-  const [messageApi, contextHolder] = useMessage();
+  const messageApi = useMessageContext();
   const messageShown = useRef<boolean>(false);
   const edited = searchParams.get("edited") === "true";
 
@@ -40,17 +40,14 @@ export const ShelfItemPage = () => {
     );
 
   return (
-    <>
-      {contextHolder}
-      <AuthPage
-        Page={
-          <UserShelfItemContextProvider item={data}>
-            <div className={styles.detailsPage}>
-              <ShelfItemDetails />
-            </div>
-          </UserShelfItemContextProvider>
-        }
-      />
-    </>
+    <AuthPage
+      Page={
+        <UserShelfItemContextProvider item={data}>
+          <div className={styles.detailsPage}>
+            <ShelfItemDetails />
+          </div>
+        </UserShelfItemContextProvider>
+      }
+    />
   );
 };

@@ -1,10 +1,11 @@
-import { Form, message, Select } from "antd";
+import { Form, Select } from "antd";
 import { Book, UserShelfItemDto } from "../../types";
 import { NotFoundSwitch } from "../../ui";
 import { FormButton } from "../../ui/FormButton";
 import { useState } from "react";
 import { BookMetadata } from "./BookMetadata";
 import { addBookToShelf } from "./add_book";
+import { useMessageContext } from "../../store/MessageContext";
 
 type AddExistingBookProps = {
   isBookNotFound: boolean;
@@ -25,7 +26,7 @@ export const AddExistingBookForm = ({
 
   const [submitted, setSubmitted] = useState(false);
   const [form] = Form.useForm<UserShelfItemDto>();
-  const [messageApi, contextHolder] = message.useMessage();
+  const messageApi = useMessageContext();
 
   const handleFinish = async (values: UserShelfItemDto) => {
     setSubmitted(true);
@@ -46,64 +47,61 @@ export const AddExistingBookForm = ({
   };
 
   return (
-    <>
-      {contextHolder}
-      <Form
-        onFinish={handleFinish}
-        form={form}
-        style={{
-          maxWidth: "50rem",
-        }}
+    <Form
+      onFinish={handleFinish}
+      form={form}
+      style={{
+        maxWidth: "50rem",
+      }}
+    >
+      <Form.Item
+        name="isbn"
+        label="Select a book"
+        rules={[
+          {
+            required: !isBookNotFound,
+            message: "Select the book to add",
+          },
+        ]}
       >
-        <Form.Item
-          name="isbn"
-          label="Select a book"
-          rules={[
-            {
-              required: !isBookNotFound,
-              message: "Select the book to add",
-            },
-          ]}
+        <Select
+          placeholder="Search for books"
+          showSearch
+          optionFilterProp="children"
+          filterOption={filterBooks}
         >
-          <Select
-            placeholder="Search for books"
-            showSearch
-            optionFilterProp="children"
-            filterOption={filterBooks}
-          >
-            {books.map((book) => {
-              const authorNames = book.authors.map(
-                (author) => `${author.firstName} ${author.lastName}`
-              );
-              const authors = authorNames.join(", ");
+          {books.map((book) => {
+            const authorNames = book.authors.map(
+              (author) => `${author.firstName} ${author.lastName}`
+            );
+            const authors = authorNames.join(", ");
 
-              return (
-                <Option key={book.isbn} value={book.isbn}>
-                  {`${book.title} (${authors})`}
-                </Option>
-              );
-            })}
-          </Select>
-        </Form.Item>
-        <NotFoundSwitch
-          label="Didn't find your book?"
-          value={isBookNotFound}
-          onToggle={onToggle}
+            return (
+              <Option key={book.isbn} value={book.isbn}>
+                {`${book.title} (${authors})`}
+              </Option>
+            );
+          })}
+        </Select>
+      </Form.Item>
+      <NotFoundSwitch
+        label="Didn't find your book?"
+        value={isBookNotFound}
+        onToggle={onToggle}
+      />
+
+      <BookMetadata />
+      <Form.Item>
+        <FormButton
+          submitted={submitted}
+          preSubmitText="Add to Shelf"
+          postSubmitText="Adding..."
+          style={{
+            maxWidth: 200,
+            width: "100%",
+          }}
         />
-
-        <BookMetadata />
-        <Form.Item>
-          <FormButton
-            submitted={submitted}
-            preSubmitText="Add to Shelf"
-            postSubmitText="Adding..."
-            style={{
-              maxWidth: 200,
-              width: "100%",
-            }}
-          />
-        </Form.Item>
-      </Form>
-    </>
+      </Form.Item>
+    </Form>
   );
 };

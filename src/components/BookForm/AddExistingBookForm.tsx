@@ -1,10 +1,11 @@
-import { Form, message, Select } from "antd";
+import { Form, Select } from "antd";
 import { Book, UserShelfItemDto } from "../../types";
 import { NotFoundSwitch } from "../../ui";
 import { FormButton } from "../../ui/FormButton";
 import { useState } from "react";
 import { BookMetadata } from "./BookMetadata";
 import { addBookToShelf } from "./add_book";
+import { useMessageContext } from "../../store/MessageContext";
 
 type AddExistingBookProps = {
   isBookNotFound: boolean;
@@ -25,7 +26,7 @@ export const AddExistingBookForm = ({
 
   const [submitted, setSubmitted] = useState(false);
   const [form] = Form.useForm<UserShelfItemDto>();
-  const [messageApi, contextHolder] = message.useMessage();
+  const messageApi = useMessageContext();
 
   const handleFinish = async (values: UserShelfItemDto) => {
     setSubmitted(true);
@@ -47,7 +48,6 @@ export const AddExistingBookForm = ({
 
   return (
     <>
-      {contextHolder}
       <Form
         onFinish={handleFinish}
         form={form}

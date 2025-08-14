@@ -3,6 +3,7 @@ import styles from "./AuthForm.module.scss";
 import { ReactNode, useEffect } from "react";
 import { FormFieldError } from "../../types";
 import { motion } from "motion/react";
+import { useMessageContext } from "../../store/MessageContext";
 
 const MotionCard = motion(Card);
 
@@ -19,7 +20,7 @@ export const AuthForm = ({
   footerText,
   error,
 }: AuthFormProps) => {
-  const [messageApi, contextHolder] = message.useMessage();
+  const messageApi = useMessageContext();
   const WRONG_PASS = "Wrong password";
 
   useEffect(() => {
@@ -30,8 +31,6 @@ export const AuthForm = ({
 
   return (
     <div className={styles.container}>
-      {contextHolder}
-
       <MotionCard
         className={styles.card}
         initial={{ y: 100 }}

@@ -1,13 +1,13 @@
 import { createContext, useContext, useState } from "react";
 import { HttpState } from "../../types/HttpState";
-import { MessageInstance } from "antd/es/message/interface";
 import { fetchCoverUrl } from "../../utils";
+import { useMessageContext } from "../../store/MessageContext";
 
 type CoverPreviewContextType = {
   coverLoading: boolean;
   coverError: boolean;
   coverData: string | null;
-  getPreview: (isbn: string, messageApi?: MessageInstance) => void;
+  getPreview: (isbn: string) => void;
   resetPreview: () => void;
 };
 
@@ -28,6 +28,7 @@ export const CoverPreviewContextProvider = ({
     data: null,
   };
   const [coverUrl, setCoverUrl] = useState<HttpState<string>>(defaultValues);
+  const messageApi = useMessageContext();
 
   const {
     loading: coverLoading,
@@ -35,7 +36,7 @@ export const CoverPreviewContextProvider = ({
     data: coverData,
   } = coverUrl;
 
-  const getPreview = async (isbn: string, messageApi?: MessageInstance) => {
+  const getPreview = async (isbn: string) => {
     if (!isbn || isbn.length !== 10) {
       if (messageApi) {
         messageApi.warning("Enter a ISBN-10 first");

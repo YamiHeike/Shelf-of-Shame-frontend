@@ -32,3 +32,21 @@
   align-self: center;
   padding: 0 2rem;
 }
+
+.results {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+  max-width: 56.25rem;
+  margin: 0 auto;
+}
+
+.cover {
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  background: #f0f0f0;
+  flex-shrink: 0;
+}

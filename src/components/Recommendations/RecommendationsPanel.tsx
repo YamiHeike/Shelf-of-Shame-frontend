@@ -14,6 +14,7 @@ export const RecommendationsPanel = ({
   onFilter,
   filters,
 }: RecommendationsPanelProps) => {
+  // TODO: move to refs, so that changeGenres and changeDifficultyRange are triggered only on click
   const changeGenres = (values: string[]) => {
     onFilter({
       ...filters,

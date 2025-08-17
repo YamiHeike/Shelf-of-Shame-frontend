@@ -1,19 +1,36 @@
 import { Button, Card, Typography } from "antd";
-import { useState } from "react";
 import styles from "./RecommendationsPanel.module.scss";
 import { DifficultyRange, GenreSelector, Header } from "../../ui";
+import { RecommendationsFilter } from "../../types";
 
 const { Text } = Typography;
 
-export const RecommendationsPanel = () => {
-  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
-  const [difficultyRange, setDifficultyRange] = useState<[number, number]>([
-    1, 10,
-  ]);
+type RecommendationsPanelProps = {
+  onFilter: (filters: RecommendationsFilter) => void;
+  filters: RecommendationsFilter;
+};
+
+export const RecommendationsPanel = ({
+  onFilter,
+  filters,
+}: RecommendationsPanelProps) => {
+  const changeGenres = (values: string[]) => {
+    onFilter({
+      ...filters,
+      genres: values,
+    });
+  };
+
+  const changeDifficultyRange = ([min, max]: number[]) => {
+    onFilter({
+      ...filters,
+      difficultyMin: min,
+      difficultyMax: max,
+    });
+  };
 
   const handleRecommend = () => {
-    // TODO: add logic from API once it's done
-    console.log("Recommend with:", { selectedGenres, difficultyRange });
+    console.log("Recommending with filters", filters);
   };
 
   return (
@@ -23,16 +40,16 @@ export const RecommendationsPanel = () => {
         <div className={styles.control}>
           <Text strong>Preferred genres</Text>
           <GenreSelector
-            value={selectedGenres}
-            onChangeGenres={setSelectedGenres}
+            value={filters.genres ?? []}
+            onChangeGenres={changeGenres}
             className={styles.selector}
           />
         </div>
         <div className={styles.controls}>
           <DifficultyRange
-            onChange={([min, max]: number[]) => setDifficultyRange([min, max])}
-            minValue={difficultyRange[0]}
-            maxValue={difficultyRange[1]}
+            onChange={changeDifficultyRange}
+            minValue={filters.difficultyMin ?? 1}
+            maxValue={filters.difficultyMax ?? 10}
           />
         </div>
         <Button

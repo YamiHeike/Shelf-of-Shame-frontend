@@ -3,6 +3,7 @@ import {
   EditShelfItemDto,
   PageParams,
   PaginatedData,
+  RecommendationsFilter,
   ShelfItemFilter,
   UserShelfItemRecord,
 } from "../types";
@@ -53,6 +54,25 @@ export const shelfApi = createApi({
         url: `/shelf/${id}`,
       }),
       providesTags: ["Shelf"],
+    }),
+    getRecommendations: builder.query<
+      UserShelfItemRecord[],
+      RecommendationsFilter & { limit: number }
+    >({
+      query: ({
+        difficultyMin,
+        difficultyMax,
+        genres,
+        limit,
+      }: ShelfItemFilter & { limit: number }) => ({
+        url: "/shelf/recommendations",
+        params: {
+          difficultyMin,
+          difficultyMax,
+          genres,
+          limit,
+        },
+      }),
     }),
 
     markAsRead: builder.mutation<UserShelfItemRecord, number>({
@@ -105,6 +125,7 @@ export const {
   useGetShelfQuery,
   useGetShelfPageQuery,
   useGetShelfItemQuery,
+  useGetRecommendationsQuery,
   useMarkAsReadMutation,
   useEditShelfItemDetailsMutation,
   useDeleteShelfItemMutation,

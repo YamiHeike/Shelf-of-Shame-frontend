@@ -30,7 +30,11 @@ export const ShelfPanelItem = () => {
         <img
           alt={`${item.book.title} cover`}
           src={coverUrl || undefined}
-          style={{ width: "100%", height: 350, objectFit: "cover" }}
+          style={{
+            width: "100%",
+            height: 350,
+            aspectRatio: "2 / 3",
+          }}
         />
       }
       bodyStyle={{ padding: 0 }}

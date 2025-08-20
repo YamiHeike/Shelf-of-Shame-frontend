@@ -42,9 +42,12 @@ export type EditShelfItemDto = {
   difficulty: number;
 };
 
-export type ShelfItemFilter = {
-  status?: Status;
+export type RecommendationsFilter = {
   difficultyMin?: number;
   difficultyMax?: number;
   genres?: string[];
 };
+
+export interface ShelfItemFilter extends RecommendationsFilter {
+  status?: Status;
+}

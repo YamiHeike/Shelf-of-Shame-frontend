@@ -22,6 +22,10 @@ export const NavMenu = () => {
         key: routes.STATS.path,
         label: routes.STATS.label,
       },
+      {
+        key: routes.RECOMMENDATIONS.path,
+        label: routes.RECOMMENDATIONS.label,
+      },
     ];
   } else {
     items = [

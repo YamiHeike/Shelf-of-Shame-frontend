@@ -1,8 +1,8 @@
-import { Select, Slider, Typography } from "antd";
+import { Select, Typography } from "antd";
 import { ShelfItemFilter, Status } from "../../types";
 import styles from "./ShelfFilterBar.module.scss";
-import { useLibraryData } from "../../hooks";
 import { toProperCase } from "../../utils";
+import { DifficultyRange, GenreSelector } from "../../ui";
 
 const { Title } = Typography;
 
@@ -12,12 +12,6 @@ type ShelfFilterBarProps = {
 };
 
 export const ShelfFilterBar = ({ onFilter, filters }: ShelfFilterBarProps) => {
-  const { genres } = useLibraryData();
-  const genreOptions = genres.list.map((genre) => ({
-    value: genre.name,
-    label: genre.name,
-  }));
-
   const statusOptions = Object.keys(Status).map((status) => ({
     value: status,
     label: toProperCase(status),
@@ -63,23 +57,14 @@ export const ShelfFilterBar = ({ onFilter, filters }: ShelfFilterBarProps) => {
           allowClear
           className={styles.filterItem}
         />
-        <Slider
-          range
-          min={1}
-          max={10}
-          defaultValue={[1, 10]}
-          value={[filters.difficultyMin ?? 1, filters.difficultyMax ?? 10]}
+        <DifficultyRange
           onChange={changeDifficultyRange}
-          marks={{ 1: "1", 5: "5", 10: "10" }}
-          className={styles.slider}
+          minValue={filters.difficultyMin ?? 1}
+          maxValue={filters.difficultyMax ?? 10}
         />
-        <Select
-          mode="multiple"
-          placeholder="Genres"
-          options={genreOptions}
-          allowClear
+        <GenreSelector
+          onChangeGenres={changeGenres}
           value={filters.genres}
-          onChange={changeGenres}
           className={styles.filterItem}
         />
       </div>

@@ -2,6 +2,7 @@ import { Button, Card, Typography } from "antd";
 import styles from "./RecommendationsPanel.module.scss";
 import { DifficultyRange, GenreSelector, Header } from "../../ui";
 import { RecommendationsFilter } from "../../types";
+import { useRef } from "react";
 
 const { Text } = Typography;
 
@@ -14,24 +15,31 @@ export const RecommendationsPanel = ({
   onFilter,
   filters,
 }: RecommendationsPanelProps) => {
-  // TODO: move to refs, so that changeGenres and changeDifficultyRange are triggered only on click
+  const genresRef = useRef<string[]>(filters.genres ?? []);
+  const difficultyRangeRef = useRef<number[]>([
+    filters.difficultyMin ?? 1,
+    filters.difficultyMax ?? 10,
+  ]);
+
   const changeGenres = (values: string[]) => {
-    onFilter({
-      ...filters,
-      genres: values,
-    });
+    genresRef.current = values;
   };
 
   const changeDifficultyRange = ([min, max]: number[]) => {
-    onFilter({
-      ...filters,
-      difficultyMin: min,
-      difficultyMax: max,
-    });
+    difficultyRangeRef.current = [min, max];
   };
 
   const handleRecommend = () => {
-    console.log("Recommending with filters", filters);
+    const [min, max] = difficultyRangeRef.current;
+    const newFilters: RecommendationsFilter = {
+      ...filters,
+      genres: genresRef.current,
+      difficultyMin: min,
+      difficultyMax: max,
+    };
+
+    console.log("Recommending with filters", newFilters);
+    onFilter(newFilters);
   };
 
   return (
@@ -41,17 +49,12 @@ export const RecommendationsPanel = ({
         <div className={styles.control}>
           <Text strong>Preferred genres</Text>
           <GenreSelector
-            value={filters.genres ?? []}
             onChangeGenres={changeGenres}
             className={styles.selector}
           />
         </div>
         <div className={styles.controls}>
-          <DifficultyRange
-            onChange={changeDifficultyRange}
-            minValue={filters.difficultyMin ?? 1}
-            maxValue={filters.difficultyMax ?? 10}
-          />
+          <DifficultyRange onChange={changeDifficultyRange} />
         </div>
         <Button
           type="primary"

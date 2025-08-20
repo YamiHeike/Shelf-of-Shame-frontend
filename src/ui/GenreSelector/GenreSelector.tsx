@@ -3,7 +3,7 @@ import { useLibraryData } from "../../hooks";
 
 type GenreSelectorProps = {
   onChangeGenres: (values: any) => void;
-  value: string[] | undefined;
+  value?: string[] | undefined;
 } & SelectProps;
 
 export const GenreSelector = ({

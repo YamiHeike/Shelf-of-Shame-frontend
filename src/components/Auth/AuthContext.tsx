@@ -25,7 +25,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const storedUser = localStorage.getItem("user");
     return storedUser ? JSON.parse(storedUser) : null;
   });
-  const isAuthenticated = !!user;
   let logoutTimer: ReturnType<typeof setTimeout> | null;
 
   const login = (user: UserDto) => {
@@ -78,7 +77,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     <AuthContext.Provider
       value={{
         user,
-        isAuthenticated,
+        isAuthenticated: !!user,
         login,
         logout,
       }}

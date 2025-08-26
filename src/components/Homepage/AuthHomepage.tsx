@@ -27,7 +27,7 @@ export const AuthHomepage = () => {
   let stats = null;
   let content = null;
 
-  if (loading) {
+  if (loading || !user) {
     content = <Loading />;
   } else if (errored) {
     content = <ErrorMessage />;
@@ -53,7 +53,7 @@ export const AuthHomepage = () => {
         <ShelfCard
           unreadBooks={unreadBooks}
           currentReads={currentReads}
-          username={user!.username}
+          username={user.username}
         />
       );
   }

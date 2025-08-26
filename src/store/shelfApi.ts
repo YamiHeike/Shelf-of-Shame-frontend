@@ -5,7 +5,9 @@ import {
   PaginatedData,
   RecommendationsFilter,
   ShelfItemFilter,
+  UserShelfItemDto,
   UserShelfItemRecord,
+  UserShelfItemValues,
 } from "../types";
 
 export const shelfApi = createApi({
@@ -22,6 +24,36 @@ export const shelfApi = createApi({
   }),
   tagTypes: ["Shelf"],
   endpoints: (builder) => ({
+    addBookToShelf: builder.mutation<UserShelfItemDto, UserShelfItemDto>({
+      query: (dto: UserShelfItemDto) => {
+        return {
+          url: "shelf/add",
+          method: "POST",
+          body: dto,
+        };
+      },
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(shelfApi.util.invalidateTags(["Shelf"]));
+        } catch {}
+      },
+    }),
+    addNewBookToShelf: builder.mutation<UserShelfItemValues, UserShelfItemDto>({
+      query: (values: UserShelfItemValues) => {
+        return {
+          url: "shelf/add-new",
+          method: "POST",
+          body: values,
+        };
+      },
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(shelfApi.util.invalidateTags(["Shelf"]));
+        } catch {}
+      },
+    }),
     getShelf: builder.query<UserShelfItemRecord[], void>({
       query: () => "shelf",
       providesTags: ["Shelf"],
@@ -122,6 +154,8 @@ export const shelfApi = createApi({
 });
 
 export const {
+  useAddBookToShelfMutation,
+  useAddNewBookToShelfMutation,
   useGetShelfQuery,
   useGetShelfPageQuery,
   useGetShelfItemQuery,

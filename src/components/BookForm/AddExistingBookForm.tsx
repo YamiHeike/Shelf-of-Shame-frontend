@@ -4,8 +4,8 @@ import { NotFoundSwitch } from "../../ui";
 import { FormButton } from "../../ui/FormButton";
 import { useState } from "react";
 import { BookMetadata } from "./BookMetadata";
-import { addBookToShelf } from "./add_book";
 import { useMessageContext } from "../../store/MessageContext";
+import { useAddBookToShelfMutation } from "../../store/shelfApi";
 
 type AddExistingBookProps = {
   isBookNotFound: boolean;
@@ -24,6 +24,7 @@ export const AddExistingBookForm = ({
     return option.children.toLowerCase().includes(input.toLowerCase());
   };
 
+  const [addExistingBook] = useAddBookToShelfMutation();
   const [submitted, setSubmitted] = useState(false);
   const [form] = Form.useForm<UserShelfItemDto>();
   const messageApi = useMessageContext();
@@ -31,7 +32,7 @@ export const AddExistingBookForm = ({
   const handleFinish = async (values: UserShelfItemDto) => {
     setSubmitted(true);
     try {
-      await addBookToShelf(values);
+      await addExistingBook(values).unwrap();
       form.resetFields();
       messageApi.success("Book added! Make sure you read it one day!");
       setSubmitted(false);

@@ -8,8 +8,8 @@ import { BookDetails } from "./BookDetails";
 import { FormButton } from "../../ui/FormButton";
 import { useFormValidationContext } from "../../store";
 import { useCoverPreviewContext } from "./CoverPreviewContext";
-import { addNewBookToShelf } from "./add_book";
 import { useMessageContext } from "../../store/MessageContext";
+import { useAddNewBookToShelfMutation } from "../../store/shelfApi";
 
 interface AddBookFormProps {
   authors: Author[];
@@ -26,6 +26,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
 }) => {
   const [form] = Form.useForm<UserShelfItemValues>();
   const [submitted, setSubmitted] = useState(false);
+  const [addBookToShelf] = useAddNewBookToShelfMutation();
   const [isAuthorNotFound, setIsAuthorNotFound] = useState(false);
   const { clearErrors, sendErrors } = useFormValidationContext();
   const messageApi = useMessageContext();
@@ -36,7 +37,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
     setSubmitted(true);
     clearErrors();
     try {
-      await addNewBookToShelf(values);
+      await addBookToShelf(values);
       form.resetFields();
       resetPreview();
       setSubmitted(false);

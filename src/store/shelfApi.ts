@@ -29,7 +29,7 @@ export const shelfApi = createApi({
         return {
           url: "shelf/add",
           method: "POST",
-          dto,
+          body: dto,
         };
       },
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
@@ -44,7 +44,7 @@ export const shelfApi = createApi({
         return {
           url: "shelf/add-new",
           method: "POST",
-          values,
+          body: values,
         };
       },
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
@@ -155,6 +155,7 @@ export const shelfApi = createApi({
 
 export const {
   useAddBookToShelfMutation,
+  useAddNewBookToShelfMutation,
   useGetShelfQuery,
   useGetShelfPageQuery,
   useGetShelfItemQuery,

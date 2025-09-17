@@ -9,6 +9,7 @@ interface AuthorSelectionProps {
   onToggleAuthorNotFound: (value: boolean) => void;
 }
 
+// TODO: multiselect
 export const AuthorSelection: React.FC<AuthorSelectionProps> = ({
   authors,
   isAuthorNotFound,
@@ -21,27 +22,28 @@ export const AuthorSelection: React.FC<AuthorSelectionProps> = ({
     <>
       <Form.Item
         label="Select Author"
-        name="authorId"
+        name="authorIds"
         rules={[
           {
             required: !isAuthorNotFound,
-            message: "Please select an author!",
+            min: 1,
+            type: "array",
+            message: "Please select at least one author!",
           },
         ]}
       >
         <Select
           placeholder="Search for an author"
+          mode="multiple"
           showSearch
           optionFilterProp="children"
           filterOption={filterAuthors}
           disabled={isAuthorNotFound}
-        >
-          {authors.map((author) => (
-            <Option key={author.id} value={author.id}>
-              {`${author.firstName} ${author.lastName}`}
-            </Option>
-          ))}
-        </Select>
+          options={authors.map((author) => ({
+            label: `${author.firstName} ${author.lastName}`,
+            value: author.id,
+          }))}
+        />
       </Form.Item>
 
       {isAuthorNotFound && (

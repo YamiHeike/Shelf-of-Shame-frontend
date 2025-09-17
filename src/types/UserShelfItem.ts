@@ -20,7 +20,7 @@ export type UserShelfItemDto = {
 
 export interface UserShelfItemValues extends UserShelfItemDto {
   title: string;
-  authorId: number;
+  authorIds: number[];
   firstName: string;
   lastName: string;
   numberOfPages: number;

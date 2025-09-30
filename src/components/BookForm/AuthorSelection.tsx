@@ -1,15 +1,12 @@
 import { Form, Select, Input } from "antd";
 import { Author } from "../../types";
 
-const { Option } = Select;
-
 interface AuthorSelectionProps {
   authors: Author[];
   isAuthorNotFound: boolean;
   onToggleAuthorNotFound: (value: boolean) => void;
 }
 
-// TODO: multiselect
 export const AuthorSelection: React.FC<AuthorSelectionProps> = ({
   authors,
   isAuthorNotFound,

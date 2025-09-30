@@ -1,50 +1,50 @@
-# React + TypeScript + Vite
+# 📚 Shelf of Shame – Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to the **Shelf of Shame** frontend — a React + TypeScript application that helps readers tackle their growing pile of unread books 📖 (a phenomenon known as _tsundoku_ in Japanese 🇯🇵).  
+The goal is simple: **encourage you to read the books you already own** instead of just buying more!
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Overview
 
-## Expanding the ESLint configuration
+This frontend is part of the **Shelf of Shame** project and provides the user interface for:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- 👤 **User authentication** (JWT-based, handled by the backend)
+- 📚 **Shelf management** – add new books, update status, difficulty, and notes
+- 📊 **Shelf statistics** – get insights into your reading habits
+- 🧠 **Recommendations** – suggestions tailored to your shelf and preferences
+- 💡 **Motivational quotes** – to help you stay on track
+- 📘 **Automatic book covers** – fetched from the OpenLibrary API based on title/author
 
-- Configure the top-level `parserOptions` property like this:
+---
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## ⚙️ Tech Stack
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+- ⚛️ **React 19** – UI library
+- 🌀 **TypeScript** – type safety and better DX
+- 🎯 **Redux Toolkit** – global state management
+- 🔁 **RTK Query** – API queries & mutations for authenticated user shelf data
+- 🎨 **Ant Design** – elegant, ready-to-use UI components
+- 📦 **Vite** – lightning-fast development and build tool
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+---
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+## 📦 Prerequisites
+
+Before you begin, make sure you have the following installed:
+
+- 🟢 **Node.js ≥ 18** – required by Vite 6 and React 19
+- 📦 **npm ≥ 8** – for package management
+- ☕ **Shelf of Shame backend** running locally at `http://localhost:8080`
+
+---
+
+## 🛠️ Getting Started
+
+Clone the repository and install dependencies:
+
+```bash
+git clone https://github.com/YamiHeike/Shelf-of-Shame-frontend.git
+cd Shelf-of-Shame-frontend
+npm install
 ```

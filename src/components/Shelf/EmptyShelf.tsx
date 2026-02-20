@@ -2,6 +2,8 @@ import { Empty, Typography, Button } from "antd";
 import { SmileOutlined } from "@ant-design/icons";
 import confetti from "canvas-confetti";
 import { useEffect } from "react";
+import { routes } from "../../routes";
+import { Link } from "react-router-dom";
 
 const { Title, Paragraph } = Typography;
 
@@ -46,6 +48,11 @@ export const EmptyShelf = () => {
       <Button type="primary" icon={<SmileOutlined />} onClick={celebrate}>
         Bask in your glory
       </Button>
+      <Link to={routes.ADD.path}>
+        <Button type="default" style={{ marginLeft: "0.5em" }}>
+          ... or add more books, you cheater! 🤣
+        </Button>
+      </Link>
     </div>
   );
 };
